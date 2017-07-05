@@ -14,6 +14,27 @@ from Queue import LifoQueue
 from time import time
 import h5py
 import nifty_with_cplex as nifty
+from skimage.measure import label
+
+
+def close_cavities(volume):
+    """close cavities in segments so skeletonization don't bugs"""
+
+
+    volume[volume==0]=2
+    lab=label(volume)
+    if len(np.unique(lab))==2:
+        return volume
+    count,what=0,0
+    for uniq in np.unique(lab):
+        if len(np.where(lab == uniq)[0])> count:
+            count=len(np.where(lab == uniq)[0])
+            what=uniq
+
+    volume[lab==what]=0
+    volume[lab != what] = 1
+
+    return volume
 
 
 def check_box(volume,point,is_queued_map,is_visited_map,stage=1):

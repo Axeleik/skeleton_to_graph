@@ -7,7 +7,7 @@ sys.path.append(
 
 from multicut_src import ExperimentSettings
 
-from workflow.pipeline import find_false_merges
+from pipeline import find_false_merges
 
 # TODO Change here
 from init_exp_splB_z1 import meta_folder, project_folder, source_folder, experiment_folder

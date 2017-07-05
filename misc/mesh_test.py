@@ -18,14 +18,16 @@ from skimage import measure
 
 
 
-def plot_mesh(vertices, faces, normals, values):
+def plot_mesh(vertices, faces, normals=False, values=False):
     """plot mesh """
 
     app = QtGui.QApplication([])
     view = GLViewWidget()
 
-    mesh = MeshData(vertices / 100, faces)  # scale down - because camera is at a fixed position
-    mesh._vertexNormals = normals
+    mesh = MeshData(vertices, faces)  # scale down - because camera is at a fixed position
+
+    if type(normals)!=bool:
+        mesh._vertexNormals = normals
 
     item = GLMeshItem(meshdata=mesh, color=[1, 0, 0, 1], shader="normalColor")
 
@@ -34,9 +36,12 @@ def plot_mesh(vertices, faces, normals, values):
     app.exec_()
 
 
-vertices, faces, normals, values = np.load("/export/home/amatskev/Bachelor/data/first_try/mesh_data.npy")
 
-plot_mesh(vertices, faces, normals, values)
+if __name__ == "__main__":
+
+    vertices, faces, normals, values = np.load("/export/home/amatskev/Bachelor/data/first_try/mesh_data.npy")
+
+    plot_mesh(vertices, faces)
 
 
 
@@ -45,7 +50,7 @@ plot_mesh(vertices, faces, normals, values)
 # volume = np.load("/export/home/amatskev/Bachelor/data/first_try/first_try_Volume.npy")
 # testvolume=np.load("/export/home/amatskev/Bachelor/marching_cubes/test/sample.npy")
 # vertices, faces, normals, values = measure.marching_cubes_lewiner(volume,
-#
+#                                                      spacing=(1,1,10))
 
 
 
@@ -87,8 +92,6 @@ plot_mesh(vertices, faces, normals, values)
 #
 # new.dtype="int32"
 # print "hi"
-# vertices, faces, normals, values = measure.marching_cubes_lewiner(volume,
-#                                                      spacing=(1,1,10))
 #
 # np.save("/export/home/amatskev/Bachelor/data/first_try/mesh_data.npy",(vertices, faces, normals, values))
 #

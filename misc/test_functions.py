@@ -76,9 +76,21 @@ def img_to_skel(img):
 
     return skel_img,skel
 
+def write(file,path):
+
+    with open(path, mode='w') as f:
+        pickle.dump(file, f)
+
+
+def read(path):
+
+    with open(path, mode='r') as f:
+        file = pickle.load(f)
+
 if __name__ == "__main__":
 
+    img = np.load("/export/home/amatskev/Bachelor/marching_cubes/test/sample.npy")
+    _,skel = img_to_skel(img)
 
-    data = extract_from_h5py()
 
-    draw_path(data)
+    plot_figure_and_path(img,skel)

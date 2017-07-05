@@ -7,7 +7,7 @@ sys.path.append(
 
 
 from multicut_src import DataSet
-from workflow.pipeline import init_dataset
+from pipeline import init_dataset
 
 # The following locations should be importable by downstream scripts
 source_folder = '/mnt/localdata03/amatskev/neuraldata/'

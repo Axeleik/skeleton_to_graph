@@ -15,6 +15,7 @@ from multicut_src import resolve_merges_with_lifted_edges_global, resolve_merges
 from multicut_src import RandomForest
 from multicut_src import ExperimentSettings
 
+
 def init_dataset(
         meta_folder, name,
         raw_filepath, raw_name,
@@ -70,6 +71,12 @@ def run_lifted_mc(
     )
 
     segmentation = ds_test.project_mc_result(seg_id, mc_nodes)
+
+    # from multicut_src import merge_small_segments
+    # segmentation=merge_small_segments(segmentation.astype("uint32"),100)
+
+
+
     vigra.writeHDF5(segmentation, save_path, results_name, compression = 'gzip')
 
 

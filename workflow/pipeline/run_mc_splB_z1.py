@@ -7,7 +7,7 @@ sys.path.append(
 
 from multicut_src import ExperimentSettings
 
-from workflow.pipeline import run_lifted_mc
+from pipeline import run_lifted_mc
 
 # TODO Change here
 from init_exp_splB_z1 import meta_folder, experiment_folder

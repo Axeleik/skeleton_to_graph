@@ -7,7 +7,7 @@ sys.path.append(
 
 from multicut_src import ExperimentSettings, load_dataset
 
-from workflow.pipeline import resolve_false_merges, project_new_result
+from pipeline import resolve_false_merges, project_new_result
 
 if __name__ == '__main__':
 
