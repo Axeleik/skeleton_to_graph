@@ -24,6 +24,7 @@ def close_cavities(volume):
     volume[volume==0]=2
     lab=label(volume)
     if len(np.unique(lab))==2:
+        print "no cavities to close"
         return volume
     count,what=0,0
     for uniq in np.unique(lab):
@@ -33,6 +34,8 @@ def close_cavities(volume):
 
     volume[lab==what]=0
     volume[lab != what] = 1
+
+    print "cavities closed"
 
     return volume
 
@@ -197,7 +200,7 @@ def stage_one(img):
             nodes[last_node] = point
             edge_list.extend([[point[0], point[1], point[2]]])
             node_list.extend([[point[0], point[1], point[2]]])
-            edges.extend([[[current_node, last_node],length,edge_list]])
+            edges.extend([[np.array([current_node, last_node]),length,edge_list]])
             is_term_map[point[0], point[1], point[2]] = last_node
             is_node_map[point[0], point[1], point[2]] = last_node
 
@@ -210,7 +213,7 @@ def stage_one(img):
             last_node = last_node + 1
             nodes[last_node ] = point
             #build edge
-            edges.extend([[[current_node, last_node],length,edge_list]]) #build edge
+            edges.extend([[np.array([current_node, last_node]),length,edge_list]]) #build edge
             node_list.extend([[point[0], point[1], point[2]]])
             #putting node branches in the queue
             for x in not_queued:
@@ -255,7 +258,7 @@ def stage_two(is_node_map, is_term_map, edges):
             edge_list = []
             edge_list.extend([[point[0], point[1], point[2]]])
             edge_list.extend([[i[0], i[1], i[2]]])
-            edges.extend([[[is_term_map[point[0],point[1],point[2]], is_node_map[i[0],i[1],i[2]]],np.linalg.norm([point[0] - i[0], point[1] - i[1], (point[2] - i[2]) * 10]),edge_list]]) #build edge
+            edges.extend([[np.array([is_term_map[point[0],point[1],point[2]], is_node_map[i[0],i[1],i[2]]]),np.linalg.norm([point[0] - i[0], point[1] - i[1], (point[2] - i[2]) * 10]),edge_list]]) #build edge
 
 
     return edges
@@ -330,6 +333,7 @@ def graph_and_edge_weights(nodes,edges_and_lens):
     edges, unique_idx = get_unique_rows(edges, return_index=True)
     edge_lens = edge_lens[unique_idx]
     edges_and_lens = edges_and_lens[unique_idx]
+    edges_and_lens[:,0]-=1
 
     assert len(edges) == len(edge_lens)
     assert edges.shape[1] == 2

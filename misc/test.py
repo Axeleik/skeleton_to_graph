@@ -1,8 +1,10 @@
 import numpy as np
-#from mesh_test import plot_mesh
-import test_functions as tf
-from neuro_seg_plot import NeuroSegPlot as nsp
+# from mesh_test import plot_mesh
+# import test_functions as tf
+# from neuro_seg_plot import NeuroSegPlot as nsp
 from skimage.measure import label
+import nifty_with_cplex as nifty
+import nifty_with_cplex.graph.rag as nrag
 
 
 def close_cavities(volume):
@@ -21,8 +23,68 @@ def close_cavities(volume):
 
     return volume
 
+def example_rag():
+    x = np.zeros((25, 25), dtype='uint32')
+    x[:13, :13] = 1
+    x[12:, 12:] = 2
+    rag = nrag.gridRag(x)
+    return rag
+
+
+    # iterate over all the nodes in the rag
+    # for each, print its adjacent nodes and the corresponding edge
+def node_iteration(rag):
+
+    # iterate over the nodes
+    for node_id in xrange(rag.numberOfNodes):
+
+        # iterate over the node adjacency of this node
+        print "Node:", node_id, "is adjacent to:"
+        for adj_node, adj_edge in rag.nodeAdjacency(node_id):
+            print "Node:", adj_node
+            print "via Edge", adj_edge
+
 
 if __name__ == "__main__":
+
+
+
+
+
+
+
+
+
+
+    volume=np.load(
+        "/export/home/amatskev/Link to neuraldata/test/first_try_Volume.npy")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    rag = example_rag()
+    node_iteration(rag)
+
+
+
+
+
+
+
+
 
 
 

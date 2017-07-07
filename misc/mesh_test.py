@@ -1,11 +1,11 @@
-#from marching_cubes import march
+from marching_cubes import march
 import numpy as np
 # from mayavi import mlab
 import cPickle as pickle
 from copy import deepcopy
-from pyqtgraph.opengl import GLViewWidget, MeshData
-from pyqtgraph.opengl.items.GLMeshItem import GLMeshItem
-from PyQt4 import QtGui
+# from pyqtgraph.opengl import GLViewWidget, MeshData
+# from pyqtgraph.opengl.items.GLMeshItem import GLMeshItem
+# from PyQt4 import QtGui
 #from nilearn import datasets, plotting, image
 #from neuro_seg_plot import NeuroSegPlot as nsp
 from scipy.ndimage.filters import gaussian_filter
@@ -15,33 +15,45 @@ from skimage import measure
 # from mpl_toolkits import mplot3d
 # from matplotlib import pyplot
 # import trimesh
+from time import time
 
 
 
-def plot_mesh(vertices, faces, normals=False, values=False):
-    """plot mesh """
-
-    app = QtGui.QApplication([])
-    view = GLViewWidget()
-
-    mesh = MeshData(vertices, faces)  # scale down - because camera is at a fixed position
-
-    if type(normals)!=bool:
-        mesh._vertexNormals = normals
-
-    item = GLMeshItem(meshdata=mesh, color=[1, 0, 0, 1], shader="normalColor")
-
-    view.addItem(item)
-    view.show()
-    app.exec_()
+# def plot_mesh(vertices, faces, normals=False, values=False):
+#     """plot mesh """
+#
+#     app = QtGui.QApplication([])
+#     view = GLViewWidget()
+#
+#     mesh = MeshData(vertices, faces)  # scale down - because camera is at a fixed position
+#
+#     if type(normals)!=bool:
+#         mesh._vertexNormals = normals
+#
+#     item = GLMeshItem(meshdata=mesh, color=[1, 0, 0, 1], shader="normalColor")
+#
+#     view.addItem(item)
+#     view.show()
+#     app.exec_()
 
 
 
 if __name__ == "__main__":
 
-    vertices, faces, normals, values = np.load("/export/home/amatskev/Bachelor/data/first_try/mesh_data.npy")
+    # vertices, faces, normals, values = np.load("/export/home/amatskev/Bachelor/data/first_try/mesh_data.npy")
 
-    plot_mesh(vertices, faces)
+    volume=np.load("/mnt/localdata03/amatskev/neuraldata/test/difficult_volume.npy")
+    print "loading finished"
+
+    time1=time()
+    vertices, normals, faces = march(volume, 0)
+    time2=time()
+    print time2-time1
+    np.save("/mnt/localdata03/amatskev/neuraldata/test/marching_cubes1.npy",(vertices, normals, faces))
+
+
+
+#    plot_mesh(vertices, faces)
 
 
 
@@ -143,11 +155,11 @@ if __name__ == "__main__":
 # app.exec_()
 #
 #
-# mlab.figure()
-#
-#
-# mlab.triangular_mesh(vertices.transpose()[0],
-#                      vertices.transpose()[1],
-#                      vertices.transpose()[2],
-#                      faces)
-# mlab.show()
+mlab.figure()
+
+
+mlab.triangular_mesh(vertices.transpose()[0],
+                     vertices.transpose()[1],
+                     vertices.transpose()[2],
+                     faces)
+mlab.show()
