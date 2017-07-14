@@ -17,16 +17,20 @@ import nifty_with_cplex as nifty
 from skimage.measure import label
 
 
-def close_cavities(volume):
+def close_cavities(init_volume):
     """close cavities in segments so skeletonization don't bugs"""
 
-
+    print "looking for open cavities inside the object..."
+    volume=deepcopy(init_volume)
     volume[volume==0]=2
     lab=label(volume)
+
     if len(np.unique(lab))==2:
-        print "no cavities to close"
-        return volume
+        print "No cavities to close!"
+        return init_volume
+
     count,what=0,0
+
     for uniq in np.unique(lab):
         if len(np.where(lab == uniq)[0])> count:
             count=len(np.where(lab == uniq)[0])
@@ -195,7 +199,7 @@ def stage_one(img):
 
 
         #terminating point
-        elif len(not_queued)==0:
+        elif len(not_queued)==0 and len(are_near)==1:
             last_node=last_node+1
             nodes[last_node] = point
             edge_list.extend([[point[0], point[1], point[2]]])
@@ -228,11 +232,11 @@ def stage_one(img):
 
 
 
-    if (len(np.where(volume)[0]) - len(np.where(is_branch_map)[0]) - len(np.where(is_term_map)[0]) - len(np.where(is_standart_map)[0]))!=0:
-        pass
-        print "assert"
-    else:
-        print "no assert"
+    # if (len(np.where(volume)[0]) - len(np.where(is_branch_map)[0]) - len(np.where(is_term_map)[0]) - len(np.where(is_standart_map)[0]))!=0:
+    #     pass
+    #     print "assert"
+    # else:
+    #     print "no assert"
 
     #assert((len(np.where(volume)[0]) - len(np.where(is_branch_map)[0]) - len(np.where(is_term_map)[0]) - len(np.where(is_standart_map)[0]))==0), "too few points were looked at/some were looked at twice !"
 
@@ -243,7 +247,7 @@ def stage_one(img):
 
 
 
-def stage_two(is_node_map, is_term_map, edges):
+def stage_two(is_node_map, is_term_map, edges,nodes):
     """finds edges for loops"""
 
 
@@ -251,17 +255,21 @@ def stage_two(is_node_map, is_term_map, edges):
 
     for point in list_term:
 
-
         _,_,_,list_near_nodes = check_box(is_node_map, point, np.zeros(is_node_map.shape, dtype=int), np.zeros(is_node_map.shape, dtype=int),2 )
+
+        if len(list_near_nodes) != 0:
+
+            is_term_map[point[0], point[1], point[2]]=0
+            print "hi"
 
         for i in list_near_nodes:
             edge_list = []
             edge_list.extend([[point[0], point[1], point[2]]])
             edge_list.extend([[i[0], i[1], i[2]]])
-            edges.extend([[np.array([is_term_map[point[0],point[1],point[2]], is_node_map[i[0],i[1],i[2]]]),np.linalg.norm([point[0] - i[0], point[1] - i[1], (point[2] - i[2]) * 10]),edge_list]]) #build edge
+            edges.extend([[np.array([is_node_map[point[0],point[1],point[2]], is_node_map[i[0],i[1],i[2]]]),np.linalg.norm([point[0] - i[0], point[1] - i[1], (point[2] - i[2]) * 10]),edge_list]]) #build edge
 
 
-    return edges
+    return edges,is_term_map
 
 
 
@@ -286,7 +294,7 @@ def skeleton_to_graph(img):
     if len(nodes)==0:
         return nodes, np.array(edges), [], is_node_map
 
-    edges = stage_two(is_node_map, is_term_map, edges)
+    edges,is_term_map = stage_two(is_node_map, is_term_map, edges,nodes)
 
 
 
@@ -342,7 +350,6 @@ def graph_and_edge_weights(nodes,edges_and_lens):
     edges = np.sort(edges, axis=1)
     edges -= 1
     n_nodes = edges.max() + 1
-    assert len(node_list) == n_nodes
     assert len(node_list) == n_nodes
     g = nifty.graph.UndirectedGraph(n_nodes)
     g.insertEdges(edges)

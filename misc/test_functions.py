@@ -56,12 +56,13 @@ def extract_from_h5py():
     return data
 
 
-def plot_figure_and_path(figure,path):
+def plot_figure_and_path(figure,path=[],plot_path=True,anisotropy_input=[1,1,1]):
     """plots figure and path"""
 
     nsp.start_figure()
-    nsp.add_iso_surfaces(figure, [1, 1, 10])
-    nsp.add_path(np.array(path.transpose()), anisotropy=[1, 1, 10])
+    nsp.add_iso_surfaces(figure, anisotropy_input)
+    if plot_path==True:
+        nsp.add_path(np.array(path.transpose()), anisotropy=anisotropy_input)
     nsp.show()
 
 def img_to_skel(img):

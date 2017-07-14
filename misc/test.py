@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
 
     volume=np.load(
-        "/export/home/amatskev/Link to neuraldata/test/first_try_Volume.npy")
+        "/export/home/amatskev/Link to neuraldata/test/test_label.npy")
 
 
 
