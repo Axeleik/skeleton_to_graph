@@ -13,7 +13,7 @@ from skimage.morphology import skeletonize_3d
 from Queue import LifoQueue
 from time import time
 import h5py
-import nifty_with_cplex as nifty
+# import nifty_with_cplex as nifty
 from skimage.measure import label
 
 
@@ -44,10 +44,9 @@ def close_cavities(init_volume):
     return volume
 
 
-def check_box(volume,point,is_queued_map,is_visited_map,stage=1):
+def check_box(volume,point,is_queued_map,is_node_map,stage=1):
     """checks the Box around the point for points which are 1,
     but were not already put in the queue and returns them in a list"""
-    list_not_visited=[]
     list_not_queued = []
     list_are_near = []
     list_is_node = []
@@ -86,11 +85,10 @@ def check_box(volume,point,is_queued_map,is_visited_map,stage=1):
 
 
                     #leftover, maybe i`ll need it sometime
-                    if is_visited_map[point[0] + x, point[1] + y, point[2] + z] == 0:
-                        list_not_visited.extend([[point[0] + x, point[1] + y, point[2] + z]])
+                    if is_node_map[point[0] + x, point[1] + y, point[2] + z] !=0:
+                        list_is_node.extend([[point[0] + x, point[1] + y, point[2] + z]])
 
-    is_visited_map[point[0],point[1],point[2]]=1
-    return list_not_queued,list_not_visited,is_visited_map,list_are_near
+    return list_not_queued,list_is_node,list_are_near
 
 
 
@@ -100,19 +98,16 @@ def init(volume):
         return np.array([-1,-1,-1])
     point = np.array((np.where(volume)[:][0][0], np.where(volume)[:][1][0], np.where(volume)[:][2][0]))
 
-    is_visited_map = np.zeros(volume.shape, dtype=int)
-    is_visited_map[point[0], point[1], point[2]]=1
-
     is_queued_map =np.zeros(volume.shape, dtype=int)
     is_queued_map[point[0], point[1], point[2]]=1
 
-    not_queued,_,_,_ = check_box(volume,point,is_queued_map,np.zeros(volume.shape, dtype=int))
+    not_queued,_,_ = check_box(volume,point,is_queued_map,np.zeros(volume.shape, dtype=int))
 
     if len(not_queued)==2:
         while True:
             point = np.array(not_queued[0])
             is_queued_map[not_queued[0][0], not_queued[0][1], not_queued[0][2]] = 1
-            not_queued,_,_,_ = check_box(volume, point, is_queued_map, np.zeros(volume.shape, dtype=int))
+            not_queued,_,_ = check_box(volume, point, is_queued_map, np.zeros(volume.shape, dtype=int))
 
             if len(not_queued)!=1:
                 break
@@ -127,7 +122,6 @@ def stage_one(img):
 
     #initializing
     volume = deepcopy(img)
-    is_visited_map = np.zeros(volume.shape, dtype=int)
     is_queued_map = np.zeros(volume.shape, dtype=int)
     is_node_map = np.zeros(volume.shape, dtype=int)
     is_term_map  = np.zeros(volume.shape, dtype=int)
@@ -139,28 +133,26 @@ def stage_one(img):
     current_node = 1
     queue = LifoQueue()
     point=init(volume)
-    leftover_list= []
+    loop_list= []
     branch_point_list=[]
     node_list = []
     length=0
-    edge_list=[]
     if (point == np.array([-1,-1,-1])).all():
         return is_node_map, is_term_map, is_branch_map, nodes, edges
 
     is_queued_map[point[0], point[1], point[2]] = 1
-    not_queued,not_visited,is_visited_map,are_near=check_box(volume, point, is_queued_map, is_visited_map)
+    not_queued,is_node_list,are_near=check_box(volume, point, is_queued_map, is_node_map)
     nodes[current_node]=point
 
     while len(not_queued)==0:
         volume[point[0], point[1], point[2]] = 0
         is_queued_map[point[0], point[1], point[2]] = 0
-        is_visited_map[point[0], point[1], point[2]] = 0
         nodes = {}
         point = init(volume)
         if (point == np.array([-1, -1, -1])).all():
             return is_node_map, is_term_map, is_branch_map, nodes, edges
         is_queued_map[point[0], point[1], point[2]] = 1
-        not_queued, not_visited, is_visited_map, are_near = check_box(volume, point, is_queued_map, is_visited_map)
+        not_queued, is_node_list, are_near = check_box(volume, point, is_queued_map, is_node_map)
         nodes[current_node] = point
 
 
@@ -184,8 +176,11 @@ def stage_one(img):
         #pull item from queue
         point,current_node,length,edge_list=queue.get()
 
-        not_queued,not_visited,is_visited_map,are_near = check_box(volume, point, is_queued_map, is_visited_map)
+        not_queued,is_node_list,are_near = check_box(volume, point, is_queued_map, is_node_map)
 
+        # if current_node==531:
+        #     print "hi"
+        #     print "hi"
 
         #standart point
         if len(not_queued)==1:
@@ -196,10 +191,12 @@ def stage_one(img):
             branch_point_list.extend([[point[0], point[1], point[2]]])
             is_standart_map[point[0], point[1], point[2]] = 1
 
+        elif len(not_queued)==0 and (len(are_near)>1 or len(is_node_list)>0):
+            loop_list.extend([current_node])
 
 
         #terminating point
-        elif len(not_queued)==0 and len(are_near)==1:
+        elif len(not_queued)==0 and len(are_near)==1 and len(is_node_list)==0:
             last_node=last_node+1
             nodes[last_node] = point
             edge_list.extend([[point[0], point[1], point[2]]])
@@ -242,23 +239,23 @@ def stage_one(img):
 
 
 
-    return  is_node_map,is_term_map,is_branch_map,nodes,edges
+    return  is_node_map,is_term_map,is_branch_map,nodes,edges,loop_list
 
 
 
 
-def stage_two(is_node_map, is_term_map, edges,nodes):
+def stage_two(is_node_map, is_term_map, edges):
     """finds edges for loops"""
-
 
     list_term = np.array(np.where(is_term_map)).transpose()
 
     for point in list_term:
 
-        _,_,_,list_near_nodes = check_box(is_node_map, point, np.zeros(is_node_map.shape, dtype=int), np.zeros(is_node_map.shape, dtype=int),2 )
+        _,_,list_near_nodes = check_box(is_node_map, point, np.zeros(is_node_map.shape, dtype=int), np.zeros(is_node_map.shape, dtype=int),2 )
 
         if len(list_near_nodes) != 0:
 
+            node_number=is_term_map[point[0], point[1], point[2]]
             is_term_map[point[0], point[1], point[2]]=0
             print "hi"
 
@@ -290,17 +287,18 @@ def skeleton_to_graph(img):
     """main function, wraps up stage one and two"""
 
     time_before_stage_one_1=time()
-    is_node_map, is_term_map, is_branch_map, nodes, edges = stage_one(img)
+    is_node_map, is_term_map, is_branch_map, nodes, edges,loop_list = stage_one(img)
     if len(nodes)==0:
         return nodes, np.array(edges), [], is_node_map
 
-    edges,is_term_map = stage_two(is_node_map, is_term_map, edges,nodes)
+    edges,is_term_map = stage_two(is_node_map, is_term_map, edges)
 
 
 
     term_list = form_term_list(is_term_map)
     term_list -= 1
-    return nodes,np.array(edges),term_list,is_node_map
+    # loop_list -= 1
+    return nodes,np.array(edges),term_list,is_node_map,loop_list
 
 
 def get_unique_rows(array, return_index=False):
@@ -475,19 +473,33 @@ def check_edge_paths(edge_paths, node_list):
 
 
 
-
-
-def compute_graph_and_paths(img):
+def compute_graph_and_paths(img,modus="run"):
     """ overall wrapper for all functions, input: label image; output: paths
         sampled from skeleton
     """
 
-    nodes, edges, term_list, is_node_map = skeleton_to_graph(img)
+    nodes, edges, term_list, is_node_map,loop_list = skeleton_to_graph(img)
     if len(term_list)==0:
         return []
     g, edge_lens, edges = graph_and_edge_weights(nodes, edges)
 
     check_connected_components(g)
+
+    loop_uniq,loop_nr=np.unique(loop_list, return_counts=True)
+
+
+    for where in np.where(loop_nr>1)[0]:
+
+        adjacency = np.array([[adj_node, adj_edge] for adj_node, adj_edge
+                              in g.nodeAdjacency(loop_uniq[where]-1)])
+
+        if (len(adjacency))==1:
+            term_list = np.append(term_list, loop_uniq[where]-1)
+
+
+    if modus=="testing":
+        return term_list,edges,g
+
 
     edge_paths, edge_counts = edge_paths_and_counts_for_nodes(g,
                                                               edge_lens,

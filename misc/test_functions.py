@@ -56,7 +56,7 @@ def extract_from_h5py():
     return data
 
 
-def plot_figure_and_path(figure,path=[],plot_path=True,anisotropy_input=[1,1,1]):
+def plot_figure_and_path(figure,path=[],plot_path=True,anisotropy_input=[1,1,10]):
     """plots figure and path"""
 
     nsp.start_figure()

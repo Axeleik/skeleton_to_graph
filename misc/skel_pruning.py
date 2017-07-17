@@ -1,8 +1,10 @@
-import nifty_with_cplex as nifty
+from locale import currency
+
+# import nifty_with_cplex as nifty
 import numpy as np
 from workflow.methods.functions_for_workflow import \
     compute_graph_and_paths,close_cavities,get_unique_rows
-# from test_functions import plot_figure_and_path,img_to_skel
+from test_functions import plot_figure_and_path,img_to_skel
 from skimage.morphology import skeletonize_3d
 import cPickle as pickle
 import vigra
@@ -199,6 +201,9 @@ def graph_pruning(g,term_list,edges,dt):
         print "current node: ", current_node
         print "label: ", label
 
+        if current_node==113:
+            print "hi"
+            print "hi"
 
         # if current node was already visited at least once
         if current_node in node_dict.keys():
@@ -268,6 +273,7 @@ def graph_pruning(g,term_list,edges,dt):
                 del main_dict[key]
             # deleting node from dict
             del node_dict[current_node]
+            print "finished correctly"
             break
 
 
@@ -302,6 +308,9 @@ def graph_pruning(g,term_list,edges,dt):
 
         test_len2=len(main_dict.keys())
 
+        if queue.qsize()==0:
+            print "hi"
+            print "hi"
 
 
 
@@ -342,6 +351,43 @@ def bla(seg,label,test):
 
     plot_figure_and_path(test, skel, True, [1, 1, 10])
 
+def extract_from_seg(seg,label):
+
+
+    test=deepcopy(seg)
+    test[seg!=label]=0
+    test[seg == label] = 1
+    volume=test
+
+    return volume
+
+def plot_pruned(volume,finished):
+
+    finished=finished.tolist()
+
+    for_plotting =[finished[key][1]/finished[key][3] for key in finished.keys()]
+
+    range = xrange(0, len(for_plotting))
+
+    for_plotting=sorted(for_plotting)
+
+    plt.figure()
+    plt.bar(range, for_plotting)
+    plt.show()
+
+    threshhold=input("What is the threshhold for the pruning? ")
+
+    finished_pruned = [finished[key][2] for key in finished.keys() if finished[key][1] / finished[key][3] > threshhold]
+
+    a=finished_pruned[0]
+    if len(finished_pruned)>1:
+        for i in finished_pruned[1:]:
+            a=np.concatenate([a,i])
+
+    a=np.array(a)
+    plot_figure_and_path(volume,a)
+
+
 if __name__ == "__main__":
 
 
@@ -358,7 +404,7 @@ if __name__ == "__main__":
     #                       "Bachelor/data/test_volume.npy")
     #
     # seg = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/seg_0.npy")
-    dt = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/dt_seg_0.npy")
+    # dt = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/dt_seg_0.npy")
     # test=deepcopy(seg)
     # a = np.array([[len(np.where(seg == label)[0]), label]
     #               for label in np.unique(seg)])
@@ -385,36 +431,57 @@ if __name__ == "__main__":
     # volume=np.load("/export/home/amatskev/"
     #                "Link to neuraldata/test/first_try_volume.npy")
     #
-    skel_img=np.load("/export/home/amatskev/"
-                          "Bachelor/data/graph_pruning/skel_img.npy")
+    # skel_img=np.load("/export/home/amatskev/"
+    #                       "Bachelor/data/graph_pruning/skel_img.npy")
     #
     # volume=close_cavities(volume)
 
     # skel_img = skeletonize_3d(volume)
     # #
-    compute_graph_and_paths(skel_img)
+    # volume = extract_from_seg(seg,86)
+    # skel_img=skeletonize_3d(volume)
+    # term_list, edges, g=compute_graph_and_paths(skel_img,"testing")
+    # #
+    # skel = np.array(
+    #     [[e1, e2, e3] for e1, e2, e3 in zip(np.where(skel_img)[0],
+    #                                         np.where(skel_img)[1],
+    #                                         np.where(skel_img)[2])])
+
 
     # with open('/export/home/amatskev/Link to neuraldata/'
     #           'test/extract_paths_from_segmentation/input_ds.pkl', mode='r') as f:
     #     input_ds_example=pickle.load(f)
     #
 
-    term_list   = np.load("/export/home/amatskev/"
-                          "Bachelor/data/graph_pruning/term_list.npy")
+    # term_list   = np.load("/export/home/amatskev/"
+    #                       "Bachelor/data/graph_pruning/term_list.npy")
     # # edge_lens   = np.load("/export/home/amatskev/"
     # #                       "Bachelor/data/graph_pruning/edge_lens.npy")
-    edges       = np.load("/export/home/amatskev/"
-                          "Bachelor/data/graph_pruning/edges.npy")
+    # edges       = np.load("/export/home/amatskev/"
+    #                       "Bachelor/data/graph_pruning/edges.npy")
     # nodes       = np.load("/export/home/amatskev/"
     #                       "Bachelor/data/graph_pruning/nodes.npy")
     # is_node_map = np.load("/export/home/amatskev/"
     #                       "Bachelor/data/graph_pruning/is_node_map.npy")
     #
-    g=read_graph('/export/home/amatskev/Bachelor/data/graph_pruning/graph_tmp.h5')
+    # g=read_graph('/export/home/amatskev/Bachelor/data/graph_pruning/graph_tmp.h5')
+    finished=np.load("/export/home/amatskev/Bachelor/data/graph_pruning/finished_label_86.npy" )
+    skel=np.load("/export/home/amatskev/Bachelor/data/graph_pruning/skel_label_86.npy")
+    volume=np.load("/export/home/amatskev/Bachelor/data/graph_pruning/volume_label_86.npy")
+
+    # finished=graph_pruning(g, term_list, edges,dt)
 
 
-    finished=graph_pruning(g, term_list, edges,dt)
+    # finished_pruned=np.load("/export/"
+    #                         "home/amatskev/Bachelor/data/"
+    #                         "graph_pruning/"
+    #                         "pruned_skeleton_paths_seg_0_label_86.npy")
+    #
+    # skel=np.load("/export/"
+    #         "home/amatskev/Bachelor/data/"
+    #         "graph_pruning/skeleton_paths_seg_0_label_86.npy")
 
+    plot_pruned(volume,finished)
     print "hi"
     print "hi"
 
