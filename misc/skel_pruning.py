@@ -47,7 +47,7 @@ def adj(g,val):
         print "Node: ",adj_node
         print "Edge: ", adj_edge
 
-def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges):
+def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_list):
 
     print "---------------------------------------------"
     print "---------------------------------------------"
@@ -86,9 +86,19 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges):
         # for terminating points
         if len(adjacency) == 1:
 
-            main_dict[current_node] = [[current_node, adjacency[0][0]],
-                                       edges[adjacency[0][1]][1],
-                                       edges[adjacency[0][1]][2],adjacency[0][1]]
+            if (edges[adjacency[0][1]][2][0]==np.array(nodes_list[current_node+1])).all():
+
+                main_dict[current_node] = [[current_node, adjacency[0][0]],
+                                           edges[adjacency[0][1]][1],
+                                           edges[adjacency[0][1]][2],
+                                           adjacency[0][1]]
+
+            else:
+
+                main_dict[current_node] = [[current_node, adjacency[0][0]],
+                                           edges[adjacency[0][1]][1],
+                                           edges[adjacency[0][1]][2][::-1],
+                                           adjacency[0][1]]
 
             # if adjacent node was already visited
             if adjacency[0][0] in node_dict.keys():
@@ -106,9 +116,9 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges):
                         = deepcopy(main_dict[node_dict[adjacency[0][0]][1]])
 
                     #get unique rows
-                    finished_dict[node_dict[adjacency[0][0]][1]][2]= \
-                        get_unique_rows(np.array
-                                        (finished_dict[node_dict[adjacency[0][0]][1]][2]))
+                    # finished_dict[node_dict[adjacency[0][0]][1]][2]= \
+                        # get_unique_rows(np.array
+                        #                 (finished_dict[node_dict[adjacency[0][0]][1]][2]))
                     del main_dict[node_dict[adjacency[0][0]][1]]
                     node_dict[adjacency[0][0]][1] = current_node
 
@@ -119,8 +129,8 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges):
                     finished_dict[current_node] = deepcopy(main_dict[current_node])
 
                     # get unique rows
-                    finished_dict[current_node][2]=\
-                        get_unique_rows(np.array(finished_dict[current_node][2]))
+                    # finished_dict[current_node][2]=\
+                    #     get_unique_rows(np.array(finished_dict[current_node][2]))
                     del main_dict[current_node]
 
             # create new dict.key for adjacent node
@@ -149,8 +159,17 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges):
                     edges[node_dict[adjacency[0][0]][2][0]][1]
 
                 # adding path to next node to label
-                main_dict[node_dict[adjacency[0][0]][1]][2].extend(
-                    edges[node_dict[adjacency[0][0]][2][0]][2])
+                if main_dict[node_dict[adjacency[0][0]][1]][2][-1]==\
+                        edges[node_dict[adjacency[0][0]][2][0]][2][-1]:
+
+                    main_dict[node_dict[adjacency[0][0]][1]][2].extend(
+                        edges[node_dict[adjacency[0][0]][2][0]][2][-2::-1])
+
+                # adding path to next node to label
+                else:
+
+                    main_dict[node_dict[adjacency[0][0]][1]][2].extend(
+                        edges[node_dict[adjacency[0][0]][2][0]][2][1:])
 
                 #adding edge number to label
                 main_dict[node_dict[adjacency[0][0]][1]][3]=\
@@ -171,7 +190,7 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges):
 
 
 #TODO check whether edgelist and termlist is ok (because of -1)
-def graph_pruning(g,term_list,edges,dt):
+def graph_pruning(g,term_list,edges,dt,nodes_list):
 
     finished_dict={}
     node_dict={}
@@ -184,7 +203,8 @@ def graph_pruning(g,term_list,edges,dt):
 
 
     queue,finished_dict,node_dict,main_dict = \
-        terminal_func (start_queue, g, finished_dict, node_dict, main_dict, edges)
+        terminal_func (start_queue, g, finished_dict,
+                       node_dict, main_dict, edges,nodes_list)
 
     print "---------------------------------------------"
     print "---------------------------------------------"
@@ -234,9 +254,9 @@ def graph_pruning(g,term_list,edges,dt):
                 del main_dict[node_dict[current_node][1]]
 
                 # get unique rows
-                finished_dict[node_dict[current_node][1]][2]\
-                    =get_unique_rows(np.array
-                                     (finished_dict[node_dict[current_node][1]][2]))
+                # finished_dict[node_dict[current_node][1]][2]\
+                #     =get_unique_rows(np.array
+                #                      (finished_dict[node_dict[current_node][1]][2]))
 
                 # writing new label to longest in node
                 node_dict[current_node][1]=label
@@ -248,8 +268,8 @@ def graph_pruning(g,term_list,edges,dt):
                 finished_dict[label] = deepcopy(main_dict[label])
 
                 # get unique rows
-                finished_dict[label][2]=\
-                    get_unique_rows(np.array(finished_dict[label][2]))
+                # finished_dict[label][2]=\
+                #     get_unique_rows(np.array(finished_dict[label][2]))
 
                 del main_dict[label]
 
@@ -269,7 +289,7 @@ def graph_pruning(g,term_list,edges,dt):
         if len(main_dict.keys())==2:
             for key in main_dict.keys():
                 finished_dict[key]=deepcopy(main_dict[key])
-                finished_dict[key][2]=get_unique_rows(np.array(finished_dict[key][2]))
+                # finished_dict[key][2]=get_unique_rows(np.array(finished_dict[key][2]))
                 del main_dict[key]
             # deleting node from dict
             del node_dict[current_node]
@@ -292,8 +312,17 @@ def graph_pruning(g,term_list,edges,dt):
                 edges[node_dict[current_node][2][0]][1]
 
             # adding path to next node to label
-            main_dict[node_dict[current_node][1]][2].extend(
-                edges[node_dict[current_node][2][0]][2])
+            if main_dict[node_dict[current_node][1]][2][-1]==\
+                    edges[node_dict[current_node][2][0]][2][-1]:
+
+                main_dict[node_dict[current_node][1]][2].extend(
+                    edges[node_dict[current_node][2][0]][2][-2::-1])
+
+            # adding path to next node to label
+            else:
+
+                main_dict[node_dict[current_node][1]][2].extend(
+                    edges[node_dict[current_node][2][0]][2][1:])
 
             # adding edge number to label
             main_dict[node_dict[current_node][1]][3] = \
@@ -365,27 +394,27 @@ def plot_pruned(volume,finished):
 
     finished=finished.tolist()
 
-    for_plotting =[finished[key][1]/finished[key][3] for key in finished.keys()]
-
-    range = xrange(0, len(for_plotting))
-
-    for_plotting=sorted(for_plotting)
-
-    plt.figure()
-    plt.bar(range, for_plotting)
-    plt.show()
+    # for_plotting =[finished[key][1]/finished[key][3] for key in finished.keys()]
+    #
+    # range = xrange(0, len(for_plotting))
+    #
+    # for_plotting=sorted(for_plotting)
+    #
+    # plt.figure()
+    # plt.bar(range, for_plotting)
+    # plt.show()
 
     threshhold=input("What is the threshhold for the pruning? ")
 
-    finished_pruned = [finished[key][2] for key in finished.keys() if finished[key][1] / finished[key][3] > threshhold]
+    finished_pruned = np.array([finished[key][2] for key in finished.keys() if finished[key][1] / finished[key][3] > threshhold])
 
-    a=finished_pruned[0]
-    if len(finished_pruned)>1:
-        for i in finished_pruned[1:]:
-            a=np.concatenate([a,i])
+    # a=finished_pruned[0]
+    # if len(finished_pruned)>1:
+    #     for i in finished_pruned[1:]:
+    #         a=np.concatenate([a,i])
 
-    a=np.array(a)
-    plot_figure_and_path(volume,a)
+    # a=np.array(a)
+    plot_figure_and_path(volume,finished_pruned,anisotropy_input=[1,1,10])
 
 
 if __name__ == "__main__":
@@ -403,8 +432,7 @@ if __name__ == "__main__":
     # volume=np.load("/export/home/amatskev/"
     #                       "Bachelor/data/test_volume.npy")
     #
-    # seg = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/seg_0.npy")
-    # dt = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/dt_seg_0.npy")
+
     # test=deepcopy(seg)
     # a = np.array([[len(np.where(seg == label)[0]), label]
     #               for label in np.unique(seg)])
@@ -465,17 +493,27 @@ if __name__ == "__main__":
     #                       "Bachelor/data/graph_pruning/is_node_map.npy")
     #
     # g=read_graph('/export/home/amatskev/Bachelor/data/graph_pruning/graph_tmp.h5')
-    finished=np.load("/export/home/amatskev/Bachelor/data/graph_pruning/finished_label_86.npy" )
-    skel=np.load("/export/home/amatskev/Bachelor/data/graph_pruning/skel_label_86.npy")
-    volume=np.load("/export/home/amatskev/Bachelor/data/graph_pruning/volume_label_86.npy")
+    # finished=np.load("/export/home/amatskev/Bachelor/data/"
+    #                  "graph_pruning/finished_without_unique_label_86.npy" )
+    # skel=np.load("/export/home/amatskev/Bachelor/data/"
+    #              "graph_pruning/skel_label_86.npy")
+    volume=np.load("/export/home/amatskev/Bachelor/"
+                   "data/graph_pruning/volume_label_86.npy")
+    # seg = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/seg_0.npy")
+    # dt = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/dt_seg_0.npy")
+    #
+    # volume = extract_from_seg(seg,86)
+    # skel_img=skeletonize_3d(volume)
+    # skel_img=np.load("/export/home/amatskev/"
+    #                  "Bachelor/data/graph_pruning/skel_img_label_86.npy")
+    #
+    # term_list, edges, g,nodes=compute_graph_and_paths(skel_img,"testing")
+    # finished=graph_pruning(g, term_list, edges,dt,nodes)
 
-    # finished=graph_pruning(g, term_list, edges,dt)
 
-
-    # finished_pruned=np.load("/export/"
-    #                         "home/amatskev/Bachelor/data/"
-    #                         "graph_pruning/"
-    #                         "pruned_skeleton_paths_seg_0_label_86.npy")
+    finished=np.load("/export/"
+                            "home/amatskev/Bachelor/data/graph_pruning/"
+                            "finished_with_ordered_paths_label_86.npy")
     #
     # skel=np.load("/export/"
     #         "home/amatskev/Bachelor/data/"

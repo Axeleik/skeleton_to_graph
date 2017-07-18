@@ -56,14 +56,20 @@ def extract_from_h5py():
     return data
 
 
-def plot_figure_and_path(figure,path=[],plot_path=True,anisotropy_input=[1,1,10]):
+def plot_figure_and_path(figure,paths=[],plot_path=True,anisotropy_input=[1,1,10]):
     """plots figure and path"""
 
-    nsp.start_figure()
-    nsp.add_iso_surfaces(figure, anisotropy_input)
+    # sub_paths = nsp.multiple_paths_for_plotting(paths)
+
+    seg_figure = nsp()
+    # sub_paths = seg_figure.multiple_paths_for_plotting(paths)
+    seg_figure.start_figure()
+    seg_figure.add_iso_surfaces(figure, anisotropy_input)
+    # path=np.array(paths[0])
     if plot_path==True:
-        nsp.add_path(np.array(path.transpose()), anisotropy=anisotropy_input)
-    nsp.show()
+        for i in paths:
+            seg_figure.add_path(np.array(i).transpose(),anisotropy=anisotropy_input)
+    seg_figure.show()
 
 def img_to_skel(img):
     """transforms image with skeleton to a numpy array of skeleton"""

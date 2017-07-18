@@ -28,7 +28,7 @@ class NeuroSegPlot():
     def add_path(path, s=None, anisotropy=[1, 1, 1],
                  color=(1, 0, 0),
                  colormap='Spectral',
-                 representation='points',
+                 representation='wireframe',
                  line_width=5,
                  vmax=None, vmin=None,
                  custom_lut=None

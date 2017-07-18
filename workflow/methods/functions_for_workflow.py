@@ -498,7 +498,7 @@ def compute_graph_and_paths(img,modus="run"):
 
 
     if modus=="testing":
-        return term_list,edges,g
+        return term_list,edges,g,nodes
 
 
     edge_paths, edge_counts = edge_paths_and_counts_for_nodes(g,
