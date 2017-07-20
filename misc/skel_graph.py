@@ -1,47 +1,8 @@
 import numpy as np
-import vigra
-import os
-import cPickle as pickle
-import shutil
-import itertools
-import h5py
-import numpy as np
-import vigra
-import cPickle as pickle
 from copy import deepcopy
-from skimage.morphology import skeletonize_3d
 from Queue import LifoQueue
 from time import time
-import h5py
 import nifty_with_cplex as nifty
-from skimage.measure import label
-
-
-def close_cavities(init_volume):
-    """close cavities in segments so skeletonization don't bugs"""
-
-    print "looking for open cavities inside the object..."
-    volume=deepcopy(init_volume)
-    volume[volume==0]=2
-    lab=label(volume)
-
-    if len(np.unique(lab))==2:
-        print "No cavities to close!"
-        return init_volume
-
-    count,what=0,0
-
-    for uniq in np.unique(lab):
-        if len(np.where(lab == uniq)[0])> count:
-            count=len(np.where(lab == uniq)[0])
-            what=uniq
-
-    volume[lab==what]=0
-    volume[lab != what] = 1
-
-    print "cavities closed"
-
-    return volume
 
 
 def check_box(volume,point,is_queued_map,is_node_map,stage=1):
@@ -116,7 +77,7 @@ def init(volume):
     return point
 
 
-def stage_one(img):
+def stage_one(img,dt):
     """stage one, finds all nodes and edges, except for loops"""
 
 
@@ -156,9 +117,11 @@ def stage_one(img):
         nodes[current_node] = point
 
 
-    for i in xrange(0,len(not_queued)):
-        queue.put(np.array([not_queued[i],current_node,length,[[point[0], point[1], point[2]]]]))
-        is_queued_map[not_queued[i][0], not_queued[i][1], not_queued[i][2]] = 1
+    for i in not_queued:
+        queue.put(np.array([i,current_node,length,
+                            [[point[0], point[1], point[2]]],
+                            [dt[point[0], point[1], point[2]]]]))
+        is_queued_map[i[0], i[1], i[2]] = 1
 
 
 
@@ -173,8 +136,9 @@ def stage_one(img):
 
     while queue.qsize():
 
+
         #pull item from queue
-        point,current_node,length,edge_list=queue.get()
+        point, current_node, length, edge_list, dt_list = queue.get()
 
         not_queued,is_node_list,are_near = check_box(volume, point, is_queued_map, is_node_map)
 
@@ -184,9 +148,10 @@ def stage_one(img):
 
         #standart point
         if len(not_queued)==1:
+            dt_list.extend([dt[point[0], point[1], point[2]]])
             edge_list.extend([[point[0], point[1], point[2]]])
             length = length + np.linalg.norm([point[0] - not_queued[0][0], point[1] - not_queued[0][1], (point[2] - not_queued[0][2]) * 10])
-            queue.put(np.array([not_queued[0],current_node,length,edge_list]))
+            queue.put(np.array([not_queued[0],current_node,length,edge_list,dt_list]))
             is_queued_map[not_queued[0][0], not_queued[0][1], not_queued[0][2]] = 1
             branch_point_list.extend([[point[0], point[1], point[2]]])
             is_standart_map[point[0], point[1], point[2]] = 1
@@ -199,9 +164,10 @@ def stage_one(img):
         elif len(not_queued)==0 and len(are_near)==1 and len(is_node_list)==0:
             last_node=last_node+1
             nodes[last_node] = point
+            dt_list.extend([dt[point[0], point[1], point[2]]])
             edge_list.extend([[point[0], point[1], point[2]]])
             node_list.extend([[point[0], point[1], point[2]]])
-            edges.extend([[np.array([current_node, last_node]),length,edge_list]])
+            edges.extend([[np.array([current_node, last_node]),length,edge_list,dt_list]])
             is_term_map[point[0], point[1], point[2]] = last_node
             is_node_map[point[0], point[1], point[2]] = last_node
 
@@ -210,16 +176,19 @@ def stage_one(img):
 
         # branch point
         elif len(not_queued)>1:
+            dt_list.extend([dt[point[0], point[1], point[2]]])
             edge_list.extend([[point[0], point[1], point[2]]])
             last_node = last_node + 1
             nodes[last_node ] = point
             #build edge
-            edges.extend([[np.array([current_node, last_node]),length,edge_list]]) #build edge
+            edges.extend([[np.array([current_node, last_node]),length,edge_list,dt_list]]) #build edge
             node_list.extend([[point[0], point[1], point[2]]])
             #putting node branches in the queue
             for x in not_queued:
                 length = np.linalg.norm([point[0] - x[0], point[1] - x[1], (point[2] - x[2]) * 10])
-                queue.put(np.array([x, last_node,length,[[point[0], point[1], point[2]]]]))
+                queue.put(np.array([x, last_node,length,
+                                    [[point[0], point[1], point[2]]],
+                                    [dt[point[0], point[1], point[2]]]]))
                 is_queued_map[x[0], x[1], x[2]] = 1
 
             is_branch_map[point[0], point[1], point[2]] = last_node
@@ -244,7 +213,7 @@ def stage_one(img):
 
 
 
-def stage_two(is_node_map, is_term_map, edges):
+def stage_two(is_node_map, is_term_map, edges,dt):
     """finds edges for loops"""
 
     list_term = np.array(np.where(is_term_map)).transpose()
@@ -253,20 +222,31 @@ def stage_two(is_node_map, is_term_map, edges):
 
         _,_,list_near_nodes = check_box(is_node_map, point, np.zeros(is_node_map.shape, dtype=int), np.zeros(is_node_map.shape, dtype=int),2 )
 
-        if len(list_near_nodes) != 0:
+        assert (len(list_near_nodes) == 0)
 
-            node_number=is_term_map[point[0], point[1], point[2]]
-            is_term_map[point[0], point[1], point[2]]=0
-            print "hi"
-
-        for i in list_near_nodes:
-            edge_list = []
-            edge_list.extend([[point[0], point[1], point[2]]])
-            edge_list.extend([[i[0], i[1], i[2]]])
-            edges.extend([[np.array([is_node_map[point[0],point[1],point[2]], is_node_map[i[0],i[1],i[2]]]),np.linalg.norm([point[0] - i[0], point[1] - i[1], (point[2] - i[2]) * 10]),edge_list]]) #build edge
-
-
-    return edges,is_term_map
+    #     if len(list_near_nodes) != 0:
+    #
+    #         assert()
+    #         node_number=is_term_map[point[0], point[1], point[2]]
+    #         is_term_map[point[0], point[1], point[2]]=0
+    #         print "hi"
+    #
+    #     for i in list_near_nodes:
+    #         edge_list = []
+    #         edge_list.extend([[point[0], point[1], point[2]]])
+    #         edge_list.extend([[i[0], i[1], i[2]]])
+    #         dt_list = []
+    #         dt_list.extend([dt[point[0], point[1], point[2]]])
+    #         dt_list.extend([dt[i[0], i[1], i[2]]])
+    #         edges.extend([[np.array([is_node_map[point[0],point[1],point[2]],
+    #                                  is_node_map[i[0],i[1],i[2]]]),
+    #                        np.linalg.norm([point[0] - i[0], point[1] - i[1],
+    #                                        (point[2] - i[2]) * 10]),
+    #                        edge_list,
+    #                        dt_list]]) #build edge
+    #
+    #
+    # return edges,is_term_map
 
 
 
@@ -283,17 +263,17 @@ def form_term_list(is_term_map):
     return term_list
 
 
-def skeleton_to_graph(img):
+def skeleton_to_graph(img,dt):
     """main function, wraps up stage one and two"""
 
     time_before_stage_one_1=time()
-    is_node_map, is_term_map, is_branch_map, nodes, edges,loop_list = stage_one(img)
+    is_node_map, is_term_map, is_branch_map, nodes, edges,loop_list = stage_one(img,dt)
     if len(nodes)==0:
         return nodes, np.array(edges), [], is_node_map
 
-    edges,is_term_map = stage_two(is_node_map, is_term_map, edges)
+    edges,is_term_map = stage_two(is_node_map, is_term_map, edges,dt)
 
-
+    edges=[[a,b,c,max(d)] for a,b,c,d in edges]
 
     term_list = form_term_list(is_term_map)
     term_list -= 1
@@ -473,12 +453,12 @@ def check_edge_paths(edge_paths, node_list):
 
 
 
-def compute_graph_and_paths(img,modus="run"):
+def compute_graph_and_paths(img,dt,modus="run"):
     """ overall wrapper for all functions, input: label image; output: paths
         sampled from skeleton
     """
 
-    nodes, edges, term_list, is_node_map,loop_list = skeleton_to_graph(img)
+    nodes, edges, term_list, is_node_map,loop_list = skeleton_to_graph(img,dt)
     if len(term_list)==0:
         return []
     g, edge_lens, edges = graph_and_edge_weights(nodes, edges)
@@ -531,313 +511,3 @@ def compute_graph_and_paths(img,modus="run"):
         return term_list,edges,g,nodes
 
     return workflow_paths
-
-
-def cut_off(all_paths_unfinished,paths_to_objs_unfinished,
-            cut_off_array,ratio_true=0.13,ratio_false=0.4):
-    """ cuts array so that all paths with a ratio between ratio_true% and
-        ratio_false% are not in the paths as they are not clearly to identify
-        as false paths or true paths
-    """
-
-    print "start cutting off array..."
-    test_label = []
-    con_label = {}
-    test_length = []
-    con_len = {}
-
-    for label in cut_off_array.keys():
-        #FIXME  in cut_off conc=np.concatenate(con_label[label]).tolist() ValueError: need at least one array to concatenate
-        if len(cut_off_array[label])==0:
-            continue
-        con_label[label]=[]
-        con_len[label]=[]
-        for path in cut_off_array[label]:
-            test_label.append(path[0])
-            con_label[label].append(path[0])
-            test_length.append(path[1])
-            con_len[label].append(path[1])
-
-    help_array=[]
-    for label in con_label.keys():
-
-        conc=np.concatenate(con_label[label]).tolist()
-        counter=[0,0]
-        for number in np.unique(conc):
-            many = conc.count(number)
-
-            if counter[1] < many:
-                counter[0] = number
-                counter[1] = many
-        #TODO con label len =0
-        for i in xrange(0,len(con_label[label])):
-            help_array.extend([counter[0]])
-
-    end = []
-
-    for idx, path in enumerate(test_label):
-
-
-        overall_length = 0
-        for i in test_length[idx]:
-            overall_length = overall_length + i
-
-        less_length = 0
-        for u in np.where(np.array(path) != help_array[idx]):
-            for index in u:
-                less_length = less_length + test_length[idx][index]
-
-        end.extend([less_length/ overall_length])
-
-
-
-    path_classes=[]
-    all_paths=[]
-    paths_to_objs=[]
-    for idx,ratio in enumerate(end):
-        if ratio<ratio_true:
-            path_classes.extend([True])
-            all_paths.extend([all_paths_unfinished[idx]])
-            paths_to_objs.extend([paths_to_objs_unfinished[idx]])
-
-        elif ratio>ratio_false:
-            path_classes.extend([False])
-            all_paths.extend([all_paths_unfinished[idx]])
-            paths_to_objs.extend([paths_to_objs_unfinished[idx]])
-
-
-    print "finished cutting of"
-
-    return np.array(all_paths), np.array(paths_to_objs, dtype="float64"),\
-           np.array(path_classes)
-
-
-def extract_paths_from_segmentation(
-        ds,
-        seg_path,
-        key,
-        paths_cache_folder=None):
-    """
-        extract paths from segmentation, for pipeline
-    """
-
-
-    if paths_cache_folder is not None:
-        if not os.path.exists(paths_cache_folder):
-            os.mkdir(paths_cache_folder)
-        paths_save_file = os.path.join(paths_cache_folder, 'paths_ds_%s.h5' % ds.ds_name)
-    else:
-        paths_save_file = ''
-
-    # if the cache exists, load paths from cache
-    if os.path.exists(paths_save_file):
-        all_paths = vigra.readHDF5(paths_save_file, 'all_paths')
-        # we need to reshape the paths again to revover the coordinates
-        if all_paths.size:
-            all_paths = np.array( [ path.reshape( (len(path)/3, 3) ) for path in all_paths ] )
-        paths_to_objs = vigra.readHDF5(paths_save_file, 'paths_to_objs')
-
-    # otherwise compute the paths
-
-    else:
-
-        seg = vigra.readHDF5(seg_path, key)
-        gt = deepcopy(seg)
-        img = deepcopy(seg)
-        all_paths = []
-        paths_to_objs = []
-
-
-        cut_off_array = {}
-        len_uniq=len(np.unique(seg))-1
-        for idx,label in enumerate(np.unique(seg)):
-            print "Number ", idx, " without labels of ",len_uniq-1
-            if label == 0:
-                continue
-
-
-            # masking volume
-            img[seg != label] = 0
-            img[seg == label] = 1
-
-            # no skeletons too close to the borders No.2
-            #img[dt == 0] = 0
-
-            # skeletonize
-            skel_img = skeletonize_3d(img)
-
-            paths=compute_graph_and_paths(skel_img)
-
-            percentage = []
-            len_path=len(paths)
-            for idx,path in enumerate(paths):
-                print idx ,". path of ",len_path-1
-                #TODO better workaround
-                # workaround till tomorrow
-                workaround_array=[]
-                length_array=[]
-                last_point=path[0]
-                for i in path:
-                    workaround_array.extend([gt[i[0],i[1],i[2]]])
-                    length_array.extend([np.linalg.norm([last_point[0] - i[0],
-                                                      last_point[1] - i[1], (last_point[2] - i[2]) * 10])])
-                    last_point=i
-
-
-                all_paths.extend([path])
-                paths_to_objs.extend([label])
-
-                half_length_array=[]
-
-                for idx,obj in enumerate(length_array[:-1]):
-                    half_length_array.extend([length_array[idx]/2+length_array[idx+1]/2])
-                half_length_array.extend([length_array[-1] / 2])
-
-
-                percentage.extend([[workaround_array, half_length_array]])
-
-            cut_off_array[label] = percentage
-
-        all_paths, paths_to_objs,_ =cut_off(all_paths,paths_to_objs,cut_off_array)
-
-        if paths_cache_folder is not None:
-            # need to write paths with vlen and flatten before writing to properly save this
-            all_paths_save = np.array([pp.flatten() for pp in all_paths])
-            # TODO this is kind of a dirty hack, because write vlen fails if the vlen objects have the same lengths
-            # -> this fails if we have only 0 or 1 paths, beacause these trivially have the same lengths
-            # -> in the edge case that we have more than 1 paths with same lengths, this will still fail
-            # see also the following issue (https://github.com/h5py/h5py/issues/875)
-            try:
-                with h5py.File(paths_save_file) as f:
-                    dt = h5py.special_dtype(vlen=np.dtype(all_paths_save[0].dtype))
-                    f.create_dataset('all_paths', data=all_paths_save, dtype=dt)
-            except (TypeError, IndexError):
-                vigra.writeHDF5(all_paths_save, paths_save_file, 'all_paths')
-            # if len(all_paths_save) < 2:
-            #     vigra.writeHDF5(all_paths_save, paths_save_file, 'all_paths')
-            # else:
-            #     with h5py.File(paths_save_file) as f:
-            #         dt = h5py.special_dtype(vlen=np.dtype(all_paths_save[0].dtype))
-            #         f.create_dataset('all_paths', data = all_paths_save, dtype = dt)
-            vigra.writeHDF5(paths_to_objs, paths_save_file, 'paths_to_objs')
-
-    return all_paths, paths_to_objs
-
-
-
-def extract_paths_and_labels_from_segmentation(
-        ds,
-        seg,
-        seg_id,
-        gt,
-        correspondence_list,
-        paths_cache_folder=None):
-
-    """
-        extract paths from segmentation, for learning
-    """
-
-    if paths_cache_folder is not None:
-        if not os.path.exists(paths_cache_folder):
-            os.mkdir(paths_cache_folder)
-        paths_save_file = os.path.join(paths_cache_folder, 'paths_ds_%s_seg_%i.h5' % (ds.ds_name, seg_id))
-    else:
-        paths_save_file = ''
-
-    # if the cache exists, load paths from cache
-    if os.path.exists(paths_save_file):
-        all_paths = vigra.readHDF5(paths_save_file, 'all_paths')
-        # we need to reshape the paths again to revover the coordinates
-        if all_paths.size:
-            all_paths = np.array( [ path.reshape( (len(path)/3, 3) ) for path in all_paths ] )
-        paths_to_objs = vigra.readHDF5(paths_save_file, 'paths_to_objs')
-        path_classes = vigra.readHDF5(paths_save_file, 'path_classes')
-        correspondence_list = vigra.readHDF5(paths_save_file, 'correspondence_list').tolist()
-
-    # otherwise compute paths
-    else:
-
-        img = deepcopy(seg)
-        all_paths = []
-        paths_to_objs = []
-
-
-        cut_off_array = {}
-        len_uniq=len(np.unique(seg))-1
-        for label in np.unique(seg):
-            print "Label ", label, " of ",len_uniq
-            if label == 0:
-                continue
-
-            # masking volume
-            img[seg != label] = 0
-            img[seg == label] = 1
-
-
-            # skeletonize
-            skel_img = skeletonize_3d(img)
-
-            paths=compute_graph_and_paths(skel_img)
-
-            percentage = []
-
-            for path in paths:
-
-                #TODO better workaround
-                # workaround till tomorrow
-                workaround_array=[]
-                length_array=[]
-                last_point=path[0]
-                for i in path:
-                    workaround_array.extend([gt[i[0],i[1],i[2]]])
-                    length_array.extend([np.linalg.norm([last_point[0] - i[0],
-                                                      last_point[1] - i[1], (last_point[2] - i[2]) * 10])])
-                    last_point=i
-
-
-                all_paths.extend([path])
-                paths_to_objs.extend([label])
-
-                half_length_array=[]
-
-                for idx,obj in enumerate(length_array[:-1]):
-                    half_length_array.extend([length_array[idx]/2+length_array[idx+1]/2])
-                half_length_array.extend([length_array[-1] / 2])
-
-
-                percentage.extend([[workaround_array, half_length_array]])
-
-            cut_off_array[label] = percentage
-
-        all_paths,paths_to_objs,path_classes = cut_off(all_paths, paths_to_objs, cut_off_array)
-
-        # if caching is enabled, write the results to cache
-        if paths_cache_folder is not None:
-            # need to write paths with vlen and flatten before writing to properly save this
-            all_paths_save = np.array([pp.flatten() for pp in all_paths])
-            # TODO this is kind of a dirty hack, because write vlen fails if the vlen objects have the same lengths
-            # -> this fails if we have only 0 or 1 paths, beacause these trivially have the same lengths
-            # -> in the edge case that we have more than 1 paths with same lengths, this will still fail
-            # see also the following issue (https://github.com/h5py/h5py/issues/875)
-            try:
-                print 'Saving paths in {}'.format(paths_save_file)
-                with h5py.File(paths_save_file) as f:
-                    dt = h5py.special_dtype(vlen=np.dtype(all_paths_save[0].dtype))
-                    f.create_dataset('all_paths', data=all_paths_save, dtype=dt)
-            except (TypeError, IndexError):
-                vigra.writeHDF5(all_paths_save, paths_save_file, 'all_paths')
-            # if len(all_paths_save) < 2:
-            #     vigra.writeHDF5(all_paths_save, paths_save_file, 'all_paths')
-            # else:
-            #     with h5py.File(paths_save_file) as f:
-            #         dt = h5py.special_dtype(vlen=np.dtype(all_paths_save[0].dtype))
-            #         f.create_dataset('all_paths', data = all_paths_save, dtype = dt)
-            vigra.writeHDF5(paths_to_objs, paths_save_file, 'paths_to_objs')
-            vigra.writeHDF5(path_classes, paths_save_file, 'path_classes')
-            vigra.writeHDF5(correspondence_list, paths_save_file, 'correspondence_list')
-
-    return all_paths, paths_to_objs, path_classes, correspondence_list
-
-
-
-

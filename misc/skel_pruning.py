@@ -2,8 +2,8 @@ from locale import currency
 
 # import nifty_with_cplex as nifty
 import numpy as np
-from workflow.methods.functions_for_workflow import \
-    compute_graph_and_paths,close_cavities,get_unique_rows
+# from workflow.methods.functions_for_workflow import \
+#     compute_graph_and_paths,close_cavities,get_unique_rows
 from test_functions import plot_figure_and_path,img_to_skel
 from skimage.morphology import skeletonize_3d
 import cPickle as pickle
@@ -11,6 +11,9 @@ import vigra
 from Queue import Queue
 from copy import deepcopy
 import matplotlib.pyplot as plt
+from time import time
+# from skel_contraction import graph_pruning
+# from skel_graph import compute_graph_and_paths
 
 
 def serialize_graph(graph):
@@ -47,319 +50,6 @@ def adj(g,val):
         print "Node: ",adj_node
         print "Edge: ", adj_edge
 
-def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_list):
-
-    print "---------------------------------------------"
-    print "---------------------------------------------"
-    print "Starting terminal_func..."
-
-
-    queue = Queue()
-
-    while start_queue.qsize():
-
-        # draw from queue
-        current_node, label = start_queue.get()
-
-        print "---------------------------------------------"
-        print "current node: ", current_node
-        print "label: ", label
-
-        #check the adjacency
-        adjacency = np.array([[adj_node, adj_edge] for adj_node, adj_edge
-                              in g.nodeAdjacency(current_node)])
-
-        # assert(len(adjacency)<3), "terminal points can not have 3 adjacent neighbors," \
-        #                           " only a maximum of 2 in loops"
-        #
-
-        # #for
-        # if current_node==7:
-        #     print "hi"
-        #     print "hi"
-        #
-        #     adjacency=np.array([neighbor for neighbor in adjacency
-        #                if neighbor[0] not in term_list])
-
-        assert(len(adjacency) == 1)
-
-        # for terminating points
-        if len(adjacency) == 1:
-
-            if (edges[adjacency[0][1]][2][0]==np.array(nodes_list[current_node+1])).all():
-
-                main_dict[current_node] = [[current_node, adjacency[0][0]],
-                                           edges[adjacency[0][1]][1],
-                                           edges[adjacency[0][1]][2],
-                                           adjacency[0][1]]
-
-            else:
-
-                main_dict[current_node] = [[current_node, adjacency[0][0]],
-                                           edges[adjacency[0][1]][1],
-                                           edges[adjacency[0][1]][2][::-1],
-                                           adjacency[0][1]]
-
-            # if adjacent node was already visited
-            if adjacency[0][0] in node_dict.keys():
-
-                node_dict[adjacency[0][0]][0].remove(current_node)
-                node_dict[adjacency[0][0]][2].remove(adjacency[0][1])
-
-                # if this edge is longer than already written edge
-                if edges[adjacency[0][1]][1] >= \
-                        main_dict[node_dict[adjacency[0][0]][1]][1]:
-
-                    print current_node," is longer than ",node_dict[adjacency[0][0]][1]
-
-                    finished_dict[node_dict[adjacency[0][0]][1]] \
-                        = deepcopy(main_dict[node_dict[adjacency[0][0]][1]])
-
-                    #get unique rows
-                    # finished_dict[node_dict[adjacency[0][0]][1]][2]= \
-                        # get_unique_rows(np.array
-                        #                 (finished_dict[node_dict[adjacency[0][0]][1]][2]))
-                    del main_dict[node_dict[adjacency[0][0]][1]]
-                    node_dict[adjacency[0][0]][1] = current_node
-
-                else:
-
-                    print current_node," is shorter than ",node_dict[adjacency[0][0]][1]
-
-                    finished_dict[current_node] = deepcopy(main_dict[current_node])
-
-                    # get unique rows
-                    # finished_dict[current_node][2]=\
-                    #     get_unique_rows(np.array(finished_dict[current_node][2]))
-                    del main_dict[current_node]
-
-            # create new dict.key for adjacent node
-            else:
-
-                node_dict[adjacency[0][0]] = [[adj_node for adj_node, adj_edge
-                                               in g.nodeAdjacency(adjacency[0][0])
-                                               if adj_node != current_node],
-                                              current_node,
-                                              [adj_edge for adj_node, adj_edge
-                                               in g.nodeAdjacency(adjacency[0][0])
-                                               if adj_edge != adjacency[0][1]]]
-
-            # if all except one branches reached the adjacent node
-            if len(node_dict[adjacency[0][0]][0]) == 1:
-
-                print "Winner at node ", adjacency[0][0]," is label ",\
-                node_dict[adjacency[0][0]][1]
-
-                # writing new node to label
-                main_dict[node_dict[adjacency[0][0]][1]][0].\
-                    extend([node_dict[adjacency[0][0]][0][0]])
-
-                # adding length to label
-                main_dict[node_dict[adjacency[0][0]][1]][1] += \
-                    edges[node_dict[adjacency[0][0]][2][0]][1]
-
-                # adding path to next node to label
-                if main_dict[node_dict[adjacency[0][0]][1]][2][-1]==\
-                        edges[node_dict[adjacency[0][0]][2][0]][2][-1]:
-
-                    main_dict[node_dict[adjacency[0][0]][1]][2].extend(
-                        edges[node_dict[adjacency[0][0]][2][0]][2][-2::-1])
-
-                # adding path to next node to label
-                else:
-
-                    main_dict[node_dict[adjacency[0][0]][1]][2].extend(
-                        edges[node_dict[adjacency[0][0]][2][0]][2][1:])
-
-                #adding edge number to label
-                main_dict[node_dict[adjacency[0][0]][1]][3]=\
-                    node_dict[adjacency[0][0]][2][0]
-
-                # putting next
-                queue.put([node_dict[adjacency[0][0]][0][0],
-                           node_dict[adjacency[0][0]][1]])
-
-                # deleting node from dict
-                del node_dict[adjacency[0][0]]
-
-
-    return queue,finished_dict,node_dict,main_dict
-
-
-
-
-
-#TODO check whether edgelist and termlist is ok (because of -1)
-def graph_pruning(g,term_list,edges,dt,nodes_list):
-
-    finished_dict={}
-    node_dict={}
-    main_dict={}
-    start_queue=Queue()
-    last_dict={}
-
-    for term_point in term_list:
-        start_queue.put([term_point,term_point])
-
-
-    queue,finished_dict,node_dict,main_dict = \
-        terminal_func (start_queue, g, finished_dict,
-                       node_dict, main_dict, edges,nodes_list)
-
-    print "---------------------------------------------"
-    print "---------------------------------------------"
-    print "Starting main function... "
-
-
-    while queue.qsize():
-        test_len1=len(main_dict.keys())
-
-        # draw from queue
-        current_node, label = queue.get()
-
-        print "---------------------------------------------"
-        print "current node: ", current_node
-        print "label: ", label
-
-        if current_node==113:
-            print "hi"
-            print "hi"
-
-        # if current node was already visited at least once
-        if current_node in node_dict.keys():
-
-
-            if len(node_dict[current_node][0])==1:
-                last_dict[label] = deepcopy(main_dict[label])
-                continue
-
-            # remove previous node from adjacency
-            node_dict[current_node][0].remove(main_dict[label][0][-2])
-
-            # remove previous edge from adjacency
-            node_dict[current_node][2].remove(main_dict[label][3])
-
-
-            # if current label is longer than longest in node
-            if main_dict[label][1] >= \
-                    main_dict[node_dict[current_node][1]][1]:
-
-                print label, " is longer than ", \
-                    node_dict[current_node][1]
-
-
-                # finishing previous longest label
-                finished_dict[node_dict[current_node][1]] \
-                    = deepcopy(main_dict[node_dict[current_node][1]])
-                del main_dict[node_dict[current_node][1]]
-
-                # get unique rows
-                # finished_dict[node_dict[current_node][1]][2]\
-                #     =get_unique_rows(np.array
-                #                      (finished_dict[node_dict[current_node][1]][2]))
-
-                # writing new label to longest in node
-                node_dict[current_node][1]=label
-
-
-            else:
-
-                #finishing this label
-                finished_dict[label] = deepcopy(main_dict[label])
-
-                # get unique rows
-                # finished_dict[label][2]=\
-                #     get_unique_rows(np.array(finished_dict[label][2]))
-
-                del main_dict[label]
-
-
-
-        else:
-
-            #create new entry for this node
-            node_dict[current_node] = [[adj_node for adj_node, adj_edge
-                                           in g.nodeAdjacency(current_node)
-                                           if adj_node != main_dict[label][0][-2]],
-                                          label,
-                                          [adj_edge for adj_node, adj_edge
-                                           in g.nodeAdjacency(current_node)
-                                           if adj_edge != main_dict[label][3]]]
-
-        if len(main_dict.keys())==2:
-            for key in main_dict.keys():
-                finished_dict[key]=deepcopy(main_dict[key])
-                # finished_dict[key][2]=get_unique_rows(np.array(finished_dict[key][2]))
-                del main_dict[key]
-            # deleting node from dict
-            del node_dict[current_node]
-            print "finished correctly"
-            break
-
-
-        # if all except one branches reached the adjacent node
-        if len(node_dict[current_node][0]) == 1:
-
-            print "Winner at node ", current_node, " is label ", \
-                node_dict[current_node][1]
-
-            # writing new node to label
-            main_dict[node_dict[current_node][1]][0]. \
-                extend([node_dict[current_node][0][0]])
-
-            # adding length to label
-            main_dict[node_dict[current_node][1]][1] += \
-                edges[node_dict[current_node][2][0]][1]
-
-            # adding path to next node to label
-            if main_dict[node_dict[current_node][1]][2][-1]==\
-                    edges[node_dict[current_node][2][0]][2][-1]:
-
-                main_dict[node_dict[current_node][1]][2].extend(
-                    edges[node_dict[current_node][2][0]][2][-2::-1])
-
-            # adding path to next node to label
-            else:
-
-                main_dict[node_dict[current_node][1]][2].extend(
-                    edges[node_dict[current_node][2][0]][2][1:])
-
-            # adding edge number to label
-            main_dict[node_dict[current_node][1]][3] = \
-                node_dict[current_node][2][0]
-
-            # putting next
-            queue.put([node_dict[current_node][0][0],
-                        node_dict[current_node][1]])
-
-            # deleting node from dict
-            del node_dict[current_node]
-
-        test_len2=len(main_dict.keys())
-
-        if queue.qsize()==0:
-            print "hi"
-            print "hi"
-
-
-
-
-
-
-
-    for key in finished_dict.keys():
-        finished_dict[key][3]=max([dt[val[0],val[1],val[2]]
-                                   for val in finished_dict[key][2]])
-
-    return finished_dict
-
-
-
-
-
-
-
-
 
 
 
@@ -390,7 +80,15 @@ def extract_from_seg(seg,label):
 
     return volume
 
-def plot_pruned(volume,finished):
+def plot_pruned(label):
+
+    print "-----------------------------------------------------------"
+    print "Label: ",label
+    seg = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/seg_0.npy")
+    volume = extract_from_seg(seg, label)
+
+    finished=np.load("/export/home/amatskev/Bachelor/"
+            "data/graph_pruning/finished_label_{0}.npy".format(label))
 
     finished=finished.tolist()
 
@@ -403,22 +101,71 @@ def plot_pruned(volume,finished):
     # plt.figure()
     # plt.bar(range, for_plotting)
     # plt.show()
+    while True:
 
-    threshhold=input("What is the threshhold for the pruning? ")
+        threshhold=input("What is the threshhold for the pruning? ")
 
-    finished_pruned = np.array([finished[key][2] for key in finished.keys() if finished[key][1] / finished[key][3] > threshhold])
+        finished_pruned = np.array([finished[key][2] for key in finished.keys() if finished[key][1] / finished[key][4] > threshhold])
 
-    # a=finished_pruned[0]
-    # if len(finished_pruned)>1:
-    #     for i in finished_pruned[1:]:
-    #         a=np.concatenate([a,i])
+        # a=finished_pruned[0]
+        # if len(finished_pruned)>1:
+        #     for i in finished_pruned[1:]:
+        #         a=np.concatenate([a,i])
 
-    # a=np.array(a)
-    plot_figure_and_path(volume,finished_pruned,anisotropy_input=[1,1,10])
+        # a=np.array(a)
+        plot_figure_and_path(volume,finished_pruned,anisotropy_input=[1,1,10])
 
+def get_finished_paths_for_pruning(label):
+
+    print "-----------------------------------------------------------"
+    print "Label: ",label
+    seg = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/seg_0.npy")
+    dt = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/dt_seg_0.npy")
+
+    volume = extract_from_seg(seg, label)
+
+
+    time_before_skel = time()
+    skel_img = skeletonize_3d(volume)
+    time_after_skel = time()
+    print "skeletonize_3d took ", time_after_skel \
+                                            - time_before_skel, " secs"
+
+    time_before_graph=time()
+    term_list, edges, g, nodes = compute_graph_and_paths(skel_img,dt, "testing")
+    time_after_graph=time()
+    print "compute_graph_and_paths took ", time_after_graph \
+                                            - time_before_graph, " secs"
+
+
+    time_before_pruning=time()
+    finished = graph_pruning(g, term_list, edges, dt, nodes)
+    time_after_pruning=time()
+    print "graph_pruning took ", time_after_pruning-time_before_pruning," secs"
+    print "-----------------------------------------------------------"
+
+    np.save("/export/home/amatskev/Bachelor/"
+            "data/graph_pruning/finished_label_{0}.npy".format(label),finished)
 
 if __name__ == "__main__":
 
+    # get_finished_paths_for_pruning(140)
+    # get_finished_paths_for_pruning(281)
+    # get_finished_paths_for_pruning(86)
+    # get_finished_paths_for_pruning(67)
+    # get_finished_paths_for_pruning(71)
+    # get_finished_paths_for_pruning(41)
+
+
+
+    # plot_pruned(140)
+    plot_pruned(281)
+    # plot_pruned(86)
+    # plot_pruned(67)
+    # plot_pruned(71)
+    # plot_pruned(41)
+    # print "hi"
+    # print "hi"
 
     # a=np.zeros((500,500,500))
     # a[50:450,200:250,100:150]=1
@@ -497,29 +244,19 @@ if __name__ == "__main__":
     #                  "graph_pruning/finished_without_unique_label_86.npy" )
     # skel=np.load("/export/home/amatskev/Bachelor/data/"
     #              "graph_pruning/skel_label_86.npy")
-    volume=np.load("/export/home/amatskev/Bachelor/"
-                   "data/graph_pruning/volume_label_86.npy")
-    # seg = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/seg_0.npy")
-    # dt = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/dt_seg_0.npy")
-    #
-    # volume = extract_from_seg(seg,86)
-    # skel_img=skeletonize_3d(volume)
+    # volume=np.load("/export/home/amatskev/Bachelor/"
+    #                "data/graph_pruning/volume_label_86.npy")
+
     # skel_img=np.load("/export/home/amatskev/"
     #                  "Bachelor/data/graph_pruning/skel_img_label_86.npy")
-    #
-    # term_list, edges, g,nodes=compute_graph_and_paths(skel_img,"testing")
-    # finished=graph_pruning(g, term_list, edges,dt,nodes)
 
 
-    finished=np.load("/export/"
-                            "home/amatskev/Bachelor/data/graph_pruning/"
-                            "finished_with_ordered_paths_label_86.npy")
+
+    # finished=np.load("/export/"
+    #                         "home/amatskev/Bachelor/data/graph_pruning/"
+    #                         "finished_with_ordered_paths_label_86.npy")
     #
     # skel=np.load("/export/"
     #         "home/amatskev/Bachelor/data/"
     #         "graph_pruning/skeleton_paths_seg_0_label_86.npy")
-
-    plot_pruned(volume,finished)
-    print "hi"
-    print "hi"
 
