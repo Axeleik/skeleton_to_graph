@@ -271,7 +271,7 @@ def skeleton_to_graph(img,dt):
     if len(nodes)==0:
         return nodes, np.array(edges), [], is_node_map
 
-    edges,is_term_map = stage_two(is_node_map, is_term_map, edges,dt)
+    stage_two(is_node_map, is_term_map, edges,dt)
 
     edges=[[a,b,c,max(d)] for a,b,c,d in edges]
 

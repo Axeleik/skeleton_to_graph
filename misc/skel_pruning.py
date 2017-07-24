@@ -1,19 +1,13 @@
-from locale import currency
-
-# import nifty_with_cplex as nifty
-import numpy as np
-# from workflow.methods.functions_for_workflow import \
-#     compute_graph_and_paths,close_cavities,get_unique_rows
-from test_functions import plot_figure_and_path,img_to_skel
-from skimage.morphology import skeletonize_3d
-import cPickle as pickle
-import vigra
-from Queue import Queue
 from copy import deepcopy
-import matplotlib.pyplot as plt
 from time import time
-# from skel_contraction import graph_pruning
-# from skel_graph import compute_graph_and_paths
+
+import nifty_with_cplex as nifty
+import numpy as np
+import vigra
+from workflow.methods.skel_contraction import graph_pruning
+from skimage.morphology import skeletonize_3d
+
+from workflow.methods.skel_graph import compute_graph_and_paths
 
 
 def serialize_graph(graph):
@@ -84,8 +78,8 @@ def plot_pruned(label):
 
     print "-----------------------------------------------------------"
     print "Label: ",label
-    seg = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/seg_0.npy")
-    volume = extract_from_seg(seg, label)
+    # seg = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/seg_0.npy")
+    # volume = extract_from_seg(seg, label)
 
     finished=np.load("/export/home/amatskev/Bachelor/"
             "data/graph_pruning/finished_label_{0}.npy".format(label))
@@ -150,7 +144,7 @@ def get_finished_paths_for_pruning(label):
 if __name__ == "__main__":
 
     # get_finished_paths_for_pruning(140)
-    # get_finished_paths_for_pruning(281)
+    get_finished_paths_for_pruning(281)
     # get_finished_paths_for_pruning(86)
     # get_finished_paths_for_pruning(67)
     # get_finished_paths_for_pruning(71)
