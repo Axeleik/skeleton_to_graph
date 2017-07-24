@@ -1,8 +1,12 @@
 import numpy as np
 from Queue import Queue
 from copy import deepcopy
+from misc.skel_pruning import extract_from_seg
 
-
+def adj(g,val):
+    for adj_node,adj_edge in g.nodeAdjacency(val):
+        print "Node: ",adj_node
+        print "Edge: ", adj_edge
 
 
 def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_list):
@@ -10,6 +14,22 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_li
 
 
     queue = Queue()
+
+    if start_queue.qsize()==2:
+
+        current_node, label = start_queue.get()
+
+        adjacency = np.array([[adj_node, adj_edge] for adj_node, adj_edge
+                              in g.nodeAdjacency(current_node)])
+
+        finished_dict[current_node] = [[current_node, adjacency[0][0]],
+                                   edges[adjacency[0][1]][1],
+                                   edges[adjacency[0][1]][2],
+                                   adjacency[0][1],
+                                   edges[adjacency[0][1]][3],
+                                       current_node]
+        _ = start_queue.get()
+
 
     while start_queue.qsize():
 
@@ -20,6 +40,7 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_li
         #check the adjacency
         adjacency = np.array([[adj_node, adj_edge] for adj_node, adj_edge
                               in g.nodeAdjacency(current_node)])
+
 
         # assert(len(adjacency)<3), "terminal points can not have 3 adjacent neighbors," \
         #                           " only a maximum of 2 in loops"
@@ -95,9 +116,50 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_li
                                                in g.nodeAdjacency(adjacency[0][0])
                                                if adj_edge != adjacency[0][1]]]
 
+
+            # we finish when we have only two open labels left
+            if len(main_dict.keys()) == 2 and queue.qsize()==1:
+
+
+                # writing longest label at node to the others,
+                # so we dont cut in half later
+                for finished_label in [adj_node for adj_node,
+                                           adj_edge in g.nodeAdjacency(adjacency[0][0])
+                              if adj_node!=node_dict[adjacency[0][0]][0][0]
+                              and adj_node!=node_dict[adjacency[0][0]][1]]:
+
+                    finished_dict[finished_label].\
+                        append(finished_label)
+
+                for key in main_dict.keys():
+
+                    finished_dict[key] = deepcopy(main_dict[key])
+
+                    del main_dict[key]
+
+                    finished_dict[key].append(key)
+
+                # deleting node from dict
+                # del node_dict[current_node]
+                _=queue.get()
+                break
+
+
+
+
             # if all except one branches reached the adjacent node
             if len(node_dict[adjacency[0][0]][0]) == 1:
 
+
+                # writing longest label at node to the others,
+                # so we dont cut in half later
+                for finished_label in [adj_node for adj_node,
+                                           adj_edge in g.nodeAdjacency(adjacency[0][0])
+                              if adj_node!=node_dict[adjacency[0][0]][0][0]
+                              and adj_node!=node_dict[adjacency[0][0]][1]]:
+
+                    finished_dict[finished_label].\
+                        append(node_dict[adjacency[0][0]][1])
 
                 # writing new node to label
                 main_dict[node_dict[adjacency[0][0]][1]][0].\
@@ -135,8 +197,8 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_li
                 queue.put([node_dict[adjacency[0][0]][0][0],
                            node_dict[adjacency[0][0]][1]])
 
-                # deleting node from dict
-                del node_dict[adjacency[0][0]]
+                # # deleting node from dict
+                # del node_dict[adjacency[0][0]]
 
 
     return queue,finished_dict,node_dict,main_dict
@@ -165,7 +227,7 @@ def graph_pruning(g,term_list,edges,dt,nodes_list):
 
 
     while queue.qsize():
-        test_len1=len(main_dict.keys())
+
 
         # draw from queue
         current_node, label = queue.get()
@@ -187,6 +249,9 @@ def graph_pruning(g,term_list,edges,dt,nodes_list):
                     (main_dict[node_dict[current_node][1]][1]/
                          main_dict[node_dict[current_node][1]][4]):
 
+
+                # writing winner node in loser node
+                main_dict[node_dict[current_node][1]].append(label)
 
                 # finishing previous longest label
                 finished_dict[node_dict[current_node][1]] \
@@ -226,19 +291,50 @@ def graph_pruning(g,term_list,edges,dt,nodes_list):
                                            in g.nodeAdjacency(current_node)
                                            if adj_edge != main_dict[label][3]]]
 
+        # we finish when we have only two open labels left
         if len(main_dict.keys())==2:
+
+
+            for finished_label in [adj_node for adj_node,
+                                                adj_edge in g.nodeAdjacency(current_node)
+                                   if adj_node!=node_dict[current_node][0][0] and
+                                                   adj_node!=main_dict[node_dict[current_node][1]][0][-2]]:
+
+                finished_dict[finished_label].append(finished_label)
+
             for key in main_dict.keys():
+
                 finished_dict[key]=deepcopy(main_dict[key])
-                # finished_dict[key][2]=get_unique_rows(np.array(finished_dict[key][2]))
+
                 del main_dict[key]
-            # deleting node from dict
-            del node_dict[current_node]
+
+                finished_dict[key].append(key)
+
+            # # deleting node from dict
+            # del node_dict[current_node]
 
             break
 
 
         # if all except one branches reached the adjacent node
         if len(node_dict[current_node][0]) == 1:
+
+            # writing longest label at node to the others,
+            # so we dont cut in half later
+            for finished_label in [adj_node for adj_node,
+                                                adj_edge in g.nodeAdjacency(current_node)
+                                   if adj_node!=node_dict[current_node][0][0] and
+                                                   adj_node!=main_dict[node_dict[current_node][1]][0][-2]]:
+
+                if finished_label in finished_dict.keys():
+
+                    finished_dict[finished_label] \
+                        .append(node_dict[current_node][1])
+
+                else:
+
+                    finished_dict[node_dict[finished_label][1]]\
+                        .append(node_dict[current_node][1])
 
             # writing new node to label
             main_dict[node_dict[current_node][1]][0]. \
@@ -276,8 +372,8 @@ def graph_pruning(g,term_list,edges,dt,nodes_list):
             queue.put([node_dict[current_node][0][0],
                         node_dict[current_node][1]])
 
-            # deleting node from dict
-            del node_dict[current_node]
+            # # deleting node from dict
+            # del node_dict[current_node]
 
         assert(queue.qsize()>0),"contraction finished before all the nodes were seen"
 
@@ -287,3 +383,46 @@ def graph_pruning(g,term_list,edges,dt,nodes_list):
 
     return finished_dict
 
+
+def pruning_without_space(label):
+
+    print "-----------------------------------------------------------"
+    print "Label: ", label
+    seg = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/seg_0.npy")
+    volume = extract_from_seg(seg, label)
+
+    finished = np.load("/export/home/amatskev/Bachelor/"
+                       "data/graph_pruning/finished_label_{0}.npy".format(label))
+    finished = finished.tolist()
+
+    # for_plotting =[finished[key][1]/finished[key][3] for key in finished.keys()]
+    #
+    # range = xrange(0, len(for_plotting))
+    #
+    # for_plotting=sorted(for_plotting)
+    #
+    # plt.figure()
+    # plt.bar(range, for_plotting)
+    # plt.show()
+    threshhold = input("What is the threshhold for the pruning? ")
+
+    # TODO maybe faster ?
+    pre_plotting_dict = \
+        {key: deepcopy(finished[key][5]) for key in finished.keys()
+         if finished[key][1] / finished[key][4] > threshhold}
+
+    counter = 1
+    while counter != 0:
+        counter = 0
+
+        for key in pre_plotting_dict.keys():
+
+            if pre_plotting_dict[key] not in pre_plotting_dict.keys():
+                counter = 1
+
+                pre_plotting_dict[pre_plotting_dict[key]] = \
+                    deepcopy(finished[pre_plotting_dict[key]][5])
+
+    finished_pruned = np.array([finished[key][2] for key in pre_plotting_dict.keys()])
+
+    return finished_pruned

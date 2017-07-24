@@ -74,40 +74,7 @@ def extract_from_seg(seg,label):
 
     return volume
 
-def plot_pruned(label):
 
-    print "-----------------------------------------------------------"
-    print "Label: ",label
-    # seg = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/seg_0.npy")
-    # volume = extract_from_seg(seg, label)
-
-    finished=np.load("/export/home/amatskev/Bachelor/"
-            "data/graph_pruning/finished_label_{0}.npy".format(label))
-
-    finished=finished.tolist()
-
-    # for_plotting =[finished[key][1]/finished[key][3] for key in finished.keys()]
-    #
-    # range = xrange(0, len(for_plotting))
-    #
-    # for_plotting=sorted(for_plotting)
-    #
-    # plt.figure()
-    # plt.bar(range, for_plotting)
-    # plt.show()
-    while True:
-
-        threshhold=input("What is the threshhold for the pruning? ")
-
-        finished_pruned = np.array([finished[key][2] for key in finished.keys() if finished[key][1] / finished[key][4] > threshhold])
-
-        # a=finished_pruned[0]
-        # if len(finished_pruned)>1:
-        #     for i in finished_pruned[1:]:
-        #         a=np.concatenate([a,i])
-
-        # a=np.array(a)
-        plot_figure_and_path(volume,finished_pruned,anisotropy_input=[1,1,10])
 
 def get_finished_paths_for_pruning(label):
 
@@ -143,8 +110,18 @@ def get_finished_paths_for_pruning(label):
 
 if __name__ == "__main__":
 
+    g=read_graph("/export/home/amatskev/Bachelor/"
+            "data/graph_pruning/label_281/graph_tmp.h5")
+
+    term_list,edges,nodes=np.load("/export/home/amatskev/Bachelor/"
+            "data/graph_pruning/label_281/term_edges_nodes.npy")
+
+    dt = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/dt_seg_0.npy")
+
+    finished_pruned=graph_pruning(g,term_list,edges,dt,nodes)
+
     # get_finished_paths_for_pruning(140)
-    get_finished_paths_for_pruning(281)
+    # get_finished_paths_for_pruning(281)
     # get_finished_paths_for_pruning(86)
     # get_finished_paths_for_pruning(67)
     # get_finished_paths_for_pruning(71)
@@ -153,7 +130,9 @@ if __name__ == "__main__":
 
 
     # plot_pruned(140)
-    plot_pruned(281)
+    pruning_without_space(281)
+    plot_figure_and_path(volume,finished_pruned,anisotropy_input=[1,1,10])
+
     # plot_pruned(86)
     # plot_pruned(67)
     # plot_pruned(71)
