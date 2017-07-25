@@ -9,7 +9,7 @@ from multicut_src import ExperimentSettings
 
 from pipeline import run_lifted_mc
 
-from init_datasets import meta_folder
+from init_datasets import meta_folder,computer_cores
 rf_cache_folder = os.path.join(meta_folder, 'rf_cache')
 
 experiment_sets = ['splB_z0', 'splB_z1']
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     ExperimentSettings().rf_cache_folder = rf_cache_folder
     ExperimentSettings().anisotropy_factor = 10.
     ExperimentSettings().use_2d = False
-    ExperimentSettings().n_threads = 15
+    ExperimentSettings().n_threads = computer_cores
     ExperimentSettings().n_trees = 500
     ExperimentSettings().solver = 'multicut_fusionmoves'
     ExperimentSettings().verbose = True

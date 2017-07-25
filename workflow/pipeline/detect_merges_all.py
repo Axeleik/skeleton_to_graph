@@ -10,7 +10,8 @@ from multicut_src import ExperimentSettings
 
 from pipeline import find_false_merges
 
-from init_datasets import meta_folder, project_folder, source_folder, result_keys, experiment_ids
+from init_datasets import meta_folder, project_folder, \
+    source_folder, result_keys, experiment_ids,computer_cores
 
 if __name__ == '__main__':
 
@@ -36,7 +37,7 @@ if __name__ == '__main__':
     ]
 
     ExperimentSettings().anisotropy_factor = 10.
-    ExperimentSettings().n_threads = 30
+    ExperimentSettings().n_threads = computer_cores
     ExperimentSettings().n_trees = 500
 
     for ds_id in experiment_ids:

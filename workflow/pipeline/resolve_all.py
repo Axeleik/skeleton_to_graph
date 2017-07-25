@@ -12,14 +12,14 @@ from pipeline import resolve_false_merges, project_new_result, project_resolved_
 if __name__ == '__main__':
 
     from init_datasets import meta_folder, project_folder
-    from init_datasets import ds_names, result_keys, experiment_ids
+    from init_datasets import ds_names, result_keys, experiment_ids,computer_cores
     from run_mc_all import rf_cache_folder
 
     # These are the parameters as used for the initial mc
     ExperimentSettings().rf_cache_folder = rf_cache_folder
     ExperimentSettings().anisotropy_factor = 10.
     ExperimentSettings().use_2d = False
-    ExperimentSettings().n_threads = 30
+    ExperimentSettings().n_threads = computer_cores
     ExperimentSettings().n_trees = 500
     ExperimentSettings().solver = 'multicut_fusionmoves'
     ExperimentSettings().verbose = True
