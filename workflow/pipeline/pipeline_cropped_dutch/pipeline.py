@@ -6,7 +6,7 @@ import numpy as np
 
 import sys
 sys.path.append(
-    '/export/home/amatskev/nature_methods_multicut_pipeline/software/')
+    '/export/home/amatskev/Bachelor/nature_methods_multicut_pipeline/software/')
 
 from multicut_src import DataSet
 from multicut_src import lifted_multicut_workflow
@@ -308,7 +308,7 @@ def project_resolved_objects_to_segmentation(
         resolved_nodes = resolved_objs[obj]
         for node_id in resolved_nodes:
             mc_labeling[node_id] = new_label_offset + resolved_nodes[node_id]
-        new_label_offset += np.max(resolved_nodes.values()) + 1
+        new_label_offset += np.max(np.array(resolved_nodes.values())) + 1
     mc_segmentation = nrag.projectScalarNodeDataToPixels(rag, mc_labeling, ExperimentSettings().n_threads)
 
 

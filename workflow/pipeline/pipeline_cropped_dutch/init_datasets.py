@@ -3,12 +3,15 @@ import os
 
 import sys
 sys.path.append(
-    '/export/home/amatskev/nature_methods_multicut_pipeline/software/')
+    '/export/home/amatskev/Bachelor/nature_methods_multicut_pipeline/software/')
 
 # The following locations should be importable by downstream scripts
 # TODO Change here when switching server
-source_folder = '/mnt/localdata01/amatskev/neuraldata/cremi_data/'
-project_folder = '/mnt/localdata01/amatskev/neuraldata/results/'
+source_folder = '/mnt/localdata01/amatskev/neuraldata/cremi_data/' \
+                '170606_resolve_false_merges_cropped/'
+
+project_folder = '/mnt/localdata01/amatskev/neuraldata/' \
+                 'results_cropped/'
 
 ds_names = ['splA_z0', 'splA_z1', 'splB_z0', 'splB_z1', 'splC_z0', 'splC_z1']
 experiment_ids = [3]
@@ -16,7 +19,7 @@ result_keys = ['z/0/data', 'z/1/data'] * 3
 
 meta_folder = os.path.join(project_folder, 'cache')
 
-computer_cores=24
+computer_cores=8
 
 from pipeline import init_train_sets
 

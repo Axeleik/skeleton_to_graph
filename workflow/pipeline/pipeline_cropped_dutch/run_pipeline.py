@@ -1,6 +1,6 @@
 import sys
 sys.path.append(
-    '/export/home/amatskev/nature_methods_multicut_pipeline/software/')
+    '/export/home/amatskev/Bachelor/nature_methods_multicut_pipeline/software/')
 from time import time
 
 start_time=time()
