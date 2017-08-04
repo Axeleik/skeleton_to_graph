@@ -24,7 +24,7 @@ print "Multicut took ", (time_after_mc-time_after_init)/3600 ," hours"
 print '####################################################################'
 print 'Detecting merges ...'
 print '####################################################################'
-execfile('detect_merges_all.py')
+# execfile('detect_merges_all.py')
 
 time_after_dm=time()
 print "Detecting merges took ", (time_after_dm-time_after_mc)/3600 ," hours"

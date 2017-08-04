@@ -96,8 +96,11 @@ def read(path):
 
 if __name__ == "__main__":
 
-    img = np.load("/export/home/amatskev/Bachelor/marching_cubes/test/sample.npy")
-    _,skel = img_to_skel(img)
+    img,_ = np.load("/export/home/amatskev/Bachelor/"
+                           "data/graph_pruning/debugging/"
+                           "spooky/skel_seg.npy")
+
+    skel_img,skel = img_to_skel(img)
 
 
     plot_figure_and_path(img,skel)
