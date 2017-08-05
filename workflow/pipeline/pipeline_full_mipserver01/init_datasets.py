@@ -7,9 +7,11 @@ sys.path.append(
 
 # The following locations should be importable by downstream scripts
 # TODO Change here when switching server
-source_folder = '/mnt/localdata01/amatskev/neuraldata/cremi_data/'
+source_folder = '/mnt/localdata01/amatskev/neuraldata/' \
+                'cremi_data/170606_resolve_false_merges_cropped/'
+
 project_folder = '/mnt/localdata01/amatskev/neuraldata/' \
-                 'full_25.07.17/results/'
+                 '/results_cropped/'
 
 ds_names = ['splA_z0', 'splA_z1', 'splB_z0', 'splB_z1', 'splC_z0', 'splC_z1']
 experiment_ids = [3]

@@ -15,9 +15,9 @@ sys.path.append(
     '/export/home/amatskev/Bachelor/nature_methods_multicut_pipeline/software/')
 sys.path.append(
     '/export/home/amatskev/Bachelor/skeleton_to_graph/')
-from workflow.methods.functions_for_workflow import extract_paths_and_labels_from_segmentation_parallel,\
-    extract_paths_and_labels_from_segmentation_linear,cut_off
-from multicut_src.false_merges import false_merges_workflow
+from workflow.methods.functions_for_workflow import extract_paths_and_labels_from_segmentation
+# from multicut_src.false_merges import false_merges_workflow
+import vigra
 
 
 
@@ -95,15 +95,21 @@ def func(hi):
 
 
 if __name__ == "__main__":
-    all_paths_unfinished, paths_to_objs_unfinished,cut_off_array=\
-        np.load("/export/home/amatskev/Bachelor/data/"
-                "debugging/cut_off.npy")
+
+    # ds, seg, seg_id, gt, correspondence_list, paths_cache_folder=\
+    #     np.load("/mnt/localdata01/amatskev/misc/debugging/for_cut_off.npy")
+    #
+    # result=extract_paths_and_labels_from_segmentation(ds, seg, seg_id, gt, correspondence_list, paths_cache_folder)
+
+    all_paths, paths_to_objs, path_classes, correspondence_list=np.load("/export/home/amatskev/Bachelor/misc/times_test/result.npy")
+
+    print "hi"
+    print "hi"
 
 
 
 
 
-    cut_off(all_paths_unfinished, paths_to_objs_unfinished,cut_off_array)
 
 
 
@@ -112,9 +118,44 @@ if __name__ == "__main__":
 
 
 
-    ds, seg, seg_id, gt, correspondence_list, paths_cache_folder = \
-        np.load("/export/home/amatskev/Bachelor/data/"
-                "testing_speeds/all_of_them.npy")
+
+
+
+
+
+
+
+
+
+
+    # all_paths = vigra.readHDF5('/export/home/amatskev/Bachelor/'
+    #                                'data/debugging/paths_ds_splB_z1.h5',
+    #                                'all_paths')
+    #
+    # paths_to_objs = vigra.readHDF5('/export/home/amatskev/Bachelor/'
+    #                                'data/debugging/paths_ds_splB_z1.h5',
+    #                                'paths_to_objs')
+
+
+
+    # all_paths_unfinished, paths_to_objs_unfinished,cut_off_array=\
+    #     np.load("/export/home/amatskev/Bachelor/data/"
+    #             "debugging/cut_off3.npy")
+    # #
+    # # all_paths_unfinished=all_paths_unfinished[:3]
+    # # paths_to_objs_unfinished[:3]
+    # # cut_off_array={label:cut_off_array[label] for label in cut_off_array.keys()[:3]}
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+    # ds, seg, seg_id, gt, correspondence_list, paths_cache_folder = \
+    #     np.load("/export/home/amatskev/Bachelor/data/"
+    #             "testing_speeds/all_of_them.npy")
 
 
 
@@ -139,11 +180,11 @@ if __name__ == "__main__":
     #
     # time0 = time()
     #
-    results0=false_merges_workflow. \
-        extract_paths_and_labels_from_segmentation(ds, seg,
-                                                        seg_id, gt,
-                                                        correspondence_list,
-                                                   paths_cache_folder)
+    # results0=false_merges_workflow. \
+    #     extract_paths_and_labels_from_segmentation(ds, seg,
+    #                                                     seg_id, gt,
+    #                                                     correspondence_list,
+    #                                                paths_cache_folder)
     # # inputs=range(0,1000)
     #
     # time1=time()
@@ -168,11 +209,11 @@ if __name__ == "__main__":
 
     time1=time()
 
-    results1p=extract_paths_and_labels_from_segmentation_parallel(ds, seg,
-                                                   seg_id, gt,
-                                                   correspondence_list,
-                                                   "/export/home/amatskev/Bachelor/"
-                                                   "data/testing_speeds/paths/alex/parallel")
+    # results1p=extract_paths_and_labels_from_segmentation_parallel(ds, seg,
+    #                                                seg_id, gt,
+    #                                                correspondence_list,
+    #                                                "/export/home/amatskev/Bachelor/"
+    #                                                "data/testing_speeds/paths/alex/parallel")
 
     time2=time()
 
