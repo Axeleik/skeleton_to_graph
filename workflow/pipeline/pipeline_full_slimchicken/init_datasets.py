@@ -8,13 +8,13 @@ sys.path.append(
 # TODO Change here when switching server
 # The following locations should be importable by downstream scripts
 source_folder = '/mnt/ssd/jhennies/neuraldata/' \
-                'cremi_2016/170606_resolve_false_merges_cropped/'
+                'cremi_2016/170606_resolve_false_merges/'
 
 project_folder = '/mnt/ssd/amatskev/neuraldata/' \
-                 'results_cropped/'
+                 'results/'
 
 ds_names = ['splA_z0', 'splA_z1', 'splB_z0', 'splB_z1', 'splC_z0', 'splC_z1']
-experiment_ids = [3]
+experiment_ids = [0, 1, 2, 3, 4, 5]
 result_keys = ['z/0/data', 'z/1/data'] * 3
 
 meta_folder = os.path.join(project_folder, 'cache')

@@ -42,8 +42,6 @@ if __name__ == '__main__':
     ExperimentSettings().n_trees = 500
 
     for ds_id in experiment_ids:
-
-        result_key = result_keys[ds_id]
         ds_name = ds_names[ds_id]
 
         train_segs_paths = np.delete(all_train_segs, ds_id, axis=0).tolist()
@@ -52,11 +50,12 @@ if __name__ == '__main__':
         test_seg_path = os.path.join(project_folder, ds_name, 'result.h5')
         test_seg_key = result_keys[ds_id]
 
+        # logger.info('Starting find_false_merges...')
+
         find_false_merges(
             ds_name,
             ds_names,
             meta_folder,
-            rf_cache_folder,
             test_seg_path, test_seg_key,
             train_segs_paths, train_segs_keys
         )

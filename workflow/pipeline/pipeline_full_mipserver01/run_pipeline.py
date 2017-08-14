@@ -8,7 +8,7 @@ start_time=time()
 print '####################################################################'
 print 'Initializing ...'
 print '####################################################################'
-# execfile('init_datasets.py')
+execfile('init_datasets.py')
 
 time_after_init=time()
 print "Initialization took ", (time_after_init-start_time)/60 ," minutes"
@@ -16,7 +16,7 @@ print "Initialization took ", (time_after_init-start_time)/60 ," minutes"
 print '####################################################################'
 print 'Running multicut ...'
 print '####################################################################'
-# execfile('run_mc_all.py')
+execfile('run_mc_all.py')
 
 time_after_mc=time()
 print "Multicut took ", (time_after_mc-time_after_init)/3600 ," hours"

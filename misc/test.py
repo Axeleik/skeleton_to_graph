@@ -15,8 +15,8 @@ sys.path.append(
     '/export/home/amatskev/Bachelor/nature_methods_multicut_pipeline/software/')
 sys.path.append(
     '/export/home/amatskev/Bachelor/skeleton_to_graph/')
-from workflow.methods.functions_for_workflow import extract_paths_and_labels_from_segmentation
-# from multicut_src.false_merges import false_merges_workflow
+# from workflow.methods.functions_for_workflow import extract_paths_and_labels_from_segmentation
+from multicut_src.false_merges import false_merges_workflow
 import vigra
 
 
@@ -96,10 +96,10 @@ def func(hi):
 
 if __name__ == "__main__":
 
-    # ds, seg, seg_id, gt, correspondence_list, paths_cache_folder=\
-    #     np.load("/mnt/localdata01/amatskev/misc/debugging/for_cut_off.npy")
-    #
-    # result=extract_paths_and_labels_from_segmentation(ds, seg, seg_id, gt, correspondence_list, paths_cache_folder)
+    ds, seg, seg_id, gt, correspondence_list, paths_cache_folder=\
+        np.load("/mnt/localdata01/amatskev/misc/debugging/for_cut_off.npy")
+
+    result=false_merges_workflow.extract_paths_and_labels_from_segmentation(ds, seg, seg_id, gt, correspondence_list, paths_cache_folder)
 
     all_paths, paths_to_objs, path_classes, correspondence_list=np.load("/export/home/amatskev/Bachelor/misc/times_test/result.npy")
 

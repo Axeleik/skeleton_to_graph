@@ -17,6 +17,9 @@ from multicut_src import RandomForest
 from multicut_src import ExperimentSettings
 from multicut_src import merge_small_segments
 
+import logging
+logger = logging.getLogger(__name__)
+
 def init_dataset(
         meta_folder, name,
         raw_filepath, raw_name,
@@ -146,7 +149,7 @@ def run_lifted_mc(
 def find_false_merges(
         ds_test_name,
         ds_train_names,
-        meta_folder, rf_cache_folder,
+        meta_folder,
         test_seg_path, test_seg_key,
         train_segs_paths, train_segs_keys
 ):
@@ -158,11 +161,12 @@ def find_false_merges(
     test_paths_cache_folder = os.path.join(meta_folder, ds_test_name, 'path_data')
     train_paths_cache_folder = os.path.join(meta_folder, 'train_path_data')
 
+    # logger.info('Starting compute_false_merges...')
+
     _, false_merge_probs, _ = compute_false_merges(
         ds_train, ds_test,
         train_segs_paths, train_segs_keys,
         test_seg_path, test_seg_key,
-        rf_cache_folder,
         test_paths_cache_folder,
         train_paths_cache_folder
     )
@@ -250,7 +254,8 @@ def resolve_false_merges(
         )
     else:
         new_node_labels = resolve_merges_with_lifted_edges(
-            ds, seg_id,
+            ds, ds_train,
+            seg_id,
             false_paths,
             path_rf,
             mc_segmentation,
