@@ -15,10 +15,17 @@ sys.path.append(
     '/export/home/amatskev/Bachelor/nature_methods_multicut_pipeline/software/')
 sys.path.append(
     '/export/home/amatskev/Bachelor/skeleton_to_graph/')
-# from workflow.methods.functions_for_workflow import extract_paths_and_labels_from_segmentation
-from multicut_src.false_merges import false_merges_workflow
+from workflow.methods.functions_for_workflow \
+    import extract_paths_and_labels_from_segmentation,\
+    extract_paths_and_labels_from_segmentation_single
+# from multicut_src.false_merges import false_merges_workflow
 import vigra
-
+from joblib import parallel,delayed
+from multiprocessing import Process
+from Queue import Queue
+import platform
+from joblib import Parallel, delayed
+import cPickle as pickle
 
 
 
@@ -59,7 +66,7 @@ def node_iteration(rag):
             print "Node:", adj_node
             print "via Edge", adj_edge
 
-def skeletonization(seg,seg_copy,skel_img,seg_id):
+def skeletonization_parallel(seg,seg_copy,skel_img,seg_id):
 
     seg_copy[seg == seg_id] = 1
     seg_copy[seg != seg_id] = 0
@@ -69,23 +76,43 @@ def skeletonization(seg,seg_copy,skel_img,seg_id):
     skel_img[skel_dump==1]=1
 
 
+def skeletonization_linear(seg,seg_id):
+
+    seg_copy=np.zeros(seg.shape)
+    seg_copy[seg == seg_id] = 1
+
+
+    skel_img=skeletonize_3d(seg_copy)
+
+    return skel_img
+
+
+
 def parallel(seg):
 
+    time1=time()
     skel_img=np.zeros(seg.shape)
 
     with futures.ThreadPoolExecutor(max_workers=8) as executor:
-        tasks = [executor.submit(skeletonization, seg,copy(seg),skel_img,seg_id) for seg_id in np.unique(seg)]
-        results = [t.result() for t in tasks]
+        [executor.submit(skeletonization_parallel, seg,copy(seg),skel_img,seg_id) for seg_id in np.unique(seg)]
+
+    time2=time()
+    print "parallel took ", time2-time1, " secs"
+
     return skel_img
 
 
 def linear(seg):
 
+    time1=time()
     skel_img=np.zeros(seg.shape)
 
     for seg_id in np.unique(seg):
+        single_skel=skeletonization_linear(seg,seg_id)
+        skel_img[single_skel==1]=1
 
-        skeletonization(seg,copy(seg),skel_img,seg_id)
+    time2 = time()
+    print "linear took ", time2 - time1, " secs"
 
     return skel_img
 
@@ -94,15 +121,129 @@ def func(hi):
         hi.extend([i])
 
 
-if __name__ == "__main__":
+def worker(img_orig,label):
+    """thread worker function"""
+    img = np.zeros(img_orig.shape)
+    img[img_orig==label]=1
 
-    ds, seg, seg_id, gt, correspondence_list, paths_cache_folder=\
+    skel_img=skeletonize_3d(img)
+    if label==60:
+        return []
+    return skel_img
+
+def mp_skeletonize(seg):
+
+    def worker(img_orig, label,out_q):
+        """thread worker function"""
+        img = np.zeros(img_orig.shape)
+        img[img_orig == label] = 1
+
+        skel_img = skeletonize_3d(img)
+
+        out_q.put(skel_img)
+
+    # Each process will get 'chunksize' nums and a queue to put his out
+    # dict into
+    out_q = Queue()
+    # chunksize = int(math.ceil(len(nums) / float(nprocs)))
+    procs = []
+
+    for label in np.unique(seg):
+        p = Process(
+                target=worker,
+                args=(seg,label,
+                      out_q))
+        procs.append(p)
+        p.start()
+
+    # Collect all results into a single result dict. We know how many dicts
+    # with results to expect.
+    final=np.zeros(seg.shape)
+
+    print "1"
+    while out_q.size():
+        final[out_q.get()==1]=1
+    print "2"
+
+    # Wait for all worker processes to finish
+    for p in procs:
+        p.join()
+    print "3"
+    return final
+
+if __name__ == '__main__':
+
+
+
+
+    ds, seg, seg_id, gt, correspondence_list, paths_cache_folder = \
         np.load("/mnt/localdata01/amatskev/misc/debugging/for_cut_off.npy")
 
-    result=false_merges_workflow.extract_paths_and_labels_from_segmentation(ds, seg, seg_id, gt, correspondence_list, paths_cache_folder)
+    # seg1=deepcopy(seg)
+    # seg2=deepcopy(seg)
+    # time1=time()
+    # procs = []
+    #
+    # out_q = Queue()
+    # uniq = np.unique(seg)
+    # for label in uniq:
+    #     p = Process(
+    #         target=skeletonize_3d,
+    #         args=(seg,label
+    #                 ))
+    #     procs.append(p)
+    #     p.start()
+    #
+    # result1=np.zeros(seg.shape)
+    #
+    # print "1: ", out_q.size()
+    # print "2: ", len(uniq)
+    #
+    # while out_q.size():
+    #     result1[out_q.get()==1]=1
 
-    all_paths, paths_to_objs, path_classes, correspondence_list=np.load("/export/home/amatskev/Bachelor/misc/times_test/result.npy")
+    # result1_unfinished=Parallel(n_jobs=-1)(delayed(worker)(seg1,label) for label in np.unique(seg))
+    #
+    # result1=np.zeros(seg.shape)
+    #
+    # for i in result1_unfinished:
+    #     result1[i==1]=1
+    #
+    #
+    # time2=time()
+    #
+    # print "parallel took ", time2-time1, " sec"
+    #
+    #
+    # result2 = linear(seg2)
+    #
+    # assert (result1==result2).all()
+    time1=time()
+    # result1=extract_paths_and_labels_from_segmentation_single\
+    #     (ds, seg, seg_id, gt, correspondence_list, paths_cache_folder)
 
+    time2=time()
+
+    result2=extract_paths_and_labels_from_segmentation\
+        (ds, seg, seg_id, gt, correspondence_list, paths_cache_folder)
+
+    time3=time()
+
+    print "single took ", time2-time1," secs"
+    print "parallel took ", time3-time2," secs"
+
+    #
+    # all_paths, paths_to_objs, path_classes, correspondence_list=np.load("/export/home/amatskev/Bachelor/misc/times_test/result.npy")
+    # print "starting tests..."
+    #
+    # result1 = parallel(seg)
+    # result2 = linear(seg)
+    #
+    # assert (result1==result2).all()
+    #
+    #
+    #
+    #
     print "hi"
     print "hi"
 
@@ -198,29 +339,29 @@ if __name__ == "__main__":
     #
     # time2=time()
     # print "Julian took ", time2-time1, " secs"
-
-    time0=time()
+    #
+    # time0=time()
 
     # results1l=extract_paths_and_labels_from_segmentation_linear(ds, seg,
     #                                                seg_id, gt,
     #                                                correspondence_list,
     #                                                "/export/home/amatskev/Bachelor/"
     #                                                "data/testing_speeds/paths/alex/linear")
-
-    time1=time()
+    #
+    # time1=time()
 
     # results1p=extract_paths_and_labels_from_segmentation_parallel(ds, seg,
     #                                                seg_id, gt,
     #                                                correspondence_list,
     #                                                "/export/home/amatskev/Bachelor/"
     #                                                "data/testing_speeds/paths/alex/parallel")
+    #
+    # time2=time()
+    #
 
-    time2=time()
-
-
-    time3=time()
-    print "I took   ", time1 - time0, " secs before"
-    print "I took   ", time2-time1, " secs now"
+    # time3=time()
+    # print "I took   ", time1 - time0, " secs before"
+    # print "I took   ", time2-time1, " secs now"
     # print "I took   ", time3-time2, " secs now"
     # np.save("/export/home/amatskev/Bachelor/misc/times_test/results0.npy",results0)
 
