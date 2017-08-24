@@ -242,6 +242,9 @@ def skeleton_to_graph(skel_img, dt, anisotropy):
 
     term_list = form_term_list(list_term_unfinished,is_term_map)
     term_list -= 1
+
+
+
     # loop_list -= 1
     return nodes, np.array(edges_and_lens), term_list, is_node_map, loop_list
 
@@ -756,9 +759,6 @@ def compute_graph_and_paths(img, dt, anisotropy):
     g, edge_lens, edges_and_lens = \
         graph_and_edge_weights(nodes, edges_and_lens)
 
-    for_building=deepcopy(edges_and_lens)
-    check_connected_components(g)
-
     loop_uniq, loop_nr = np.unique(loop_list, return_counts=True)
 
     for where in np.where(loop_nr > 1)[0]:
@@ -768,7 +768,12 @@ def compute_graph_and_paths(img, dt, anisotropy):
                               in g.nodeAdjacency(loop_uniq[where] - 1)])
 
         if (len(adjacency)) == 1:
-            term_list = np.append(term_list, loop_uniq[where] - 1)
+            term_list = np.append(term_list, [loop_uniq[where] - 1])
+
+    for_building=deepcopy(edges_and_lens)
+    check_connected_components(g)
+
+
 
     # if modus=="testing":
     #     return term_list,edges,g,nodes
