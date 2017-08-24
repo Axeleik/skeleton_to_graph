@@ -742,7 +742,6 @@ def compute_graph_and_paths(img, dt, anisotropy):
     skel_img=skeletonize_3d(img)
 
 
-
     print "deleting img..."
     del img
     # vigra.filters.distanceTransform(
@@ -759,6 +758,9 @@ def compute_graph_and_paths(img, dt, anisotropy):
     g, edge_lens, edges_and_lens = \
         graph_and_edge_weights(nodes, edges_and_lens)
 
+    for_building=deepcopy(edges_and_lens)
+    check_connected_components(g)
+
     loop_uniq, loop_nr = np.unique(loop_list, return_counts=True)
 
     for where in np.where(loop_nr > 1)[0]:
@@ -768,12 +770,7 @@ def compute_graph_and_paths(img, dt, anisotropy):
                               in g.nodeAdjacency(loop_uniq[where] - 1)])
 
         if (len(adjacency)) == 1:
-            term_list = np.append(term_list, [loop_uniq[where] - 1])
-
-    for_building=deepcopy(edges_and_lens)
-    check_connected_components(g)
-
-
+            term_list = np.append(term_list, loop_uniq[where] - 1)
 
     # if modus=="testing":
     #     return term_list,edges,g,nodes
