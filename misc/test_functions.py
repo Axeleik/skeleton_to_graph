@@ -1,13 +1,15 @@
-from neuro_seg_plot import NeuroSegPlot as nsp
+# from neuro_seg_plot import NeuroSegPlot as nsp
 import numpy as np
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+# import matplotlib.pyplot as plt
+# from mpl_toolkits.mplot3d import Axes3D
 import h5py
 from copy import deepcopy
 import cPickle as pickle
-from skimage.morphology import skeletonize_3d
-import scipy
-from scipy import interpolate
+# from skimage.morphology import skeletonize_3d
+# import scipy
+# from scipy import interpolate
+import vigra
+import volumina_viewer
 
 
 
@@ -94,7 +96,51 @@ def read(path):
     with open(path, mode='r') as f:
         file = pickle.load(f)
 
+    return file
+
+
+def view(filepaths, filekeys, names=None, types=None, swapaxes=None, crop=None):
+    inputs = []
+    this_type = None
+    swp = None
+    if crop is None:
+        crop = np.s_[:, :, :]
+    for idx, filepath in enumerate(filepaths):
+        if types is not None:
+            this_type = types[idx]
+        if swapaxes is not None:
+            swp = swapaxes[idx]
+        if this_type is not None:
+            inputs.append(vigra.readHDF5(filepath, filekeys[idx]).astype(this_type)[crop])
+        else:
+            inputs.append(vigra.readHDF5(filepath, filekeys[idx])[crop])
+        if swp is not None:
+            inputs[-1] = inputs[-1].swapaxes(*swp)
+        print inputs[-1].shape
+    volumina_viewer.volumina_n_layer(
+        inputs,
+        names
+    )
+
+
 if __name__ == "__main__":
+
+    f = h5py.File("/mnt/localdata01/amatskev/misc/debugging/result.h5", mode='r')
+
+
+
+    view(
+        [
+            "/mnt/localdata01/amatskev/misc/debugging/result.h5",
+        ], ['z/0/data'],
+        types=['uint32']
+    )
+
+
+
+
+
+
 
     img,_ = np.load("/export/home/amatskev/Bachelor/"
                            "data/graph_pruning/debugging/"

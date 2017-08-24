@@ -153,6 +153,7 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_li
 
                 # writing longest label at node to the others,
                 # so we dont cut in half later
+                # noblankspace
                 for finished_label in [adj_node for adj_node,
                                            adj_edge in g.nodeAdjacency(adjacency[0][0])
                               if adj_node!=node_dict[adjacency[0][0]][0][0]
@@ -208,7 +209,7 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_li
 
 
 #TODO check whether edgelist and termlist is ok (because of -1)
-def graph_pruning(g,term_list,edges,dt,nodes_list):
+def graph_pruning(g,term_list,edges,nodes_list,pruning_threshhold):
 
     finished_dict={}
     node_dict={}
@@ -251,6 +252,7 @@ def graph_pruning(g,term_list,edges,dt,nodes_list):
 
 
                 # writing winner node in loser node
+                #noblankspace
                 main_dict[node_dict[current_node][1]].append(label)
 
                 # finishing previous longest label
@@ -292,7 +294,7 @@ def graph_pruning(g,term_list,edges,dt,nodes_list):
                                            if adj_edge != main_dict[label][3]]]
 
         # we finish when we have only two open labels left
-        if len(main_dict.keys())==2:
+        if len(main_dict.keys())<3:
 
 
             for finished_label in [adj_node for adj_node,

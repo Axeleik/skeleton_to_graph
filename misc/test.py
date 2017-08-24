@@ -26,6 +26,9 @@ from Queue import Queue
 import platform
 from joblib import Parallel, delayed
 import cPickle as pickle
+import scipy
+from joblib import Parallel,delayed
+import multiprocessing
 
 
 
@@ -171,13 +174,310 @@ def mp_skeletonize(seg):
     print "3"
     return final
 
+
+def extract_region_features(
+        feature_volume,
+        path_image,
+        ignoreLabel=0,
+        features=''
+):
+
+    extractor = vigra.analysis.extractRegionFeatures(
+        feature_volume,
+        path_image,
+        ignoreLabel=ignoreLabel,
+        features=features
+    )
+
+    return extractor
+
+def python_region_features_extractor_mt(path,feature_volumes,idx):
+
+    pixel_values = []
+
+    for feature_volume in feature_volumes:
+        for c in range(feature_volume.shape[-1]):
+            # feature_values[path[:, 0], path[:, 1], path[:, 2]]
+
+            pixel_values.extend(feature_volume[path[:, 0], path[:, 1], path[:, 2]][:,c])
+    print "pixel values ", idx, " finished"
+    return pixel_values
+
+
+
+def python_region_features_extractor_sc(path,feature_volumes):
+
+    pixel_values = []
+
+    for feature_volume in feature_volumes:
+        for c in range(feature_volume.shape[-1]):
+
+            pixel_values.extend([feature_volume[path[:, 0], path[:, 1], path[:, 2]][:,c]])
+
+
+    return np.array(pixel_values)
+
+def python_region_features_extractor_2_mc(single_vals):
+
+    path_features=[]
+
+    [path_features.extend([np.mean(vals),np.var(vals),sum(vals),
+         max(vals),min(vals),
+    scipy.stats.kurtosis(vals), scipy.stats.skew(vals)]) for vals in single_vals]
+
+    return np.array(path_features)
+
+
+def extract_features_for_path(path,feature_volumes,stats,idx):
+
+        print "start feature ",idx
+        # calculate the local path bounding box
+        min_coords  = np.min(path, axis=0)
+        max_coords = np.max(path, axis=0)
+        max_coords += 1
+        shape = tuple(max_coords - min_coords)
+        path_image = np.zeros(shape, dtype='uint32')
+        path -= min_coords
+        # we swapaxes to properly index the image properly
+        path_sa = np.swapaxes(path, 0, 1)
+        path_image[path_sa[0], path_sa[1], path_sa[2]] = 1
+
+        path_features = []
+        for feature_volume in feature_volumes:
+            for c in range(feature_volume.shape[-1]):
+                path_roi = np.s_[
+                    min_coords[0]:max_coords[0],
+                    min_coords[1]:max_coords[1],
+                    min_coords[2]:max_coords[2],
+                    c  # wee need to also add the channel to the slicing
+                ]
+                # extractor = vigra.analysis.extractRegionFeatures(
+                #     feature_volume[path_roi],
+                #     path_image,
+                #     ignoreLabel=0,
+                #     features=stats
+                # )
+                extractor = extract_region_features(
+                    feature_volume[path_roi],
+                    path_image,
+                    ignoreLabel=0,
+                    features=stats
+                )
+                # TODO make sure that dimensions match for more that 1d stats!
+                path_features.extend(
+                    [extractor[stat][1] for stat in stats]
+                )
+                hi=[extractor[stat][1] for stat in stats]
+        # ret = np.array(path_features)[:,None]
+        # print ret.shape
+        print "path_features: ",idx
+        return np.array(path_features)[None, :]
+
+def read(path):
+
+    with open(path, mode='r') as f:
+        file = pickle.load(f)
+
+    return file
+
+
+def test_func(a,b):
+        # put to Queue instead of returning
+        return np.array([a,b])
+
+
+
+
+def extract_features_for_path_orig(path,feature_volumes,stats,idx):
+        print "start feature ",idx
+
+        # calculate the local path bounding box
+        min_coords  = np.min(path, axis=0)
+        max_coords = np.max(path, axis=0)
+        max_coords += 1
+        shape = tuple(max_coords - min_coords)
+        path_image = np.zeros(shape, dtype='uint32')
+        path -= min_coords
+        # we swapaxes to properly index the image properly
+        path_sa = np.swapaxes(path, 0, 1)
+        path_image[path_sa[0], path_sa[1], path_sa[2]] = 1
+
+        path_features = []
+        for feature_volume in feature_volumes:
+            for c in range(feature_volume.shape[-1]):
+                path_roi = np.s_[
+                    min_coords[0]:max_coords[0],
+                    min_coords[1]:max_coords[1],
+                    min_coords[2]:max_coords[2],
+                    c  # wee need to also add the channel to the slicing
+                ]
+                extractor = vigra.analysis.extractRegionFeatures(
+                    feature_volume[path_roi],
+                    path_image,
+                    ignoreLabel=0,
+                    features=stats
+                )
+                # TODO make sure that dimensions match for more that 1d stats!
+                path_features.extend(
+                    [extractor[stat][1] for stat in stats]
+                )
+        # ret = np.array(path_features)[:,None]
+        # print ret.shape
+        print "path_features: ",idx
+        return np.array(path_features)[None, :]
+
+
+
 if __name__ == '__main__':
 
+        dummy = np.ones((5, 5, 5),dtype="uint32")
+
+        a=vigra.filters.distanceTransform(
+            dummy.astype("uint32"),background=False)
 
 
 
-    ds, seg, seg_id, gt, correspondence_list, paths_cache_folder = \
-        np.load("/mnt/localdata01/amatskev/misc/debugging/for_cut_off.npy")
+        feature_volumes = []
+
+        for i in xrange(0, 9):
+            feature_volumes.append \
+                (np.load("/mnt/ssd/amatskev/debugging/debugging_feature_volumes{}.npy".format(i)))
+            print "volume ", i, " loaded"
+
+        print "feature volumes loaded"
+        stats = read("/mnt/ssd/amatskev/debugging/debuggingstats.pkl")
+        print "stats loaded"
+
+        paths_in_roi = np.load("/mnt/ssd/amatskev/debugging/debugging_paths_in_roi.npy")
+        print "paths in roi loaded"
+
+        # a_test=[x for x in range(0,100000)]
+
+        print "start 1000"
+        # time0=time()
+        # # out1 = np.concatenate([extract_features_for_path(path,feature_volumes,stats,idx)
+        # #                       for idx,path in enumerate(paths_in_roi[:1000])])
+        time1=time()
+
+        ##########################################
+        pixel_values_all = [python_region_features_extractor_sc(path,feature_volumes)
+                              for idx,path in enumerate(paths_in_roi[:3])]
+
+        parallel_array = np.array(Parallel(n_jobs=-1) \
+            (delayed(python_region_features_extractor_2_mc)(single_vals)
+             for single_vals in pixel_values_all ))
+
+        out=np.array([python_region_features_extractor_2_mc(single_vals)
+                            for single_vals in pixel_values_all])
+
+
+
+        ##########################################
+        time2=time()
+        # with futures.ThreadPoolExecutor(max_workers=32) as executor:
+        #     tasks = []
+        #     for idx,single_vals in enumerate(out2):
+        #         tasks.append(executor.submit(python_region_features_extractor_2_mc, single_vals,idx))
+        #     out = np.concatenate([t.result() for t in tasks], axis=0)
+        #
+        # print "first: ", time1-time0
+        # print "second: ", time2-time1
+
+        # with futures.ThreadPoolExecutor(max_workers=32) as executor:
+        #     tasks = []
+        #     for idx, path in enumerate(paths_in_roi):
+        #         tasks.append(executor.submit(extract_features_for_path,
+        #                                      path, feature_volumes,stats,idx))
+        #     out = np.concatenate([t.result() for t in tasks], axis=0)
+        time3=time()
+        print "time mine: ",time2-time1
+        print "time before: ",time3-time2
+
+    # with futures.ThreadPoolExecutor(max_workers=8) as executor:
+        #     tasks = []
+        #     for p_id, a in enumerate(a_test):
+        #         tasks.append(executor.submit(test_func, a, a * a))
+        #     out1 = np.concatenate([t.result() for t in tasks], axis=0)
+
+        # with futures.ThreadPoolExecutor(max_workers=24) as executor:
+        #     tasks = []
+        #     for idx, path in enumerate(paths_in_roi):
+        #         tasks.append(executor.submit(extract_features_for_path, path,feature_volumes,stats,idx))
+        #     out = np.concatenate([t.result() for t in tasks], axis=0)
+        #
+        #
+        # # parallel_array = Parallel(n_jobs=-1) \
+        # #     (delayed(extract_features_for_path)( path,feature_volumes,stats,p_id)
+        # #      for p_id, path in enumerate(paths_in_roi[0:50]) )
+        #
+        #
+        # print len(out)
+
+        # print "start"
+        #
+        # feature_volumes = []
+        #
+        # for i in xrange(0, 5):
+        #     feature_volumes.append \
+        #         (np.load("/mnt/localdata01/amatskev/debugging/debugging_feature_volumes{}.npy".format(i)))
+        #     print "volume ", i, " loaded"
+        #
+        # print "feature volumes loaded"
+        # stats = read("/mnt/localdata01/amatskev/debugging/debuggingstats.pkl")
+        # print "stats loaded"
+        #
+        # paths_in_roi = np.load("/mnt/localdata01/amatskev/debugging/debugging_paths_in_roi.npy")
+        # print "paths in roi loaded"
+        #
+        # parallel_array = Parallel(n_jobs=-1) \
+        #     (delayed(python_region_features_extractor)( path, feature_volumes,idx)
+        #      for idx,path in enumerate(paths_in_roi[:500]))
+        #
+        #
+        # print len(parallel_array)
+
+    # time0=time()
+
+    #
+    # print "finished first"
+    # time1=time()
+    #
+    # with futures.ThreadPoolExecutor(max_workers=8) as executor:
+    #     tasks = []
+    #     for p_id, path in enumerate(paths_in_roi[:500]):
+    #         tasks.append(executor.submit(extract_features_for_path, path, feature_volumes, stats))
+    #     out2 = np.concatenate([t.result() for t in tasks], axis=0)
+    # print "finished second"
+    #
+    # time2=time()
+    #
+    # parallel_array = Parallel(n_jobs=-1) \
+    #     (delayed(python_region_features_extractor)( path, feature_volumes)
+    #      for path in paths_in_roi[:500])
+    #
+    # time3=time()
+    #
+    # print "New took ",time1-time0," secs"
+    # print "Old took ",time2-time1," secs"
+    # print "Newpar took ",time3-time2," secs"
+    # # ds, seg, seg_id, gt, correspondence_list, paths_cache_folder = \
+    # #     np.load("/mnt/localdata01/amatskev/misc/debugging/for_cut_off.npy")
+
+    # parallel_array = Parallel(n_jobs=-1) \
+    #     (delayed(python_region_features_extractor)(path, feature_volumes)
+    #      for path in paths_in_roi[:500])
+
+
+
+
+
+
+
+
+
+
+
+
 
     # seg1=deepcopy(seg)
     # seg2=deepcopy(seg)
@@ -218,19 +518,19 @@ if __name__ == '__main__':
     # result2 = linear(seg2)
     #
     # assert (result1==result2).all()
-    time1=time()
-    # result1=extract_paths_and_labels_from_segmentation_single\
+    # time1=time()
+    # # result1=extract_paths_and_labels_from_segmentation_single\
+    # #     (ds, seg, seg_id, gt, correspondence_list, paths_cache_folder)
+    #
+    # time2=time()
+    #
+    # result2=extract_paths_and_labels_from_segmentation\
     #     (ds, seg, seg_id, gt, correspondence_list, paths_cache_folder)
-
-    time2=time()
-
-    result2=extract_paths_and_labels_from_segmentation\
-        (ds, seg, seg_id, gt, correspondence_list, paths_cache_folder)
-
-    time3=time()
-
-    print "single took ", time2-time1," secs"
-    print "parallel took ", time3-time2," secs"
+    #
+    # time3=time()
+    #
+    # print "single took ", time2-time1," secs"
+    # print "parallel took ", time3-time2," secs"
 
     #
     # all_paths, paths_to_objs, path_classes, correspondence_list=np.load("/export/home/amatskev/Bachelor/misc/times_test/result.npy")
@@ -244,8 +544,8 @@ if __name__ == '__main__':
     #
     #
     #
-    print "hi"
-    print "hi"
+    # print "hi"
+    # print "hi"
 
 
 

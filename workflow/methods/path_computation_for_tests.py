@@ -181,7 +181,7 @@ def stage_one(skel_img, dt, anisotropy):
             last_node = last_node + 1
             nodes[last_node] = point
             # build edge
-            edges.extend([[np.array([current_node, last_node]), length, edge_list, dt_list]])  # build edge
+            edges.extend([[np.array([current_node, last_node]), length, edge_list, dt_list]])
             node_list.extend([[point[0], point[1], point[2]]])
             # putting node branches in the queue
             for x in not_queued:
@@ -194,15 +194,6 @@ def stage_one(skel_img, dt, anisotropy):
 
             is_branch_map[point[0], point[1], point[2]] = last_node
             is_node_map[point[0], point[1], point[2]] = last_node
-
-    # if (len(np.where(volume)[0]) - len(np.where(is_branch_map)[0]) - len(np.where(is_term_map)[0]) - len(np.where(is_standart_map)[0]))!=0:
-    #     pass
-    #     print "assert"
-    # else:
-    #     print "no assert"
-
-    # assert((len(np.where(volume)[0]) - len(np.where(is_branch_map)[0]) - len(np.where(is_term_map)[0]) - len(np.where(is_standart_map)[0]))==0), "too few points were looked at/some were looked at twice !"
-
 
 
     return is_node_map, is_term_map, is_branch_map, nodes, edges, loop_list
@@ -221,30 +212,7 @@ def stage_two(is_node_map, list_term, edges, dt):
             i=i+1
 
     assert (i < 2)
-        #
-        #     if len(list_near_nodes) != 0:
-        #
-        #         assert()
-        #         node_number=is_term_map[point[0], point[1], point[2]]
-        #         is_term_map[point[0], point[1], point[2]]=0
-        #         print "hi"
-        #
-        #     for i in list_near_nodes:
-        #         edge_list = []
-        #         edge_list.extend([[point[0], point[1], point[2]]])
-        #         edge_list.extend([[i[0], i[1], i[2]]])
-        #         dt_list = []
-        #         dt_list.extend([dt[point[0], point[1], point[2]]])
-        #         dt_list.extend([dt[i[0], i[1], i[2]]])
-        #         edges.extend([[np.array([is_node_map[point[0],point[1],point[2]],
-        #                                  is_node_map[i[0],i[1],i[2]]]),
-        #                        np.linalg.norm([point[0] - i[0], point[1] - i[1],
-        #                                        (point[2] - i[2]) * 10]),
-        #                        edge_list,
-        #                        dt_list]]) #build edge
-        #
-        #
-        # return edges,is_term_map
+
 
 
 def form_term_list(term_where,is_term_map):
@@ -347,8 +315,6 @@ def check_connected_components(g):
 
 def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_list):
 
-
-
     queue = Queue()
 
     while start_queue.qsize():
@@ -398,10 +364,6 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_li
                     finished_dict[node_dict[adjacency[0][0]][1]] \
                         = deepcopy(main_dict[node_dict[adjacency[0][0]][1]])
 
-                    #get unique rows
-                    # finished_dict[node_dict[adjacency[0][0]][1]][2]= \
-                        # get_unique_rows(np.array
-                        #                 (finished_dict[node_dict[adjacency[0][0]][1]][2]))
                     del main_dict[node_dict[adjacency[0][0]][1]]
                     node_dict[adjacency[0][0]][1] = current_node
 
@@ -476,7 +438,7 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_li
 
 
 #TODO check whether edgelist and termlist is ok (because of -1)
-def graph_pruning(g,term_list,edges,nodes_list):
+def graph_pruning(g,term_list,edges,nodes_list,pruning_threshhold):
 
     finished_dict={}
     node_dict={}
@@ -485,9 +447,14 @@ def graph_pruning(g,term_list,edges,nodes_list):
     last_dict={}
     # edges_and_lens=deepcopy(edges)
 
+
+
     for term_point in term_list:
         start_queue.put([term_point,term_point])
 
+    #TODO implement clean case for 3 or 2 term_points
+    if start_queue.qsize()>4:
+        return np.array([])
 
     queue,finished_dict,node_dict,main_dict = \
         terminal_func (start_queue, g, finished_dict,
@@ -497,7 +464,7 @@ def graph_pruning(g,term_list,edges,nodes_list):
 
 
     while queue.qsize():
-        test_len1=len(main_dict.keys())
+
 
         # draw from queue
         current_node, label = queue.get()
@@ -558,13 +525,14 @@ def graph_pruning(g,term_list,edges,nodes_list):
                                            in g.nodeAdjacency(current_node)
                                            if adj_edge != main_dict[label][3]]]
 
-        if len(main_dict.keys())==2:
+        #finishing contraction
+        if len(main_dict.keys())<3:
             for key in main_dict.keys():
                 finished_dict[key]=deepcopy(main_dict[key])
                 # finished_dict[key][2]=get_unique_rows(np.array(finished_dict[key][2]))
                 del main_dict[key]
-            # deleting node from dict
-            del node_dict[current_node]
+            # # deleting node from dict
+            # del node_dict[current_node]
 
             break
 
@@ -616,7 +584,7 @@ def graph_pruning(g,term_list,edges,nodes_list):
     #This is the pruning
     pruned_term_list = np.array(
         [key for key in finished_dict.keys() if
-         finished_dict[key][1] / finished_dict[key][4] > 4])
+         finished_dict[key][1] / finished_dict[key][4] > pruning_threshhold])
 
 
     return pruned_term_list
@@ -770,14 +738,24 @@ def compute_graph_and_paths(img, dt, anisotropy):
     #skeletonize
     skel_img=skeletonize_3d(img)
 
+
+
+    print "deleting img..."
+    del img
+    # vigra.filters.distanceTransform(
+    #     a.astype("uint32"), background=True, pixel_pitch=[3, 1, 1])
+
     nodes, edges_and_lens, term_list, is_node_map, loop_list = \
         skeleton_to_graph(skel_img, dt, anisotropy)
+
+    print "deleting skel_img..."
+    del skel_img
+
     if len(nodes) < 2:
         return []
     g, edge_lens, edges_and_lens = \
         graph_and_edge_weights(nodes, edges_and_lens)
 
-    #FIXME graph_pruning keeps screwing up the edges_and_lens array
     for_building=deepcopy(edges_and_lens)
     check_connected_components(g)
 
@@ -796,13 +774,13 @@ def compute_graph_and_paths(img, dt, anisotropy):
     #     return term_list,edges,g,nodes
 
     pruned_term_list = graph_pruning\
-        (g, term_list, edges_and_lens, nodes)
+        (g, term_list, edges_and_lens, nodes, 4)
 
 
     #TODO cores global
     edge_paths, edge_counts = \
         edge_paths_and_counts_for_nodes\
-            (g,edge_lens,pruned_term_list, 32)
+            (g,edge_lens,pruned_term_list, 1)
     check_edge_paths(edge_paths, pruned_term_list)
 
     finished_paths=build_paths_from_edges(edge_paths,for_building)

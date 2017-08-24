@@ -14,7 +14,7 @@ from init_datasets import meta_folder, project_folder, \
     source_folder, result_keys, experiment_ids,computer_cores
 
 if __name__ == '__main__':
-    assert (1==0)
+    # assert (1==0)
 
     from init_datasets import ds_names
     from run_mc_all import rf_cache_folder
