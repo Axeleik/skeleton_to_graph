@@ -39,10 +39,10 @@ def extract_paths_from_segmentation(
         #threshhold for distance transform for picking terminal
         #points near boundary
         threshhold_boundary=30
-        volume_where_threshhold = np.where(volume_dt < threshhold_boundary)
-        volume_dt_boundaries = np.s_[min(volume_where_threshhold[0])+1:max(volume_where_threshhold[0]),
-                               min(volume_where_threshhold[1])+1:max(volume_where_threshhold[1]),
-                               min(volume_where_threshhold[2])+1:max(volume_where_threshhold[2])]
+        volume_where_threshhold = np.where(volume_dt > threshhold_boundary)
+        volume_dt_boundaries = np.s_[min(volume_where_threshhold[0]):max(volume_where_threshhold[0]),
+                               min(volume_where_threshhold[1]):max(volume_where_threshhold[1]),
+                               min(volume_where_threshhold[2]):max(volume_where_threshhold[2])]
 
         #for counting and debugging purposes
         len_uniq=len(np.unique(seg))-1
@@ -93,9 +93,6 @@ def extract_paths_and_labels_from_segmentation(
 
 
         assert seg.shape == gt.shape
-        dt = ds.inp(ds.n_inp - 1)  # we assume that the last input is the distance transform
-
-
         dt = ds.inp(ds.n_inp - 1)
         all_paths = []
         paths_to_objs = []
@@ -110,11 +107,11 @@ def extract_paths_and_labels_from_segmentation(
 
         # threshhold for distance transform for picking terminal
         # points near boundary
-        threshhold_boundary = 30
-        volume_where_threshhold = np.where(volume_dt < threshhold_boundary)
-        volume_dt_boundaries = np.s_[min(volume_where_threshhold[0]) + 1:max(volume_where_threshhold[0]),
-                               min(volume_where_threshhold[1]) + 1:max(volume_where_threshhold[1]),
-                               min(volume_where_threshhold[2]) + 1:max(volume_where_threshhold[2])]
+        threshhold_boundary=30
+        volume_where_threshhold = np.where(volume_dt > threshhold_boundary)
+        volume_dt_boundaries = np.s_[min(volume_where_threshhold[0]):max(volume_where_threshhold[0]),
+                               min(volume_where_threshhold[1]):max(volume_where_threshhold[1]),
+                               min(volume_where_threshhold[2]):max(volume_where_threshhold[2])]
 
         # for counting and debugging purposes
         len_uniq = len(np.unique(seg)) - 1
@@ -125,6 +122,11 @@ def extract_paths_and_labels_from_segmentation(
                                        anisotropy, label, len_uniq,
                                        volume_dt_boundaries)
              for label in np.unique(seg))
+        # parallel_array=[parallel_wrapper(seg, dt, gt,
+        #                                anisotropy, label, len_uniq,
+        #                                volume_dt_boundaries)
+        #      for label in np.unique(seg)]
+
 
         [[all_paths.append(path)
            for path in seg_array[0]]
@@ -143,7 +145,6 @@ def extract_paths_and_labels_from_segmentation(
         all_paths = np.array(all_paths)
         paths_to_objs = np.array(paths_to_objs, dtype="float64")
         path_classes = np.array(path_classes)
-
         print "finished numpying"
 
     logger.debug('... done extracting paths and labels from segmentation!')

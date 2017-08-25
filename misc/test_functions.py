@@ -9,7 +9,6 @@ import cPickle as pickle
 # import scipy
 # from scipy import interpolate
 import vigra
-import volumina_viewer
 
 
 
@@ -122,8 +121,15 @@ def view(filepaths, filekeys, names=None, types=None, swapaxes=None, crop=None):
         names
     )
 
+def bl(a):
+    del a
+    return 3
 
 if __name__ == "__main__":
+
+    hi=5
+    b=bl(hi)
+    print hi
 
     f = h5py.File("/mnt/localdata01/amatskev/misc/debugging/result.h5", mode='r')
 

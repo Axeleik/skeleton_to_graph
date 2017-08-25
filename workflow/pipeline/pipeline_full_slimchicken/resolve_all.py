@@ -12,7 +12,7 @@ from pipeline import resolve_false_merges, project_new_result, project_resolved_
 if __name__ == '__main__':
 
     from init_datasets import meta_folder, project_folder
-    from init_datasets import ds_names, result_keys, experiment_ids,computer_cores
+    from init_datasets import ds_names, result_keys, experiment_ids,computer_cores,pruning_factor,border_distance
     from run_mc_all import rf_cache_folder
 
     # These are the parameters as used for the initial mc
@@ -34,6 +34,10 @@ if __name__ == '__main__':
     min_prob_thresh = 0.3
     max_prob_thresh = 1.
     exclude_objs_with_larger_thresh = False
+
+    #path computation
+    ExperimentSettings().pruning_factor = pruning_factor
+    ExperimentSettings().border_distance = border_distance
 
     for ds_id in experiment_ids:
         ds_name = ds_names[ds_id]

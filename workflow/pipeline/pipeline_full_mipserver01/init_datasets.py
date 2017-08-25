@@ -19,6 +19,8 @@ result_keys = ['z/0/data', 'z/1/data'] * 3
 meta_folder = os.path.join(project_folder, 'cache')
 
 computer_cores=24
+pruning_factor=4
+border_distance=60
 
 from pipeline import init_train_sets
 

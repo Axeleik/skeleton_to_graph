@@ -15,9 +15,8 @@ sys.path.append(
     '/export/home/amatskev/Bachelor/nature_methods_multicut_pipeline/software/')
 sys.path.append(
     '/export/home/amatskev/Bachelor/skeleton_to_graph/')
-# from workflow.methods.functions_for_workflow \
-#     import extract_paths_and_labels_from_segmentation,\
-#     extract_paths_and_labels_from_segmentation_single
+from workflow.methods.functions_for_workflow \
+    import extract_paths_and_labels_from_segmentation
 # from multicut_src.false_merges import false_merges_workflow
 import vigra
 from joblib import parallel,delayed
@@ -29,7 +28,7 @@ import cPickle as pickle
 import scipy
 from joblib import Parallel,delayed
 import multiprocessing
-from path_computation_for_tests import parallel_wrapper
+# from path_computation_for_tests import parallel_wrapper
 
 
 
@@ -331,48 +330,90 @@ def ram_test(volume_dt,nr):
     test=volume_dt[0,0,nr]
     return test
 
-
-
-
-if __name__ == '__main__':
-
-
-    ds, seg, seg_id, gt, correspondence_list, paths_cache_folder = \
-        np.load("/mnt/localdata01/amatskev/misc/debugging/for_cut_off.npy")
-
-    len_uniq = len(np.unique(seg)) - 1
-    dt = ds.inp(ds.n_inp - 1)
+def testing_dt(threshhold_boundary,seg):
 
     # creating distance transform of whole volume for border near paths
-    volume_expanded = np.ones((dt.shape[0] + 2, dt.shape[1] + 2, dt.shape[1] + 2))
+    volume_expanded = np.ones((seg.shape[0] + 2, seg.shape[1] + 2, seg.shape[1] + 2))
     volume_expanded[1:-1, 1:-1, 1:-1] = 0
     volume_dt = vigra.filters.distanceTransform(
         volume_expanded.astype("uint32"), background=True,
-        pixel_pitch=[10., 1., 1.])[1:-1, 1:-1, 1:-1]
-    # we assume that the last input is the distance transform
-    threshhold_boundary=30
-    volume_where_threshhold=np.where(volume_dt<threshhold_boundary)
-    volume_dt_boundaries=np.s_[min(volume_where_threshhold[0]):max(volume_where_threshhold[0]),
-                            min(volume_where_threshhold[1]):max(volume_where_threshhold[1]),
-                            min(volume_where_threshhold[2]):max(volume_where_threshhold[2])]
+        pixel_pitch=[10, 1, 1])[1:-1, 1:-1, 1:-1]
+
+    # threshhold for distance transform for picking terminal
+    # points near boundary
+    volume_where_threshhold = np.where(volume_dt < threshhold_boundary)
+    volume_dt_boundaries = np.s_[min(volume_where_threshhold[0]) + 1:max(volume_where_threshhold[0]),
+                           min(volume_where_threshhold[1]) + 1:max(volume_where_threshhold[1]),
+                           min(volume_where_threshhold[2]) + 1:max(volume_where_threshhold[2])]
+    print volume_dt_boundaries
+
+
+if __name__ == '__main__':
+    #slimchicken
+
+    # all_paths_pruned,_,_,_,_=np.load(
+    #     "/mnt/ssd/amatskev/debugging/border_term_points/"
+    #     "comparison_pruning_4.npy")
 
 
 
-    dummy_volume=np.ones(volume_dt.shape)
-    bla2=[parallel_wrapper(seg,dt,gt,[10,1,1],label,len_uniq,dummy_volume,"only_paths") for label in np.unique(seg)]
 
-    bla1=[parallel_wrapper(seg,dt,gt,[10,1,1],label,len_uniq,volume_dt,"only_paths") for label in np.unique(seg)]
-    i1=0
-    i2=0
-    for idx in xrange(0,len(np.unique(seg))):
-        i1=i1+len(bla1[idx][0])
-        print "len i1: ",len(bla1[idx][0])
-        i2 = i2 + len(bla2[idx][0])
-        print "len i2: ",len(bla2[idx][0])
-    print "i1: ",i1
-    print "i2: ",i2
 
-    np.save("/mnt/localdata01/amatskev/misc/debugging/border_paths.npy",(bla1,bla2))
+    ds,seg,seg_id,gt,correspondence_list=np.load(
+        "/mnt/ssd/amatskev/debugging/border_term_points/"
+        "first_seg_paths_and_labels_all.npy")
+
+    # testing_dt(200,seg)
+
+
+    # ds, seg, seg_id, gt, correspondence_list, paths_cache_folder = \
+    #     np.load("/mnt/localdata01/amatskev/misc/debugging/for_cut_off.npy")
+    factor=70
+    print "factor: ",factor
+    result1=extract_paths_and_labels_from_segmentation(factor,ds,seg,seg_id,gt,correspondence_list)
+    np.save("/mnt/ssd/amatskev/debugging/border_term_points/"
+        "first_result_border_term_40.npy",result1)
+    #
+    print "len",factor,": ", len(result1[0])
+
+
+
+    # ds, seg, seg_id, gt, correspondence_list, paths_cache_folder = \
+    #     np.load("/mnt/localdata01/amatskev/misc/debugging/for_cut_off.npy")
+    #
+    # len_uniq = len(np.unique(seg)) - 1
+    # dt = ds.inp(ds.n_inp - 1)
+    #
+    # # creating distance transform of whole volume for border near paths
+    # volume_expanded = np.ones((dt.shape[0] + 2, dt.shape[1] + 2, dt.shape[1] + 2))
+    # volume_expanded[1:-1, 1:-1, 1:-1] = 0
+    # volume_dt = vigra.filters.distanceTransform(
+    #     volume_expanded.astype("uint32"), background=True,
+    #     pixel_pitch=[10., 1., 1.])[1:-1, 1:-1, 1:-1]
+    # # we assume that the last input is the distance transform
+    # threshhold_boundary=30
+    # volume_where_threshhold=np.where(volume_dt<threshhold_boundary)
+    # volume_dt_boundaries=np.s_[min(volume_where_threshhold[0]):max(volume_where_threshhold[0]),
+    #                         min(volume_where_threshhold[1]):max(volume_where_threshhold[1]),
+    #                         min(volume_where_threshhold[2]):max(volume_where_threshhold[2])]
+    #
+    #
+    #
+    # dummy_volume=np.ones(volume_dt.shape)
+    # bla2=[parallel_wrapper(seg,dt,gt,[10,1,1],label,len_uniq,dummy_volume,"only_paths") for label in np.unique(seg)]
+    #
+    # bla1=[parallel_wrapper(seg,dt,gt,[10,1,1],label,len_uniq,volume_dt,"only_paths") for label in np.unique(seg)]
+    # i1=0
+    # i2=0
+    # for idx in xrange(0,len(np.unique(seg))):
+    #     i1=i1+len(bla1[idx][0])
+    #     print "len i1: ",len(bla1[idx][0])
+    #     i2 = i2 + len(bla2[idx][0])
+    #     print "len i2: ",len(bla2[idx][0])
+    # print "i1: ",i1
+    # print "i2: ",i2
+    #
+    # np.save("/mnt/localdata01/amatskev/misc/debugging/border_paths.npy",(bla1,bla2))
 
 
     # print "hi"

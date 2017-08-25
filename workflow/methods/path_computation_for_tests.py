@@ -464,7 +464,7 @@ def graph_pruning(g,term_list,edges,nodes_list,pruning_threshhold):
         start_queue.put([term_point,term_point])
 
     #TODO implement clean case for 3 or 2 term_points
-    if start_queue.qsize()>4:
+    if start_queue.qsize()<4:
         return np.array([])
 
     queue,finished_dict,node_dict,main_dict = \
@@ -750,9 +750,6 @@ def compute_graph_and_paths(img, dt, anisotropy,volume_dt_boundaries):
     skel_img=skeletonize_3d(img)
 
 
-    print "deleting img..."
-    del img
-
     nodes, edges_and_lens, term_list, is_node_map, loop_list = \
         skeleton_to_graph(skel_img, dt, anisotropy,volume_dt_boundaries)
 
@@ -810,6 +807,9 @@ def parallel_wrapper(seg, dt, gt, anisotropy,
     img[seg==label]=1
 
     paths = compute_graph_and_paths(img, dt, anisotropy,volume_dt_boundaries)
+
+    print "deleting img..."
+    del img
 
     if mode=="with_labels":
 
