@@ -7,6 +7,7 @@ from path_computation_for_tests \
 import logging
 logger = logging.getLogger(__name__)
 from joblib import Parallel,delayed
+import vigra
 
 
 def extract_paths_from_segmentation(
@@ -25,15 +26,33 @@ def extract_paths_from_segmentation(
 
         seg = vigra.readHDF5(seg_path, key)
         dt = ds.inp(ds.n_inp - 1)
-        img = deepcopy(seg)
         all_paths = []
         paths_to_objs = []
 
+        #creating distance transform of whole volume for border near paths
+        volume_expanded = np.ones((dt.shape[0]+2,dt.shape[1]+2,dt.shape[1]+2))
+        volume_expanded[1:-1, 1:-1, 1:-1] = 0
+        volume_dt = vigra.filters.distanceTransform(
+            volume_expanded.astype("uint32"), background=True,
+            pixel_pitch=[10, 1, 1])[1:-1, 1:-1, 1:-1]
+
+        #threshhold for distance transform for picking terminal
+        #points near boundary
+        threshhold_boundary=30
+        volume_where_threshhold = np.where(volume_dt < threshhold_boundary)
+        volume_dt_boundaries = np.s_[min(volume_where_threshhold[0])+1:max(volume_where_threshhold[0]),
+                               min(volume_where_threshhold[1])+1:max(volume_where_threshhold[1]),
+                               min(volume_where_threshhold[2])+1:max(volume_where_threshhold[2])]
+
+        #for counting and debugging purposes
         len_uniq=len(np.unique(seg))-1
 
-        parallel_array = Parallel(n_jobs=-13)\
+        #parallelized path computation
+        parallel_array = Parallel(n_jobs=-1)\
             (delayed(parallel_wrapper)(seg, dt, [],
-                                       anisotropy, label, len_uniq,"only_paths")
+                                       anisotropy, label,
+                                       len_uniq, volume_dt_boundaries,
+                                       "only_paths")
              for label in np.unique(seg))
 
 
@@ -76,17 +95,35 @@ def extract_paths_and_labels_from_segmentation(
         assert seg.shape == gt.shape
         dt = ds.inp(ds.n_inp - 1)  # we assume that the last input is the distance transform
 
-        img = deepcopy(seg)
+
         dt = ds.inp(ds.n_inp - 1)
         all_paths = []
         paths_to_objs = []
         path_classes = []
 
+        # creating distance transform of whole volume for border near paths
+        volume_expanded = np.ones((dt.shape[0] + 2, dt.shape[1] + 2, dt.shape[1] + 2))
+        volume_expanded[1:-1, 1:-1, 1:-1] = 0
+        volume_dt = vigra.filters.distanceTransform(
+            volume_expanded.astype("uint32"), background=True,
+            pixel_pitch=[10, 1, 1])[1:-1, 1:-1, 1:-1]
+
+        # threshhold for distance transform for picking terminal
+        # points near boundary
+        threshhold_boundary = 30
+        volume_where_threshhold = np.where(volume_dt < threshhold_boundary)
+        volume_dt_boundaries = np.s_[min(volume_where_threshhold[0]) + 1:max(volume_where_threshhold[0]),
+                               min(volume_where_threshhold[1]) + 1:max(volume_where_threshhold[1]),
+                               min(volume_where_threshhold[2]) + 1:max(volume_where_threshhold[2])]
+
+        # for counting and debugging purposes
         len_uniq = len(np.unique(seg)) - 1
 
+        #parallelized path computation
         parallel_array = Parallel(n_jobs=-1)\
             (delayed(parallel_wrapper)(seg, dt, gt,
-                                       anisotropy, label, len_uniq)
+                                       anisotropy, label, len_uniq,
+                                       volume_dt_boundaries)
              for label in np.unique(seg))
 
         [[all_paths.append(path)

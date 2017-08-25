@@ -15,9 +15,9 @@ sys.path.append(
     '/export/home/amatskev/Bachelor/nature_methods_multicut_pipeline/software/')
 sys.path.append(
     '/export/home/amatskev/Bachelor/skeleton_to_graph/')
-from workflow.methods.functions_for_workflow \
-    import extract_paths_and_labels_from_segmentation,\
-    extract_paths_and_labels_from_segmentation_single
+# from workflow.methods.functions_for_workflow \
+#     import extract_paths_and_labels_from_segmentation,\
+#     extract_paths_and_labels_from_segmentation_single
 # from multicut_src.false_merges import false_merges_workflow
 import vigra
 from joblib import parallel,delayed
@@ -29,6 +29,7 @@ import cPickle as pickle
 import scipy
 from joblib import Parallel,delayed
 import multiprocessing
+from path_computation_for_tests import parallel_wrapper
 
 
 
@@ -326,72 +327,120 @@ def extract_features_for_path_orig(path,feature_volumes,stats,idx):
         print "path_features: ",idx
         return np.array(path_features)[None, :]
 
+def ram_test(volume_dt,nr):
+    test=volume_dt[0,0,nr]
+    return test
+
+
 
 
 if __name__ == '__main__':
 
-        dummy = np.ones((5, 5, 5),dtype="uint32")
 
-        a=vigra.filters.distanceTransform(
-            dummy.astype("uint32"),background=False)
+    ds, seg, seg_id, gt, correspondence_list, paths_cache_folder = \
+        np.load("/mnt/localdata01/amatskev/misc/debugging/for_cut_off.npy")
 
+    len_uniq = len(np.unique(seg)) - 1
+    dt = ds.inp(ds.n_inp - 1)
 
-
-        feature_volumes = []
-
-        for i in xrange(0, 9):
-            feature_volumes.append \
-                (np.load("/mnt/ssd/amatskev/debugging/debugging_feature_volumes{}.npy".format(i)))
-            print "volume ", i, " loaded"
-
-        print "feature volumes loaded"
-        stats = read("/mnt/ssd/amatskev/debugging/debuggingstats.pkl")
-        print "stats loaded"
-
-        paths_in_roi = np.load("/mnt/ssd/amatskev/debugging/debugging_paths_in_roi.npy")
-        print "paths in roi loaded"
-
-        # a_test=[x for x in range(0,100000)]
-
-        print "start 1000"
-        # time0=time()
-        # # out1 = np.concatenate([extract_features_for_path(path,feature_volumes,stats,idx)
-        # #                       for idx,path in enumerate(paths_in_roi[:1000])])
-        time1=time()
-
-        ##########################################
-        pixel_values_all = [python_region_features_extractor_sc(path,feature_volumes)
-                              for idx,path in enumerate(paths_in_roi[:3])]
-
-        parallel_array = np.array(Parallel(n_jobs=-1) \
-            (delayed(python_region_features_extractor_2_mc)(single_vals)
-             for single_vals in pixel_values_all ))
-
-        out=np.array([python_region_features_extractor_2_mc(single_vals)
-                            for single_vals in pixel_values_all])
+    # creating distance transform of whole volume for border near paths
+    volume_expanded = np.ones((dt.shape[0] + 2, dt.shape[1] + 2, dt.shape[1] + 2))
+    volume_expanded[1:-1, 1:-1, 1:-1] = 0
+    volume_dt = vigra.filters.distanceTransform(
+        volume_expanded.astype("uint32"), background=True,
+        pixel_pitch=[10., 1., 1.])[1:-1, 1:-1, 1:-1]
+    # we assume that the last input is the distance transform
+    threshhold_boundary=30
+    volume_where_threshhold=np.where(volume_dt<threshhold_boundary)
+    volume_dt_boundaries=np.s_[min(volume_where_threshhold[0]):max(volume_where_threshhold[0]),
+                            min(volume_where_threshhold[1]):max(volume_where_threshhold[1]),
+                            min(volume_where_threshhold[2]):max(volume_where_threshhold[2])]
 
 
 
-        ##########################################
-        time2=time()
-        # with futures.ThreadPoolExecutor(max_workers=32) as executor:
-        #     tasks = []
-        #     for idx,single_vals in enumerate(out2):
-        #         tasks.append(executor.submit(python_region_features_extractor_2_mc, single_vals,idx))
-        #     out = np.concatenate([t.result() for t in tasks], axis=0)
-        #
-        # print "first: ", time1-time0
-        # print "second: ", time2-time1
+    dummy_volume=np.ones(volume_dt.shape)
+    bla2=[parallel_wrapper(seg,dt,gt,[10,1,1],label,len_uniq,dummy_volume,"only_paths") for label in np.unique(seg)]
 
-        # with futures.ThreadPoolExecutor(max_workers=32) as executor:
-        #     tasks = []
-        #     for idx, path in enumerate(paths_in_roi):
-        #         tasks.append(executor.submit(extract_features_for_path,
-        #                                      path, feature_volumes,stats,idx))
-        #     out = np.concatenate([t.result() for t in tasks], axis=0)
-        time3=time()
-        print "time mine: ",time2-time1
-        print "time before: ",time3-time2
+    bla1=[parallel_wrapper(seg,dt,gt,[10,1,1],label,len_uniq,volume_dt,"only_paths") for label in np.unique(seg)]
+    i1=0
+    i2=0
+    for idx in xrange(0,len(np.unique(seg))):
+        i1=i1+len(bla1[idx][0])
+        print "len i1: ",len(bla1[idx][0])
+        i2 = i2 + len(bla2[idx][0])
+        print "len i2: ",len(bla2[idx][0])
+    print "i1: ",i1
+    print "i2: ",i2
+
+    np.save("/mnt/localdata01/amatskev/misc/debugging/border_paths.npy",(bla1,bla2))
+
+
+    # print "hi"
+
+
+
+    # dummy = np.ones((5, 5, 5),dtype="uint32")
+    #
+    #     a=vigra.filters.distanceTransform(
+    #         dummy.astype("uint32"),background=False)
+    #
+    #
+    #
+    #     feature_volumes = []
+    #
+    #     for i in xrange(0, 9):
+    #         feature_volumes.append \
+    #             (np.load("/mnt/ssd/amatskev/debugging/debugging_feature_volumes{}.npy".format(i)))
+    #         print "volume ", i, " loaded"
+    #
+    #     print "feature volumes loaded"
+    #     stats = read("/mnt/ssd/amatskev/debugging/debuggingstats.pkl")
+    #     print "stats loaded"
+    #
+    #     paths_in_roi = np.load("/mnt/ssd/amatskev/debugging/debugging_paths_in_roi.npy")
+    #     print "paths in roi loaded"
+    #
+    #     # a_test=[x for x in range(0,100000)]
+    #
+    #     print "start 1000"
+    #     # time0=time()
+    #     # # out1 = np.concatenate([extract_features_for_path(path,feature_volumes,stats,idx)
+    #     # #                       for idx,path in enumerate(paths_in_roi[:1000])])
+    #     time1=time()
+    #
+    #     ##########################################
+    #     pixel_values_all = [python_region_features_extractor_sc(path,feature_volumes)
+    #                           for idx,path in enumerate(paths_in_roi[:3])]
+    #
+    #     parallel_array = np.array(Parallel(n_jobs=-1) \
+    #         (delayed(python_region_features_extractor_2_mc)(single_vals)
+    #          for single_vals in pixel_values_all ))
+    #
+    #     out=np.array([python_region_features_extractor_2_mc(single_vals)
+    #                         for single_vals in pixel_values_all])
+    #
+    #
+    #
+    #     ##########################################
+    #     time2=time()
+    #     # with futures.ThreadPoolExecutor(max_workers=32) as executor:
+    #     #     tasks = []
+    #     #     for idx,single_vals in enumerate(out2):
+    #     #         tasks.append(executor.submit(python_region_features_extractor_2_mc, single_vals,idx))
+    #     #     out = np.concatenate([t.result() for t in tasks], axis=0)
+    #     #
+    #     # print "first: ", time1-time0
+    #     # print "second: ", time2-time1
+    #
+    #     # with futures.ThreadPoolExecutor(max_workers=32) as executor:
+    #     #     tasks = []
+    #     #     for idx, path in enumerate(paths_in_roi):
+    #     #         tasks.append(executor.submit(extract_features_for_path,
+    #     #                                      path, feature_volumes,stats,idx))
+    #     #     out = np.concatenate([t.result() for t in tasks], axis=0)
+    #     time3=time()
+    #     print "time mine: ",time2-time1
+    #     print "time before: ",time3-time2
 
     # with futures.ThreadPoolExecutor(max_workers=8) as executor:
         #     tasks = []
@@ -460,8 +509,6 @@ if __name__ == '__main__':
     # print "New took ",time1-time0," secs"
     # print "Old took ",time2-time1," secs"
     # print "Newpar took ",time3-time2," secs"
-    # # ds, seg, seg_id, gt, correspondence_list, paths_cache_folder = \
-    # #     np.load("/mnt/localdata01/amatskev/misc/debugging/for_cut_off.npy")
 
     # parallel_array = Parallel(n_jobs=-1) \
     #     (delayed(python_region_features_extractor)(path, feature_volumes)
