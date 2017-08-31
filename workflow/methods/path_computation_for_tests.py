@@ -218,6 +218,7 @@ def stage_two(is_node_map, list_term, edges, dt):
 def form_term_list(is_term_map,volume_dt_boundaries):
     """returns list of terminal points taken from an image"""
 
+    #remove when enable pruning, otherwise assertion error
     is_term_map[volume_dt_boundaries]=0
 
     term_where = np.array(np.where(is_term_map)).transpose()
@@ -236,7 +237,7 @@ def skeleton_to_graph(skel_img, dt, anisotropy,volume_dt_boundaries):
     is_node_map, is_term_map, is_branch_map, nodes, edges_and_lens, loop_list = \
         stage_one(skel_img, dt, anisotropy)
 
-    print "deleting skel_img..."
+    # print "deleting skel_img..."
     del skel_img
 
 
@@ -699,7 +700,7 @@ def check_edge_paths(edge_paths, node_list):
     for pair in edge_paths:
         assert pair in pair_list
 
-    print "passed"
+    # print "passed"
 
 
 
@@ -808,7 +809,7 @@ def parallel_wrapper(seg, dt, gt, anisotropy,
 
     paths = compute_graph_and_paths(img, dt, anisotropy,volume_dt_boundaries)
 
-    print "deleting img..."
+    # print "deleting img..."
     del img
 
     if mode=="with_labels":

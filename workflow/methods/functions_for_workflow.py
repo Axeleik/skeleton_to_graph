@@ -90,10 +90,7 @@ def extract_paths_and_labels_from_segmentation(
         pass
     # otherwise compute paths
     else:
-
-
-        assert seg.shape == gt.shape
-        dt = ds.inp(ds.n_inp - 1)
+        dt = ds.inp(2)
         all_paths = []
         paths_to_objs = []
         path_classes = []

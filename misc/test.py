@@ -17,6 +17,7 @@ sys.path.append(
     '/export/home/amatskev/Bachelor/skeleton_to_graph/')
 from workflow.methods.functions_for_workflow \
     import extract_paths_and_labels_from_segmentation
+from multicut_src.false_merges.compute_paths_and_features import path_feature_aggregator
 # from multicut_src.false_merges import false_merges_workflow
 import vigra
 from joblib import parallel,delayed
@@ -191,17 +192,16 @@ def extract_region_features(
 
     return extractor
 
-def python_region_features_extractor_mt(path,feature_volumes,idx):
 
-    pixel_values = []
+def python_region_features_extractor_2_mc(single_vals):
+    path_features = []
 
-    for feature_volume in feature_volumes:
-        for c in range(feature_volume.shape[-1]):
-            # feature_values[path[:, 0], path[:, 1], path[:, 2]]
+    [path_features.extend([np.mean(vals), np.var(vals), sum(vals),
+                           max(vals), min(vals),
+                           scipy.stats.kurtosis(vals),
+                           (((vals - vals.mean()) / vals.std(ddof=0)) ** 3).mean()]) for vals in single_vals]
 
-            pixel_values.extend(feature_volume[path[:, 0], path[:, 1], path[:, 2]][:,c])
-    print "pixel values ", idx, " finished"
-    return pixel_values
+    return np.array(path_features)
 
 
 
@@ -217,13 +217,36 @@ def python_region_features_extractor_sc(path,feature_volumes):
 
     return np.array(pixel_values)
 
-def python_region_features_extractor_2_mc(single_vals):
+def python_region_features_extractor_2_mc(single_vals,idx):
 
     path_features=[]
 
     [path_features.extend([np.mean(vals),np.var(vals),sum(vals),
          max(vals),min(vals),
-    scipy.stats.kurtosis(vals), scipy.stats.skew(vals)]) for vals in single_vals]
+    scipy.stats.kurtosis(vals),scipy.stats.skew(vals)])
+                          for vals in single_vals]
+
+    # print idx ," done"
+
+    if idx%100==0:
+
+        print idx
+
+    return np.array(path_features)
+
+def python_region_features_extractor_2_mc_test(single_vals,idx):
+
+    path_features=[]
+
+    [path_features.extend([
+                           (((vals - vals.mean()) / vals.std(ddof=0)) ** 3).mean()])
+     for vals in single_vals]
+
+    # print idx ," done"
+
+    # if idx%100==0:
+
+    print idx
 
     return np.array(path_features)
 
@@ -288,17 +311,9 @@ def test_func(a,b):
 
 
 
-def extract_features_for_path_orig(path,feature_volumes,stats,idx):
-        print "start feature ",idx
+def extract_features_for_path_orig(path,feature_volumes,idx):
 
-        # calculate the local path bounding box
-        min_coords  = np.min(path, axis=0)
-        max_coords = np.max(path, axis=0)
-        max_coords += 1
-        shape = tuple(max_coords - min_coords)
-        path_image = np.zeros(shape, dtype='uint32')
-        path -= min_coords
-        # we swapaxes to properly index the image properly
+        path_image = np.zeros((62,1250,1250), dtype='uint32')
         path_sa = np.swapaxes(path, 0, 1)
         path_image[path_sa[0], path_sa[1], path_sa[2]] = 1
 
@@ -306,24 +321,27 @@ def extract_features_for_path_orig(path,feature_volumes,stats,idx):
         for feature_volume in feature_volumes:
             for c in range(feature_volume.shape[-1]):
                 path_roi = np.s_[
-                    min_coords[0]:max_coords[0],
-                    min_coords[1]:max_coords[1],
-                    min_coords[2]:max_coords[2],
+                        0:62,
+                        0:1250,
+                        0:1250,
                     c  # wee need to also add the channel to the slicing
                 ]
                 extractor = vigra.analysis.extractRegionFeatures(
                     feature_volume[path_roi],
                     path_image,
                     ignoreLabel=0,
-                    features=stats
+                    features=["skewness"]
                 )
                 # TODO make sure that dimensions match for more that 1d stats!
                 path_features.extend(
-                    [extractor[stat][1] for stat in stats]
+                    [extractor[stat][1] for stat in
+                     ["skewness"]]
                 )
         # ret = np.array(path_features)[:,None]
         # print ret.shape
-        print "path_features: ",idx
+
+        print idx
+
         return np.array(path_features)[None, :]
 
 def ram_test(volume_dt,nr):
@@ -349,32 +367,70 @@ def testing_dt(threshhold_boundary,seg):
 
 
 if __name__ == '__main__':
-    #slimchicken
 
-    # all_paths_pruned,_,_,_,_=np.load(
+    feature_volumes=[]
+    for i in xrange(0, 9):
+        feature_volumes.append \
+            (np.load("/net/hci-storage02/userfolders/amatskev/debugging/debugging_feature_volumes_for_NaN{}.npy".format(i)))
+        print "volume ", i, " loaded"
+    all_paths=np.load(
+        "/mnt/ssd/amatskev/debugging/debugging_paths_seg__6.npy")
+
+    float_feature_volumes=[]
+    for i in feature_volumes:
+        float_feature_volumes.append(np.float64(i))
+
+
+    pixel_values_all = [python_region_features_extractor_sc(path,float_feature_volumes)
+                        for idx, path in enumerate(all_paths[6151:6152])]
+    print "pixel_values "
+    out2 = np.concatenate([extract_features_for_path_orig(path,feature_volumes,idx)
+                           for idx,path in enumerate(all_paths[6151:6152])])
+
+
+    out1 = np.array([python_region_features_extractor_2_mc_test(single_vals,idx)
+                    for idx,single_vals in enumerate(pixel_values_all)])
+
+
+    print "hi"
+
+
+    # out2 = np.array([python_region_features_extractor_2_mc_test(single_vals,idx)
+    #                 for idx,single_vals in enumerate(pixel_values_all)])
+    # print "1: ",out1[309][6],", ",out1[309][34]
+    # print "2: ", out2[309][6], ", ", out2[309][34]
+    # all_paths = vigra.readHDF5("/mnt/localdata01/amatskev/debugging/paths_ds_splC_z1_seg_8.h5", 'all_paths')  #slimchicken
+    # all_paths = np.array([path.reshape((len(path) / 3, 3)) for path in all_paths])
+    # #     "/mnt/ssd/amatskev/debugging/border_term_points/"
+    # #     "comparison_pruning_4.npy")
+    # out2=   np.load("/mnt/ssd/amatskev/debugging/border_term_points/features_train.npy")
+
+    # with open("/mnt/ssd/amatskev/debugging/border_term_points/pixel_values_full.pkl", mode='r') as f:
+    #     pixel_values_all = pickle.load(f)
+    #
+    # out1 = np.array(Parallel(n_jobs=-1) \
+    #                     (delayed(python_region_features_extractor_2_mc)(single_vals)
+    #                      for single_vals in pixel_values_all))
+
+
+    # ds,seg,seg_id,gt,correspondence_list=np.load(
     #     "/mnt/ssd/amatskev/debugging/border_term_points/"
-    #     "comparison_pruning_4.npy")
-
-
-
-
-
-    ds,seg,seg_id,gt,correspondence_list=np.load(
-        "/mnt/ssd/amatskev/debugging/border_term_points/"
-        "first_seg_paths_and_labels_all.npy")
-
+    #     "first_seg_paths_and_labels_all.npy")
+    #
+    # with open("/mnt/ssd/amatskev/debugging/border_term_points/pixel_values.pkl", mode='w') as f:
+    #     pickle.dump(pixel_values_all, f)
     # testing_dt(200,seg)
 
 
     # ds, seg, seg_id, gt, correspondence_list, paths_cache_folder = \
     #     np.load("/mnt/localdata01/amatskev/misc/debugging/for_cut_off.npy")
-    factor=70
-    print "factor: ",factor
-    result1=extract_paths_and_labels_from_segmentation(factor,ds,seg,seg_id,gt,correspondence_list)
-    np.save("/mnt/ssd/amatskev/debugging/border_term_points/"
-        "first_result_border_term_40.npy",result1)
-    #
-    print "len",factor,": ", len(result1[0])
+    # factor=70
+    # print "factor: ",factor
+    # result1=extract_paths_and_labels_from_segmentation(factor,ds,seg,seg_id,gt,correspondence_list)
+    # np.save("/mnt/ssd/amatskev/debugging/border_term_points/"
+    #     "first_result_border_term_40.npy",result1)
+    # #
+    # print "len",factor,": ", len(result1[0])
 
 
 

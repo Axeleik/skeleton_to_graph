@@ -9,6 +9,7 @@ import cPickle as pickle
 # import scipy
 # from scipy import interpolate
 import vigra
+# import volumina_viewer
 
 
 
@@ -116,6 +117,10 @@ def view(filepaths, filekeys, names=None, types=None, swapaxes=None, crop=None):
         if swp is not None:
             inputs[-1] = inputs[-1].swapaxes(*swp)
         print inputs[-1].shape
+
+        inputs[0][inputs[0] != 25] = 0
+        # inputs[0][inputs[0] == 25] = 1
+
     volumina_viewer.volumina_n_layer(
         inputs,
         names

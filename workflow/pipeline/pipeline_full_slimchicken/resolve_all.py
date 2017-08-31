@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     # Parameters for the resolving algorithm
     ExperimentSettings().min_nh_range = 5
-    ExperimentSettings().max_sample_size = 20
+    ExperimentSettings().max_sample_size = 3
 
     # Parameters deciding which objects to resolve
     min_prob_thresh = 0.3
