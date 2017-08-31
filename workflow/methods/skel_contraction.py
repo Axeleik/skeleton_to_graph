@@ -9,6 +9,7 @@ def adj(g,val):
         print "Edge: ", adj_edge
 
 
+
 def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_list):
 
 
