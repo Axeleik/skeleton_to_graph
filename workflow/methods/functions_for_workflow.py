@@ -8,6 +8,7 @@ import logging
 logger = logging.getLogger(__name__)
 from joblib import Parallel,delayed
 import vigra
+from compute_border_contacts_for_tests import compute_border_contacts_old
 
 
 def extract_paths_from_segmentation(
@@ -29,31 +30,33 @@ def extract_paths_from_segmentation(
         all_paths = []
         paths_to_objs = []
 
-        #creating distance transform of whole volume for border near paths
-        volume_expanded = np.ones((dt.shape[0]+2,dt.shape[1]+2,dt.shape[1]+2))
-        volume_expanded[1:-1, 1:-1, 1:-1] = 0
-        volume_dt = vigra.filters.distanceTransform(
-            volume_expanded.astype("uint32"), background=True,
-            pixel_pitch=[10, 1, 1])[1:-1, 1:-1, 1:-1]
-
-        #threshhold for distance transform for picking terminal
-        #points near boundary
-        threshhold_boundary=30
-        volume_where_threshhold = np.where(volume_dt > threshhold_boundary)
-        volume_dt_boundaries = np.s_[min(volume_where_threshhold[0]):max(volume_where_threshhold[0]),
-                               min(volume_where_threshhold[1]):max(volume_where_threshhold[1]),
-                               min(volume_where_threshhold[2]):max(volume_where_threshhold[2])]
+        # #creating distance transform of whole volume for border near paths
+        # volume_expanded = np.ones((dt.shape[0]+2,dt.shape[1]+2,dt.shape[1]+2))
+        # volume_expanded[1:-1, 1:-1, 1:-1] = 0
+        # volume_dt = vigra.filters.distanceTransform(
+        #     volume_expanded.astype("uint32"), background=True,
+        #     pixel_pitch=[10, 1, 1])[1:-1, 1:-1, 1:-1]
+        #
+        # #threshhold for distance transform for picking terminal
+        # #points near boundary
+        # threshhold_boundary=30
+        # volume_where_threshhold = np.where(volume_dt > threshhold_boundary)
+        # volume_dt_boundaries = np.s_[min(volume_where_threshhold[0]):max(volume_where_threshhold[0]),
+        #                        min(volume_where_threshhold[1]):max(volume_where_threshhold[1]),
+        #                        min(volume_where_threshhold[2]):max(volume_where_threshhold[2])]
 
         #for counting and debugging purposes
         len_uniq=len(np.unique(seg))-1
 
+        centres_dict = compute_border_contacts_old(seg, dt)
+
         #parallelized path computation
         parallel_array = Parallel(n_jobs=-1)\
             (delayed(parallel_wrapper)(seg, dt, [],
-                                       anisotropy, label,
-                                       len_uniq, volume_dt_boundaries,
+                                       anisotropy, key,
+                                       len_uniq, centres_dict[key],
                                        "only_paths")
-             for label in np.unique(seg))
+             for key in centres_dict.keys() if len(centres_dict[key]) > 1)
 
 
         [[all_paths.append(path)
@@ -64,7 +67,7 @@ def extract_paths_from_segmentation(
           for path_to_obj in seg_array[1] if seg_array!=[]]
             for seg_array in parallel_array]
 
-        # all_paths=np.array(all_paths)
+        all_paths=np.array(all_paths)
         paths_to_objs=np.array(paths_to_objs, dtype="float64")
 
 
@@ -72,7 +75,7 @@ def extract_paths_from_segmentation(
 
 
 def extract_paths_and_labels_from_segmentation(
-        ds,
+        dt,
         seg,
         seg_id,
         gt,
@@ -90,39 +93,44 @@ def extract_paths_and_labels_from_segmentation(
         pass
     # otherwise compute paths
     else:
-        dt = ds.inp(2)
+        # dt = ds.inp(2)
         all_paths = []
         paths_to_objs = []
         path_classes = []
 
-        # creating distance transform of whole volume for border near paths
-        volume_expanded = np.ones((dt.shape[0] + 2, dt.shape[1] + 2, dt.shape[1] + 2))
-        volume_expanded[1:-1, 1:-1, 1:-1] = 0
-        volume_dt = vigra.filters.distanceTransform(
-            volume_expanded.astype("uint32"), background=True,
-            pixel_pitch=[10, 1, 1])[1:-1, 1:-1, 1:-1]
-
-        # threshhold for distance transform for picking terminal
-        # points near boundary
-        threshhold_boundary=30
-        volume_where_threshhold = np.where(volume_dt > threshhold_boundary)
-        volume_dt_boundaries = np.s_[min(volume_where_threshhold[0]):max(volume_where_threshhold[0]),
-                               min(volume_where_threshhold[1]):max(volume_where_threshhold[1]),
-                               min(volume_where_threshhold[2]):max(volume_where_threshhold[2])]
+        # # creating distance transform of whole volume for border near paths
+        # volume_expanded = np.ones((dt.shape[0] + 2, dt.shape[1] + 2, dt.shape[1] + 2))
+        # volume_expanded[1:-1, 1:-1, 1:-1] = 0
+        # volume_dt = vigra.filters.distanceTransform(
+        #     volume_expanded.astype("uint32"), background=True,
+        #     pixel_pitch=[10, 1, 1])[1:-1, 1:-1, 1:-1]
+        #
+        # # threshhold for distance transform for picking terminal
+        # # points near boundary
+        # threshhold_boundary=30
+        # volume_where_threshhold = np.where(volume_dt > threshhold_boundary)
+        # volume_dt_boundaries = np.s_[min(volume_where_threshhold[0]):max(volume_where_threshhold[0]),
+        #                        min(volume_where_threshhold[1]):max(volume_where_threshhold[1]),
+        #                        min(volume_where_threshhold[2]):max(volume_where_threshhold[2])]
 
         # for counting and debugging purposes
         len_uniq = len(np.unique(seg)) - 1
 
-        #parallelized path computation
-        parallel_array = Parallel(n_jobs=-1)\
-            (delayed(parallel_wrapper)(seg, dt, gt,
-                                       anisotropy, label, len_uniq,
-                                       volume_dt_boundaries)
-             for label in np.unique(seg))
-        # parallel_array=[parallel_wrapper(seg, dt, gt,
-        #                                anisotropy, label, len_uniq,
-        #                                volume_dt_boundaries)
-        #      for label in np.unique(seg)]
+        centres_dict = compute_border_contacts_old(seg, dt)
+
+        # #parallelized path computation
+        # parallel_array = Parallel(n_jobs=-1)\
+        #     (delayed(parallel_wrapper)(seg, dt, gt,
+        #                                anisotropy, key, len_uniq,
+        #                                centres_dict[key])
+        #      for key in centres_dict.keys() if len(centres_dict[key])>1)
+
+
+
+        parallel_array=[parallel_wrapper(seg, dt, gt,
+                                       anisotropy, key, len_uniq,
+                                       centres_dict[key])
+             for key in centres_dict.keys() if len(centres_dict[key])>1]
 
 
         [[all_paths.append(path)

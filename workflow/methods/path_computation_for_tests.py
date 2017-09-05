@@ -7,7 +7,8 @@ from skimage.morphology import skeletonize_3d
 
 
 
-def norm3d(point1,point2,anisotropy):
+
+def norm3d(point1,point2,anisotropy=[10,1,1]):
 
     return sqrt(((point1[0] - point2[0])* anisotropy[0])*((point1[0] - point2[0])* anisotropy[0])+
                  ((point1[1] - point2[1])*anisotropy[1])*((point1[1] - point2[1])*anisotropy[1])+
@@ -215,30 +216,38 @@ def stage_two(is_node_map, list_term, edges, dt):
 
 
 
-def form_term_list(is_term_map,volume_dt_boundaries):
+def form_term_list(is_term_map,border_points):
     """returns list of terminal points taken from an image"""
 
-    #remove when enable pruning, otherwise assertion error
-    is_term_map[volume_dt_boundaries]=0
-
+    border_distance=45
     term_where = np.array(np.where(is_term_map)).transpose()
 
-    term_list = []
-    for point in term_where:
-        term_list.extend([is_term_map[point[0], point[1], point[2]]])
-    term_list = np.array([term for term in term_list])
+    dict_border_points = {key: [] for key in xrange(0, len(border_points))}
 
-    return term_list
+    for term_point in term_where:
+
+        comparison_array=[]
+
+        [comparison_array.append(norm3d(term_point, cent_point))
+         for cent_point in border_points]
+
+        min_index = np.argmin(comparison_array)
+        # print comparison_array[min_index]
+        if comparison_array[min_index]<=border_distance:
+
+            dict_border_points[min_index].append(
+                is_term_map[term_point[0], term_point[1], term_point[2]]-1)
 
 
-def skeleton_to_graph(skel_img, dt, anisotropy,volume_dt_boundaries):
+    return dict_border_points
+
+
+def skeleton_to_graph(skel_img, dt, anisotropy,border_points):
     """main function, wraps up stage one and two"""
 
     is_node_map, is_term_map, is_branch_map, nodes, edges_and_lens, loop_list = \
         stage_one(skel_img, dt, anisotropy)
 
-    # print "deleting skel_img..."
-    del skel_img
 
 
     if len(nodes) < 2:
@@ -249,13 +258,13 @@ def skeleton_to_graph(skel_img, dt, anisotropy,volume_dt_boundaries):
 
     edges_and_lens = [[val1, val2, val3, max(val4)] for val1, val2, val3, val4 in edges_and_lens]
 
-    term_list = form_term_list(is_term_map,volume_dt_boundaries)
-    term_list -= 1
+    dict_border_points = form_term_list(is_term_map, border_points)
+    # term_list -= 1
 
 
 
     # loop_list -= 1
-    return nodes, np.array(edges_and_lens), term_list, is_node_map, loop_list
+    return nodes, np.array(edges_and_lens), dict_border_points, is_node_map, loop_list
 
 
 def get_unique_rows(array, return_index=False):
@@ -602,7 +611,7 @@ def graph_pruning(g,term_list,edges,nodes_list,pruning_threshhold):
     return pruned_term_list
 
 
-def edge_paths_and_counts_for_nodes(g, weights, node_list, n_threads=8):
+def edge_paths_and_counts_for_nodes(g, weights, dict_border_points, n_threads=8):
     """
     Returns the path of edges for all pairs of nodes in node list as
     well as the number of times each edge is included in a shortest path.
@@ -617,29 +626,30 @@ def edge_paths_and_counts_for_nodes(g, weights, node_list, n_threads=8):
     edge_counts: np.array[int] : Array with number of times each edge was visited in a shortest path
     """
 
+
+
+
     edge_paths = {}
     edge_counts = np.zeros(g.numberOfEdges, dtype='uint32')
 
-    # single threaded implementation
-    if n_threads < 2:
+    # build the nifty shortest path object
+    path_finder = nifty.graph.ShortestPathDijkstra(g)
+    dict_border_keys=dict_border_points.keys()
+    for idx,key in enumerate(dict_border_keys[:-1]):
 
-        # build the nifty shortest path object
-        path_finder = nifty.graph.ShortestPathDijkstra(g)
+        target_nodes=np.concatenate([dict_border_points[left_key]
+                                     for left_key in dict_border_keys[idx + 1:]])
 
         # iterate over the source nodes
         # we don't need to go to the last node, because it won't have any more targets
-        for ii, u in enumerate(node_list[:-1]):
-
-            # target all nodes in node list tat we have not visited as source
-            # already (for these the path is already present)
-            target_nodes = node_list[ii + 1:]
+        for ii, u in enumerate(dict_border_points[key]):
 
             # find the shortest path from source node u to the target nodes
             shortest_paths = path_finder.runSingleSourceMultiTarget(
-                weights.tolist(),
-                u,
-                target_nodes,
-                returnNodes=False
+                    weights.tolist(),
+                    int(u),
+                    np.int32(target_nodes),
+                    returnNodes=False
             )
             assert len(shortest_paths) == len(target_nodes)
 
@@ -650,42 +660,11 @@ def edge_paths_and_counts_for_nodes(g, weights, node_list, n_threads=8):
                 edge_paths[(u, v)] = sp
                 edge_counts[sp] += 1
 
-    # multi-threaded implementation
-    # this might be quite memory hungry!
-    else:
-
-        # construct the target nodes for all source nodes and run shortest paths
-        # in parallel, don't need last node !
-        all_target_nodes = [node_list[ii + 1:] for ii in xrange(len(node_list[:-1]))]
-        all_shortest_paths = nifty.graph.shortestPathMultiTargetParallel(
-            g,
-            weights.tolist(),
-            node_list[:-1],
-            all_target_nodes,
-            returnNodes=False,
-            numberOfThreads=n_threads
-        )
-
-        # TODO for what ?
-        # assert len(all_shortest_paths) == len(node_list) - 1, "%i, %i" % (len(all_shortest_paths), len(node_list) - 1)
-
-        # TODO this is still quite some serial computation overhead.
-        # for good paralleliztion, this should also be parallelized
-
-        # extract the shortest paths for all node pairs and edge counts
-        for ii, shortest_paths in enumerate(all_shortest_paths):
-
-            u = node_list[ii]
-            target_nodes = all_target_nodes[ii]
-            for jj, sp in enumerate(shortest_paths):
-                v = target_nodes[jj]
-                edge_paths[(u, v)] = sp
-                edge_counts[sp] += 1
 
     return edge_paths, edge_counts
 
 
-def check_edge_paths(edge_paths, node_list):
+def check_edge_paths_for_list(edge_paths, node_list):
     """checks edge paths (constantin)"""
 
     from itertools import combinations
@@ -702,7 +681,22 @@ def check_edge_paths(edge_paths, node_list):
 
     # print "passed"
 
+def check_edge_paths_for_dict(edge_paths, term_dict):
+    """checks edge paths (constantin)"""
 
+    from itertools import combinations
+    pairs = combinations(node_list, 2)
+    pair_list = [pair for pair in pairs]
+
+    # make sure that we have all combination in the edge_paths
+    for pair in pair_list:
+        assert pair in edge_paths
+
+    # make sure that we don't have any spurious pairs in edge_paths
+    for pair in edge_paths:
+        assert pair in pair_list
+
+    # print "passed"
 
 def build_paths_from_edges(edge_paths,edges):
     """Builds paths from edges """
@@ -742,7 +736,8 @@ def build_paths_from_edges(edge_paths,edges):
     return finished_paths
 
 
-def compute_graph_and_paths(img, dt, anisotropy,volume_dt_boundaries):
+def compute_graph_and_paths(img, dt, anisotropy,
+                            border_points):
     """ overall wrapper for all functions, input: label image; output: paths
         sampled from skeleton
     """
@@ -751,10 +746,18 @@ def compute_graph_and_paths(img, dt, anisotropy,volume_dt_boundaries):
     skel_img=skeletonize_3d(img)
 
 
-    nodes, edges_and_lens, term_list, is_node_map, loop_list = \
-        skeleton_to_graph(skel_img, dt, anisotropy,volume_dt_boundaries)
+    nodes, edges_and_lens, dict_border_points, is_node_map, loop_list = \
+        skeleton_to_graph(skel_img, dt, anisotropy,border_points)
 
-    if len(term_list)<2:
+    # print "deleting skel_img..."
+    del skel_img
+
+    # making sure we can actually compute some paths
+    counter_for_term_dict=0
+    for key in dict_border_points.keys():
+        if len(dict_border_points[key])>0:
+            counter_for_term_dict += 1
+    if counter_for_term_dict<2:
         return []
 
     if len(nodes) < 2:
@@ -786,8 +789,10 @@ def compute_graph_and_paths(img, dt, anisotropy,volume_dt_boundaries):
     #TODO cores global
     edge_paths, edge_counts = \
         edge_paths_and_counts_for_nodes\
-            (g,edge_lens,term_list, 1)
-    check_edge_paths(edge_paths, term_list)
+            (g,edge_lens,dict_border_points, 1)
+
+    # check_edge_paths_for_list(edge_paths, term_list)
+    # check_edge_paths_for_dict(edge_paths, dict_border_points)
 
     finished_paths=build_paths_from_edges(edge_paths,for_building)
 
@@ -795,7 +800,8 @@ def compute_graph_and_paths(img, dt, anisotropy,volume_dt_boundaries):
 
 
 def parallel_wrapper(seg, dt, gt, anisotropy,
-                      label, len_uniq,volume_dt_boundaries, mode="with_labels"):
+                      label, len_uniq,
+                     border_points=[], mode="with_labels"):
 
     if mode == "with_labels":
         print "Label ", label, " of ", len_uniq
@@ -807,7 +813,8 @@ def parallel_wrapper(seg, dt, gt, anisotropy,
     img=np.zeros(seg.shape)
     img[seg==label]=1
 
-    paths = compute_graph_and_paths(img, dt, anisotropy,volume_dt_boundaries)
+    paths = compute_graph_and_paths(img, dt, anisotropy,
+                                    border_points)
 
     # print "deleting img..."
     del img

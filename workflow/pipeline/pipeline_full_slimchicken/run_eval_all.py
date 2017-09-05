@@ -2,7 +2,7 @@ def run_roi_and_rand_general():
 
     from eval_all import roi_and_rand_general
 
-    project_folder = '/mnt/localdata1/jhennies/neuraldata/results/multicut_workflow/170606_branch_nifty_backend/'
+    project_folder = '/mnt/ssd/amatskev/neuraldata/results/'
     # project_folder = '/media/hdb/jhennies/neuraldata/results/multicut_workflow/170530_new_baseline/'
     # project_folder = '/media/julian/Daten/datasets/results/multicut_workflow/170530_new_baseline/'
     # result_file = 'result_resolved_local.h5'
@@ -46,7 +46,7 @@ def run_eval_obj_measures_readable():
 
         print '\nEvaluating spl{}_z{}'.format(spl, half)
 
-        project_folder = '/home/julian/ssh_data/neuraldata/results/multicut_workflow/170530_new_baseline/'
+        project_folder = '/mnt/ssd/amatskev/neuraldata/results/'
         seg_file = 'result.h5'
         seg_key = 'z/{}/data'.format(half)
         resolved_files = ['result_resolved_local.h5']
@@ -80,7 +80,7 @@ def run_plot_all_sample_path_eval_split_samples():
     halves = [0, 1] * 3
     defect_corrects = [False, False, True, True, True, True]
 
-    project_folder = '/home/julian/ssh_data/neuraldata/results/multicut_workflow/170530_new_baseline/'
+    project_folder = '/mnt/ssd/amatskev/neuraldata/results/'
 
     thresh_range = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 
@@ -103,7 +103,7 @@ def run_path_eval_on_all_samples():
 
     from eval_all import all_sample_path_eval
 
-    project_folder = '/mnt/localdata1/jhennies/neuraldata/results/multicut_workflow/170606_branch_nifty_backend/'
+    project_folder = '/mnt/ssd/amatskev/neuraldata/results/'
     # thresh_range = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
     thresh_range = [0.3]
     samples = ['A', 'A', 'B', 'B', 'C', 'C']
@@ -131,7 +131,7 @@ def run_eval_obj_measures_readable():
 
     spl = 'A'
     half = 0
-    project_folder = '/mnt/localdata1/jhennies/neuraldata/results/multicut_workflow/170606_branch_nifty_backend/'
+    project_folder = '/mnt/ssd/amatskev/neuraldata/results/'
     seg_file = 'result.h5'
     seg_key = 'z/0/data'
     resolved_files = ['result_resolved_local.h5']
@@ -160,7 +160,7 @@ def run_plot_all_sample_path_eval_split_samples():
 
     from eval_all import plot_all_sample_path_eval_split_samples
 
-    project_folder = '/mnt/localdata1/jhennies/neuraldata/results/multicut_workflow/170606_branch_nifty_backend/'
+    project_folder = '/mnt/ssd/amatskev/neuraldata/results/'
     thresh_range = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
     # thresh_range = [0.3]
     samples = ['A', 'A', 'B', 'B', 'C', 'C']
@@ -179,7 +179,7 @@ def run_plot_all_sample_path_eval_split_samples():
 
 
 if __name__ == '__main__':
-    # run_roi_and_rand_general()
+    run_roi_and_rand_general()
 
     run_path_eval_on_all_samples()
     # run_eval_obj_measures_readable()

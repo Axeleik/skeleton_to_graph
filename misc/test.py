@@ -3,9 +3,9 @@ import numpy as np
 # import test_functions as tf
 # from neuro_seg_plot import NeuroSegPlot as nsp
 from skimage.measure import label
-import nifty_with_cplex as nifty
-import nifty_with_cplex.graph.rag as nrag
-from concurrent import futures
+# import nifty_with_cplex as nifty
+# import nifty_with_cplex.graph.rag as nrag
+# from concurrent import futures
 from skimage.morphology import skeletonize_3d
 from time import time
 from copy import deepcopy,copy
@@ -17,17 +17,17 @@ sys.path.append(
     '/export/home/amatskev/Bachelor/skeleton_to_graph/')
 from workflow.methods.functions_for_workflow \
     import extract_paths_and_labels_from_segmentation
-from multicut_src.false_merges.compute_paths_and_features import path_feature_aggregator
-# from multicut_src.false_merges import false_merges_workflow
-import vigra
-from joblib import parallel,delayed
+# from multicut_src.false_merges.compute_paths_and_features import path_feature_aggregator
+from multicut_src.false_merges import compute_border_contacts,false_merges_workflow
+# import vigra
+# from joblib import parallel,delayed
 from multiprocessing import Process
 from Queue import Queue
-import platform
-from joblib import Parallel, delayed
+# import platform
+# from joblib import Parallel, delayed
 import cPickle as pickle
 import scipy
-from joblib import Parallel,delayed
+# from joblib import Parallel,delayed
 import multiprocessing
 # from path_computation_for_tests import parallel_wrapper
 
@@ -367,32 +367,104 @@ def testing_dt(threshhold_boundary,seg):
 
 
 if __name__ == '__main__':
-
-    feature_volumes=[]
-    for i in xrange(0, 9):
-        feature_volumes.append \
-            (np.load("/net/hci-storage02/userfolders/amatskev/debugging/debugging_feature_volumes_for_NaN{}.npy".format(i)))
-        print "volume ", i, " loaded"
-    all_paths=np.load(
-        "/mnt/ssd/amatskev/debugging/debugging_paths_seg__6.npy")
-
-    float_feature_volumes=[]
-    for i in feature_volumes:
-        float_feature_volumes.append(np.float64(i))
+    ds, seg, seg_id, gt, correspondence_list, paths_cache_folder = np.load(
+        "/mnt/localdata01/amatskev/debugging/bad_seg.npy")
+    dt = np.load("/mnt/localdata01/amatskev/debugging/bad_seg_dt.npy")
 
 
-    pixel_values_all = [python_region_features_extractor_sc(path,float_feature_volumes)
-                        for idx, path in enumerate(all_paths[6151:6152])]
-    print "pixel_values "
-    out2 = np.concatenate([extract_features_for_path_orig(path,feature_volumes,idx)
-                           for idx,path in enumerate(all_paths[6151:6152])])
+    extract_paths_and_labels_from_segmentation(
+        dt, seg, seg_id, gt, correspondence_list, None)
 
+    # ds, seg, seg_id, gt, correspondence_list = \
+    #     np.load("/mnt/localdata01/amatskev/"
+    #             "debugging/border_term_points/first_seg_paths_and_labels_all.npy")
+    # dt = \
+    #         np.load("/mnt/localdata01/amatskev/debugging/border_term_points//"
+    #             "first_dt.npy")
+    # centres_dict=np.load("/mnt/localdata01/amatskev/debugging/"
+    #         "border_term_points/centres_array.npy").tolist()
+    #
+    # extract_paths_and_labels_from_segmentation(
+    #     dt, seg, seg_id, gt, correspondence_list,centres_dict)
 
-    out1 = np.array([python_region_features_extractor_2_mc_test(single_vals,idx)
-                    for idx,single_vals in enumerate(pixel_values_all)])
+    # _,_, _, _, _, paths_cache_folder = \
+    #     np.load("/mnt/ssd/amatskev/debugging/border_term_points/for_cut_off.npy")
+    #
+    #
+    # ds, seg, seg_id, gt, correspondence_list = \
+    #     np.load("/mnt/ssd/amatskev/debugging/border_term_points/first_seg_paths_and_labels_all.npy")
+    #
+    # false_merges_workflow.extract_paths_and_labels_from_segmentation(ds, seg, seg_id, gt, correspondence_list, paths_cache_folder)
 
+    # seg= \
+    #     np.load("/mnt/localdata01/amatskev/debugging/border_term_points/"
+    #             "first_seg.npy")
+    # dt= \
+    #     np.load("/mnt/localdata01/amatskev/debugging/border_term_points//"
+    #             "first_dt.npy")
+    # time1=time()
+    # centres_array =compute_border_contacts.compute_border_contacts_old(seg,dt)
+    # time2=time()
+    # print "time: ",time2-time1
+    #
+    # np.save("/mnt/localdata01/amatskev/debugging/"
+    #         "border_term_points/centres_array.npy",centres_array)
+    #
+    # where_centres=np.where(centres_array)[0].transpose()
+    #
+    # centre_dict={}
+    #
+    # for centre_coords in where_centres:
+    #     pass
 
-    print "hi"
+    # seg = np.load(
+    #     "/mnt/localdata01/amatskev/debugging/border_term_points/"
+    #     "first_seg.npy")
+    # volume_dt = np.load(
+    #     "/mnt/localdata01/amatskev/debugging/border_term_points/"
+    #     "first_volume_dt.npy")
+    # # seg = np.array(f["z/1/data"])
+
+    # threshhold_boundary = 20
+    # volume_where_threshhold = np.where(volume_dt > threshhold_boundary)
+    # volume_dt_boundaries = np.s_[min(volume_where_threshhold[0]):max(volume_where_threshhold[0]),
+    #                        min(volume_where_threshhold[1]):max(volume_where_threshhold[1]),
+    #                        min(volume_where_threshhold[2]):max(volume_where_threshhold[2])]
+    # where = np.unique(seg)
+    #
+    # for label_number in where:
+    #     img = np.zeros(seg.shape)
+    #     img[seg == label_number] = 1
+    #     img[volume_dt_boundaries] = 0
+    #     unique = label(img)
+    #     if len(np.unique(img)) != 2:
+    #         print "label: ", label_number, " of ", len(where) - 1
+
+    # feature_volumes=[]
+    # for i in xrange(0, 9):
+    #     feature_volumes.append \
+    #         (np.load("/net/hci-storage02/userfolders/amatskev/debugging/debugging_feature_volumes_for_NaN{}.npy".format(i)))
+    #     print "volume ", i, " loaded"
+    # all_paths=np.load(
+    #     "/mnt/ssd/amatskev/debugging/debugging_paths_seg__6.npy")
+    #
+    # float_feature_volumes=[]
+    # for i in feature_volumes:
+    #     float_feature_volumes.append(np.float64(i))
+    #
+    #
+    # pixel_values_all = [python_region_features_extractor_sc(path,float_feature_volumes)
+    #                     for idx, path in enumerate(all_paths[6151:6152])]
+    # print "pixel_values "
+    # out2 = np.concatenate([extract_features_for_path_orig(path,feature_volumes,idx)
+    #                        for idx,path in enumerate(all_paths[6151:6152])])
+    #
+    #
+    # out1 = np.array([python_region_features_extractor_2_mc_test(single_vals,idx)
+    #                 for idx,single_vals in enumerate(pixel_values_all)])
+    #
+    #
+    # print "hi"
 
 
     # out2 = np.array([python_region_features_extractor_2_mc_test(single_vals,idx)
@@ -413,20 +485,29 @@ if __name__ == '__main__':
     #                      for single_vals in pixel_values_all))
 
 
-    # ds,seg,seg_id,gt,correspondence_list=np.load(
-    #     "/mnt/ssd/amatskev/debugging/border_term_points/"
-    #     "first_seg_paths_and_labels_all.npy")
     #
+    # boundaries=(slice(3, 58, None), slice(30, 1219, None), slice(30, 1219, None))
+    #
+    # seg=np.load(
+    #     "/mnt/localdata01/amatskev/debugging/border_term_points/"
+    #     "first_seg.npy")
+    # gt=np.load(
+    #     "/mnt/localdata01/amatskev/debugging/border_term_points/"
+    #     "first_gt.npy")
+    # img=np.zeros((seg.shape))
+    # img[seg==2]=1
+    # img[boundaries] = 0
+    #
+    # # result1=extract_paths_and_labels_from_segmentation(ds,seg,seg_id,gt,correspondence_list)
+    # pass
     # with open("/mnt/ssd/amatskev/debugging/border_term_points/pixel_values.pkl", mode='w') as f:
     #     pickle.dump(pixel_values_all, f)
     # testing_dt(200,seg)
 
 
-    # ds, seg, seg_id, gt, correspondence_list, paths_cache_folder = \
-    #     np.load("/mnt/localdata01/amatskev/misc/debugging/for_cut_off.npy")
+
     # factor=70
     # print "factor: ",factor
-    # result1=extract_paths_and_labels_from_segmentation(factor,ds,seg,seg_id,gt,correspondence_list)
     # np.save("/mnt/ssd/amatskev/debugging/border_term_points/"
     #     "first_result_border_term_40.npy",result1)
     # #

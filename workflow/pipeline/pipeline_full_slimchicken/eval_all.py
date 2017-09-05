@@ -9,8 +9,10 @@ import matplotlib
 from matplotlib import pyplot as plt
 
 import sys
-sys.path.append('/home/jhennies/src/cremi_python/cremi_python')
+sys.path.append('/export/home/amatskev/Bachelor/cremi_eval/cremi_python')
 from cremi import Volume, NeuronIds
+import compute_path_error_rates
+
 
 def roi_and_rand_general(
         sample, half, defect_correct, project_folder,
@@ -84,7 +86,7 @@ def roi_and_rand_general(
     return (voi_split, voi_merge, adapted_rand)
 
 
-from evaluation import resolve_merges_error_rate_path_level
+# from evaluation import resolve_merges_error_rate_path_level
 
 
 def eval_obj_measures(
@@ -123,7 +125,7 @@ def eval_obj_measures(
 
     # Load stuff
     # source_folder = '/mnt/localdata02/jhennies/neuraldata/cremi_2016/170321_resolve_false_merges/'
-    source_folder = '/mnt/ssd/jhennies/neuraldata/cremi_2016/170606_resolve_false_merges/'
+    source_folder = '/mnt/ssd/amatskev/neuraldata/results/'
 
     gt_filepath = os.path.join(
         source_folder,
@@ -244,7 +246,6 @@ def eval_obj_measures_readable(
 
 def path_eval_on_sample(sample, half, defect_correct, project_folder, thresh_range):
 
-    from evaluation import compute_path_error_rates
 
     print '\nEvaluating spl{}_z{}'.format(sample, half)
     print '--------------------'

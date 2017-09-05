@@ -9,7 +9,7 @@ import cPickle as pickle
 # import scipy
 # from scipy import interpolate
 import vigra
-# import volumina_viewer
+import volumina_viewer
 
 
 
@@ -126,38 +126,86 @@ def view(filepaths, filekeys, names=None, types=None, swapaxes=None, crop=None):
         names
     )
 
+
+
+
 def bl(a):
     del a
     return 3
 
 if __name__ == "__main__":
 
-    hi=5
-    b=bl(hi)
-    print hi
+    # hi=5
+    # b=bl(hi)
+    # print hi
+    #
+    # f = h5py.File("/net/hci-storage02/userfolders/amatskev/"
+    #               "neuraldata/results/splA_z1/result.h5", mode='r')
+    #
+    #
+    seg=np.load(
+        "/mnt/localdata01/amatskev/debugging/border_term_points/"
+        "first_seg.npy")
+    # volume_dt=np.load(
+    #     "/mnt/localdata01/amatskev/debugging/border_term_points/"
+    #     "first_volume_dt.npy")
+    # # seg = np.array(f["z/1/data"])
+    #
+    # threshhold_boundary = 20
+    # volume_where_threshhold = np.where(volume_dt > threshhold_boundary)
+    # volume_dt_boundaries = np.s_[min(volume_where_threshhold[0]):max(volume_where_threshhold[0]),
+    #                        min(volume_where_threshhold[1]):max(volume_where_threshhold[1]),
+    #                        min(volume_where_threshhold[2]):max(volume_where_threshhold[2])]
+    # where=np.unique(seg)
 
-    f = h5py.File("/mnt/localdata01/amatskev/misc/debugging/result.h5", mode='r')
+    for label in [329]:
+        img = np.zeros(seg.shape)
+        img[seg==label]=1
+        # unique=label(img)
 
+        # if len(np.unique(img))!=2:
+        #     print "label: ", label, " of ", len(where)-1
+        img = [img]
+        volumina_viewer.volumina_n_layer(
+            img,
+            "bla"
+        )
+        [0, 24, 54, 90, 105, 118, 124, 144, 187, 202, 209,
+         239, 250, 254, 283, 285, 289, 291, 293, 294, 296, 301, 305, 307, 308,
+         311, 318, 327, 329]
 
-
-    view(
-        [
-            "/mnt/localdata01/amatskev/misc/debugging/result.h5",
-        ], ['z/0/data'],
-        types=['uint32']
-    )
-
-
-
-
-
-
-
-    img,_ = np.load("/export/home/amatskev/Bachelor/"
-                           "data/graph_pruning/debugging/"
-                           "spooky/skel_seg.npy")
-
-    skel_img,skel = img_to_skel(img)
-
-
-    plot_figure_and_path(img,skel)
+    # img=np.zeros(seg.shape)
+    # boundary_img=np.ones(seg.shape)
+    # boundary_img[boundaries]=0
+    # img[seg==2]=1
+    # img[boundaries]=0
+    # img=[img]
+    # boundary_img=[boundary_img]
+    # volumina_viewer.volumina_n_layer(
+    #     boundary_img,
+    #     "bla"
+    # )
+    #
+    #
+    #
+    # view(
+    #     [
+    #         "/net/hci-storage02/userfolders/amatskev/neuraldata/results/splA_z1/result.h5",
+    #     ], ['z/1/data'],
+    #     types=['uint32']
+    # )
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+    # img,_ = np.load("/export/home/amatskev/Bachelor/"
+    #                        "data/graph_pruning/debugging/"
+    #                        "spooky/skel_seg.npy")
+    #
+    # skel_img,skel = img_to_skel(img)
+    #
+    #
+    # plot_figure_and_path(img,skel)
