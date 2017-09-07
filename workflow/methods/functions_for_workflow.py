@@ -55,7 +55,7 @@ def extract_paths_from_segmentation(
             (delayed(parallel_wrapper)(seg, dt, [],
                                        anisotropy, key,
                                        len_uniq, centres_dict[key],
-                                       "only_paths")
+                                       "testing")
              for key in centres_dict.keys() if len(centres_dict[key]) > 1)
 
 
@@ -75,6 +75,7 @@ def extract_paths_from_segmentation(
 
 
 def extract_paths_and_labels_from_segmentation(
+        centres_dict,
         dt,
         seg,
         seg_id,
@@ -118,19 +119,12 @@ def extract_paths_and_labels_from_segmentation(
 
         centres_dict = compute_border_contacts_old(seg, dt)
 
-        # #parallelized path computation
-        # parallel_array = Parallel(n_jobs=-1)\
-        #     (delayed(parallel_wrapper)(seg, dt, gt,
-        #                                anisotropy, key, len_uniq,
-        #                                centres_dict[key])
-        #      for key in centres_dict.keys() if len(centres_dict[key])>1)
-
-
-
-        parallel_array=[parallel_wrapper(seg, dt, gt,
+        #parallelized path computation
+        parallel_array = Parallel(n_jobs=-1)\
+            (delayed(parallel_wrapper)(seg, dt, gt,
                                        anisotropy, key, len_uniq,
                                        centres_dict[key])
-             for key in centres_dict.keys() if len(centres_dict[key])>1]
+             for key in centres_dict.keys() if len(centres_dict[key])>1)
 
 
         [[all_paths.append(path)

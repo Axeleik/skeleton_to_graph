@@ -366,14 +366,50 @@ def testing_dt(threshhold_boundary,seg):
     print volume_dt_boundaries
 
 
+def load_feature_volumes_for_ds(ds, inp_id=0,
+                                anisotropy_factor=
+                                10):
+    """load the feature volumes for ds_inp 0,1,2 for one ds"""
+    import h5py
+    feat_paths = ds.make_filters(inp_id, anisotropy_factor)
+    roi = np.s_[
+          0:ds.shape[0],
+          0:ds.shape[1],
+          0:ds.shape[2]
+          ]
+
+    # load features in global boundng box
+    feature_volumes_unfinished = []
+    feature_volumes = []
+    for path in feat_paths:
+        with h5py.File(path) as f:
+            feat_shape = f['data'].shape
+            # we add a singleton dimension to single channel features to loop over channel later
+            if len(feat_shape) == 3:
+                feature_volumes_unfinished.append(np.float64(f['data'][roi][..., None]))
+            else:
+                feature_volumes_unfinished.append(np.float64(f['data'][roi]))
+
+    for stack in feature_volumes_unfinished:
+        for idx in xrange(0, stack.shape[-1]):
+            feature_volumes.append(stack[:, :, :, idx])
+
+    return np.array(feature_volumes)
+
+
+
 if __name__ == '__main__':
-    ds, seg, seg_id, gt, correspondence_list, paths_cache_folder = np.load(
-        "/mnt/localdata01/amatskev/debugging/bad_seg.npy")
-    dt = np.load("/mnt/localdata01/amatskev/debugging/bad_seg_dt.npy")
+    ds, seg, seg_id, gt, correspondence_list = \
+        np.load("/mnt/localdata01/amatskev/"
+                "debugging/border_term_points/first_seg_paths_and_labels_all.npy")
+    dt = np.load("/mnt/localdata01/amatskev/debugging/border_term_points/"
+                "first_dt.npy")
+    centres_dict=np.load("/mnt/localdata01/amatskev/debugging/"
+            "border_term_points/centres_array.npy").tolist()
 
 
     extract_paths_and_labels_from_segmentation(
-        dt, seg, seg_id, gt, correspondence_list, None)
+        centres_dict, dt, seg, seg_id, gt, correspondence_list, None)
 
     # ds, seg, seg_id, gt, correspondence_list = \
     #     np.load("/mnt/localdata01/amatskev/"
