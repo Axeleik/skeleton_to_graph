@@ -8,8 +8,9 @@ from skimage.morphology import skeletonize_3d
 
 
 
-def norm3d(point1,point2,anisotropy=[10,1,1]):
+def norm3d(point1,point2):
 
+    anisotropy = [ExperimentSettings().anisotropy_factor, 1, 1]
     return sqrt(((point1[0] - point2[0])* anisotropy[0])*((point1[0] - point2[0])* anisotropy[0])+
                  ((point1[1] - point2[1])*anisotropy[1])*((point1[1] - point2[1])*anisotropy[1])+
                  ((point1[2] - point2[2]) * anisotropy[2])*((point1[2] - point2[2]) * anisotropy[2]))
@@ -219,7 +220,7 @@ def stage_two(is_node_map, list_term, edges, dt):
 def form_term_list_with_cents(is_term_map, border_points, mode):
     """returns list of terminal points taken from an image"""
 
-    border_distance=45
+    border_distance=ExperimentSettings().border_distance
     term_where = np.array(np.where(is_term_map)).transpose()
 
     dict_border_points = {key: [] for key in xrange(0, len(border_points))}
@@ -293,7 +294,7 @@ def skeleton_to_graph(skel_img, dt, anisotropy):
 
 
     if len(nodes) < 2:
-        return nodes, np.array(edges_and_lens), [], is_node_map,loop_list
+        return nodes, np.array(edges_and_lens), [], loop_list
 
 
     # stage_two(is_node_map, list_term_unfinished, edges_and_lens, dt)
@@ -549,6 +550,10 @@ def graph_pruning(g,term_list,edges,nodes_list, dict_border_points=None):
                          main_dict[node_dict[current_node][1]][4]):
 
 
+                # writing winner node in loser node
+                #noblankspace
+                main_dict[node_dict[current_node][1]].append(label)
+
                 # finishing previous longest label
                 finished_dict[node_dict[current_node][1]] \
                     = deepcopy(main_dict[node_dict[current_node][1]])
@@ -589,10 +594,22 @@ def graph_pruning(g,term_list,edges,nodes_list, dict_border_points=None):
 
         #finishing contraction
         if len(main_dict.keys())<3:
+
+
+            for finished_label in [adj_node for adj_node,
+                                                adj_edge in g.nodeAdjacency(current_node)
+                                   if adj_node!=node_dict[current_node][0][0] and
+                                                   adj_node!=main_dict[node_dict[current_node][1]][0][-2]]:
+
+                finished_dict[finished_label].append(finished_label)
+
             for key in main_dict.keys():
                 finished_dict[key]=deepcopy(main_dict[key])
-                # finished_dict[key][2]=get_unique_rows(np.array(finished_dict[key][2]))
+
                 del main_dict[key]
+
+                finished_dict[key].append(key)
+
             # # deleting node from dict
             # del node_dict[current_node]
 
@@ -601,6 +618,23 @@ def graph_pruning(g,term_list,edges,nodes_list, dict_border_points=None):
 
         # if all except one branches reached the adjacent node
         if len(node_dict[current_node][0]) == 1:
+
+            # writing longest label at node to the others,
+            # so we dont cut in half later
+            for finished_label in [adj_node for adj_node,
+                                                adj_edge in g.nodeAdjacency(current_node)
+                                   if adj_node!=node_dict[current_node][0][0] and
+                                                   adj_node!=main_dict[node_dict[current_node][1]][0][-2]]:
+
+                if finished_label in finished_dict.keys():
+
+                    finished_dict[finished_label] \
+                        .append(node_dict[current_node][1])
+
+                else:
+
+                    finished_dict[node_dict[finished_label][1]]\
+                        .append(node_dict[current_node][1])
 
             # writing new node to label
             main_dict[node_dict[current_node][1]][0]. \
@@ -643,36 +677,27 @@ def graph_pruning(g,term_list,edges,nodes_list, dict_border_points=None):
 
         assert(queue.qsize()>0),"contraction finished before all the nodes were seen"
 
-    #This is the pruning
-    pruned_term_list = np.array(
-        [key for key in finished_dict.keys() if
-         finished_dict[key][1] / finished_dict[key][4] > 4])
+
+    #Here begins the actual pruning
+    # TODO maybe faster ?
+    pre_plotting_dict = \
+        {key: deepcopy(finished_dict[key][5]) for key in finished_dict.keys()
+         if finished_dict[key][1] / finished_dict[key][4] > 4}
 
 
-    safe_counter = 1
-    if dict_border_points!=None:
+    counter = 1
+    while counter != 0:
+        counter = 0
+        print pre_plotting_dict.keys()
+        for key in pre_plotting_dict.keys():
+            print key
+            if pre_plotting_dict[key] not in pre_plotting_dict.keys():
+                counter = 1
 
-        safe_counter=0
-        for pruned_point in pruned_term_list:
-            if pruned_point not in dict_border_points[0]:
-                safe_counter+=1
+                del pre_plotting_dict[key]
 
+    pruned_term_list = np.array([key for key in pre_plotting_dict.keys()])
 
-    if len(pruned_term_list==0) or safe_counter==0:
-        pruned_term_list = np.array(
-            [key for key in finished_dict.keys()])
-
-    safe_counter = 1
-    if dict_border_points != None:
-
-        safe_counter = 0
-        for pruned_point in pruned_term_list:
-
-            if pruned_point not in dict_border_points[0]:
-                safe_counter += 1
-
-        if safe_counter==0:
-            return np.array([])
 
     return pruned_term_list
 
@@ -693,8 +718,7 @@ def edge_paths_and_counts_for_nodes(g, weights, dict_border_points,
     edge_counts: np.array[int] : Array with number of times each edge was visited in a shortest path
     """
 
-    max_number_of_paths=20
-
+    max_number_of_paths=ExperimentSettings().max_number_of_paths_for_training
 
     edge_paths = {}
     edge_counts = np.zeros(g.numberOfEdges, dtype='uint32')
@@ -787,7 +811,7 @@ def edge_paths_and_counts_for_nodes(g, weights, dict_border_points,
     else :
         if len(pruned_term_list)<2:
             return None
-
+        assert (mode != "testing"), "we want more than one path for testing"
         # only build one path
         if mode == "testing":
 
@@ -813,7 +837,7 @@ def edge_paths_and_counts_for_nodes(g, weights, dict_border_points,
             max_sum = 0
             for key in edge_paths_keys:
                 sum_weights = sum(weights[edge_paths[key]])
-                print "key: ",key,", sum: ",sum_weights
+                # print "key: ",key,", sum: ",sum_weights
                 if sum_weights > max_sum:
                     max_sum = sum_weights
                     counter = key
@@ -843,20 +867,7 @@ def edge_paths_and_counts_for_nodes(g, weights, dict_border_points,
 
             edge_paths_keys = edge_paths.keys()
 
-            sum_weights_keys_array=[[sum(weights[edge_paths[key]]),key]
-                                        for key in edge_paths_keys]
-
-            only_weights_sum=np.array([weight for weight,key in sum_weights_keys_array])
-
-            sort_indexes_sum_weights_array= np.argsort(only_weights_sum)[::-1]
-
-            sorted_keys=[sum_weights_keys_array[index][1] for index in sort_indexes_sum_weights_array]
-
-            if len(edge_paths_keys)>=max_number_of_paths:
-
-                sorted_keys=sorted_keys[:20]
-
-            edge_paths_finished = {key:edge_paths[key] for key in sorted_keys}
+            edge_paths_finished = {key:edge_paths[key] for key in edge_paths_keys}
 
 
 
@@ -1026,13 +1037,14 @@ def compute_graph_and_paths(img, dt, anisotropy,
         pruned_term_list = graph_pruning\
                 (g, term_list, edges_and_lens, nodes)
             ##########################################
-
+        if len(pruned_term_list)==0:
+            return []
         dict_border_points=None
 
     #TODO cores global
     edge_paths = \
         edge_paths_and_counts_for_nodes\
-            (g,edge_lens,dict_border_points,pruned_term_list, mode, 1)
+            (g,edge_lens,dict_border_points,pruned_term_list, "training", 1)
 
     if edge_paths==None:
         return []
@@ -1042,28 +1054,101 @@ def compute_graph_and_paths(img, dt, anisotropy,
     return finished_paths
 
 
-def parallel_wrapper(seg, dt, gt, anisotropy,
+def shorten_paths(paths_full_raw):
+    """for shortening paths so they dont end exactly at the border """
+
+    shortage_ratio=ExperimentSettings().ratio_for_shortage
+    if shortage_ratio==0:
+        return paths_full_raw
+
+    assert(shortage_ratio<=0.5)
+
+    paths_full=[path for path in paths_full_raw if len(path)>5]
+
+    if len(paths_full)==0:
+        return paths_full_raw
+
+    # collects the "length" for every point of every path
+    lens_paths = [np.concatenate(([norm3d(path[0], path[1]) / 2],
+                                 [norm3d(path[idx - 1], path[idx]) / 2 +
+                                  norm3d(path[idx], path[idx + 1]) / 2
+                                  for idx, point in enumerate(path)
+                                  if idx != 0 and idx != len(path) - 1],
+                                 [norm3d(path[-2], path[-1]) / 2]))
+                 for path in paths_full]
+
+    overall_lengths=[sum(val) for val in lens_paths]
+
+    shortage_lengths=[overall_length*shortage_ratio for overall_length in overall_lengths]
+
+    indexes_front_back_array=[path_index_shortage_pointss_return(lens_paths[idx],shortage_lengths[idx]) for idx,val in enumerate(lens_paths)]
+
+    paths_cut=[paths_full[idx][indexes_front_back_array[idx][0]:indexes_front_back_array[idx][1]] for idx,val in enumerate(paths_full)]
+
+    return paths_cut
+
+
+def path_index_shortage_pointss_return(lens_path,shortage_length):
+    """returns index point where we cut off our paths for shortage"""
+
+
+    sum_front=0
+    sum_back=0
+
+
+    for idx,val in enumerate(lens_path):
+
+        sum_front=sum_front+val
+
+        if sum_front >= shortage_length:
+            index_front = idx
+            break
+
+
+    for idx, val in enumerate(lens_path[::-1]):
+
+        sum_back = sum_back + val
+
+        if sum_back >= shortage_length:
+            index_back = len(lens_path)- 1 - idx
+            break
+
+
+    assert (index_front <= index_back)
+
+    # assuring we dont
+    if index_back-index_front<2:
+        index_front=index_front-1
+        index_back=index_back+1
+
+    assert (index_back < len(lens_path))
+    assert (index_front >= 0)
+
+    return index_front,index_back
+
+
+
+
+
+def parallel_wrapper(idx,seg, dt, gt, anisotropy,
                       label, len_uniq,
                      border_points=[], mode="training"):
     assert (mode=="testing" or mode=="training")
 
-    if mode == "testing":
-        print "Number ", label, " without labels of ", len_uniq
-
-    else:
-        print "Label ", label, " of ", len_uniq
-
-
+    if idx%50==0:
+        print "Label nr. ", idx , " of ", len_uniq
 
     # masking volume
-    img=np.zeros(seg.shape)
+    img=np.zeros(seg.shape,dtype="uint8")
     img[seg==label]=1
 
-    paths = compute_graph_and_paths(img, dt, anisotropy,
+    paths_full = compute_graph_and_paths(img, dt, anisotropy,
                                     border_points, mode)
 
     # print "deleting img..."
     del img
+
+    paths = shorten_paths(paths_full)
 
     if mode=="testing":
 
@@ -1077,14 +1162,28 @@ def parallel_wrapper(seg, dt, gt, anisotropy,
 
     else:
 
+
         if len(paths) == 0:
             return [],[],[]
 
-        all_paths_single, paths_to_objs_single, path_classes_single = \
-            cut_off([], [], [], label, paths, gt, anisotropy)
+        all_paths_single=[np.array(path) for path in paths]
+
+        paths_to_objs_single = [label for x in xrange(0, len(paths))]
+
+        path_classes_single = [
+            False if gt[path[0][0], path[0][1], path[0][2]] ==
+                    gt[path[-1][0], path[-1][1], path[-1][2]] else True
+            for path in paths]
+
+        assert (len(all_paths_single) == len(paths_to_objs_single))
+        assert (len(all_paths_single) == len(path_classes_single))
 
 
         return all_paths_single, paths_to_objs_single, path_classes_single
+
+
+
+
 
 
 
@@ -1102,7 +1201,7 @@ def cut_off(all_paths,
     length to the length of the path outside the main label is below
     ratio_true and above ratio_false and classifies them as true or false """
 
-    print "cutting off..."
+    # print "cutting off..."
     # collects the underlying ground truth label for every point of every path
     gt_paths=[[gt[point[0],point[1],point[2]] for point in path]
               for path in paths]

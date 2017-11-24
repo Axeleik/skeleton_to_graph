@@ -1,7 +1,7 @@
 import numpy as np
 from Queue import Queue
 from copy import deepcopy
-from misc.skel_pruning import extract_from_seg
+# from misc.skel_pruning import extract_from_seg
 
 def adj(g,val):
     for adj_node,adj_edge in g.nodeAdjacency(val):
@@ -210,7 +210,7 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_li
 
 
 #TODO check whether edgelist and termlist is ok (because of -1)
-def graph_pruning(g,term_list,edges,nodes_list,pruning_threshhold):
+def graph_pruning(g,term_list,edges,nodes_list):
 
     finished_dict={}
     node_dict={}

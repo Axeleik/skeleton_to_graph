@@ -516,7 +516,7 @@ def compute_graph_and_paths(img,dt,modus="run",anisotropy=[10,1,1]):
 
 
 
-    if modus=="testing":
+    if modus=="run":
         return term_list,edges_and_lens,g,nodes
 
     return workflow_paths

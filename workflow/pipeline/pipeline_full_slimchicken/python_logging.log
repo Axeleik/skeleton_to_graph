@@ -1,0 +1,1135 @@
+2017-08-28 16:32:30,079 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-28 16:32:30,111 - INFO - multicut_src.false_merges.false_merges_workflow - Begin of compute_false_merges ...
+2017-08-28 16:32:30,111 - INFO - multicut_src.false_merges.false_merges_workflow - Training false merges random forest ...
+2017-08-28 16:32:30,112 - INFO - multicut_src.false_merges.false_merges_workflow - RF was not cached and will be computed.
+2017-08-28 16:32:30,112 - DEBUG - multicut_src.false_merges.false_merges_workflow - Looping over training sets:
+2017-08-28 16:32:30,112 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-28 16:32:30,112 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 0
+2017-08-28 16:32:30,113 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splA_z1
+2017-08-28 16:32:30,968 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-28 16:35:41,495 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-28 16:35:41,523 - INFO - multicut_src.false_merges.false_merges_workflow - Begin of compute_false_merges ...
+2017-08-28 16:35:41,523 - INFO - multicut_src.false_merges.false_merges_workflow - Training false merges random forest ...
+2017-08-28 16:35:41,524 - INFO - multicut_src.false_merges.false_merges_workflow - RF was not cached and will be computed.
+2017-08-28 16:35:41,525 - DEBUG - multicut_src.false_merges.false_merges_workflow - Looping over training sets:
+2017-08-28 16:35:41,525 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-28 16:35:41,525 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 0
+2017-08-28 16:35:41,525 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splA_z1
+2017-08-28 16:35:42,381 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-28 16:36:55,504 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 16:36:55,703 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 16:48:22,382 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-28 16:49:37,649 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 16:49:46,725 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 16:50:53,762 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-28 16:52:07,504 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 16:52:15,745 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 16:53:21,359 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-28 16:54:34,560 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 16:54:44,315 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 16:55:53,716 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-28 16:57:08,907 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 16:57:16,668 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 16:58:20,523 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-28 16:59:33,659 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 16:59:43,598 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:00:52,705 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-28 17:02:29,870 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-28 17:02:29,895 - INFO - multicut_src.false_merges.false_merges_workflow - Begin of compute_false_merges ...
+2017-08-28 17:02:29,895 - INFO - multicut_src.false_merges.false_merges_workflow - Training false merges random forest ...
+2017-08-28 17:02:29,897 - INFO - multicut_src.false_merges.false_merges_workflow - RF was not cached and will be computed.
+2017-08-28 17:02:29,897 - DEBUG - multicut_src.false_merges.false_merges_workflow - Looping over training sets:
+2017-08-28 17:02:29,897 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-28 17:02:29,897 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 0
+2017-08-28 17:02:29,898 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splA_z1
+2017-08-28 17:02:30,779 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-28 17:03:54,255 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:03:54,485 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:03:54,561 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-28 17:05:10,166 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:05:10,352 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:05:10,453 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-28 17:06:25,733 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:06:25,919 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:06:26,000 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-28 17:07:46,939 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:07:47,139 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:07:47,236 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-28 17:09:16,790 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:09:16,969 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:09:17,063 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-28 17:10:30,568 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:10:30,740 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:10:30,813 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-28 17:11:59,832 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:12:07,909 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:16:17,885 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-28 17:16:17,930 - INFO - multicut_src.false_merges.false_merges_workflow - Begin of compute_false_merges ...
+2017-08-28 17:16:17,931 - INFO - multicut_src.false_merges.false_merges_workflow - Training false merges random forest ...
+2017-08-28 17:16:17,933 - INFO - multicut_src.false_merges.false_merges_workflow - RF was not cached and will be computed.
+2017-08-28 17:16:17,934 - DEBUG - multicut_src.false_merges.false_merges_workflow - Looping over training sets:
+2017-08-28 17:16:17,934 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-28 17:16:17,935 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 0
+2017-08-28 17:16:17,935 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splA_z1
+2017-08-28 17:16:18,817 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-28 17:17:38,781 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:17:39,129 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:17:54,801 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-28 17:19:15,023 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:19:15,415 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:19:15,558 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-28 17:20:30,496 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:20:30,807 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:20:30,903 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-28 17:21:51,221 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:21:51,527 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:21:51,609 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-28 17:23:13,470 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:23:13,792 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:23:13,901 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-28 17:24:31,869 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:24:32,198 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:24:32,298 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-28 17:25:49,519 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:25:49,832 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:51:32,294 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-28 17:51:32,325 - INFO - multicut_src.false_merges.false_merges_workflow - Begin of compute_false_merges ...
+2017-08-28 17:51:32,325 - INFO - multicut_src.false_merges.false_merges_workflow - Training false merges random forest ...
+2017-08-28 17:51:32,326 - INFO - multicut_src.false_merges.false_merges_workflow - RF was not cached and will be computed.
+2017-08-28 17:51:32,326 - DEBUG - multicut_src.false_merges.false_merges_workflow - Looping over training sets:
+2017-08-28 17:51:32,326 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-28 17:51:32,326 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 0
+2017-08-28 17:51:32,327 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splA_z1
+2017-08-28 17:51:33,169 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-28 17:52:47,830 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:52:48,028 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:52:48,081 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-28 17:54:02,847 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:54:03,030 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:54:03,119 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-28 17:55:16,615 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:55:16,805 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:55:16,901 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-28 17:56:30,250 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:56:30,444 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:56:30,519 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-28 17:57:45,141 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 17:57:45,325 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 17:57:45,423 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-28 18:07:43,049 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-28 18:07:43,080 - INFO - multicut_src.false_merges.false_merges_workflow - Begin of compute_false_merges ...
+2017-08-28 18:07:43,080 - INFO - multicut_src.false_merges.false_merges_workflow - Training false merges random forest ...
+2017-08-28 18:07:43,081 - INFO - multicut_src.false_merges.false_merges_workflow - RF was not cached and will be computed.
+2017-08-28 18:07:43,081 - DEBUG - multicut_src.false_merges.false_merges_workflow - Looping over training sets:
+2017-08-28 18:07:43,081 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-28 18:07:43,082 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 0
+2017-08-28 18:07:43,082 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splA_z1
+2017-08-28 18:07:43,966 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-28 18:08:57,917 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:08:58,120 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 18:08:58,198 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-28 18:10:11,534 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:10:11,709 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 18:10:11,771 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-28 18:11:26,824 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:11:27,012 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 18:11:27,108 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-28 18:12:41,868 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:12:42,068 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 18:12:42,163 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-28 18:13:57,334 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:13:58,126 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 18:13:58,331 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-28 18:15:12,231 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:15:12,429 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 18:15:12,524 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-28 18:16:26,404 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:16:26,586 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 18:17:10,589 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-28 18:18:25,161 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:18:35,841 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 18:23:51,985 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-28 18:23:52,014 - INFO - multicut_src.false_merges.false_merges_workflow - Begin of compute_false_merges ...
+2017-08-28 18:23:52,014 - INFO - multicut_src.false_merges.false_merges_workflow - Training false merges random forest ...
+2017-08-28 18:23:52,015 - INFO - multicut_src.false_merges.false_merges_workflow - RF was not cached and will be computed.
+2017-08-28 18:23:52,015 - DEBUG - multicut_src.false_merges.false_merges_workflow - Looping over training sets:
+2017-08-28 18:23:52,016 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-28 18:23:52,016 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 0
+2017-08-28 18:23:52,016 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splA_z1
+2017-08-28 18:23:52,887 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-28 18:25:06,195 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:25:06,389 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 18:26:19,480 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-28 18:27:33,092 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:27:33,296 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 18:28:46,941 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-28 18:30:00,267 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:30:00,465 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 18:31:12,026 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-28 18:32:25,598 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:32:25,821 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 18:33:41,114 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-28 18:34:54,890 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:34:55,084 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 18:36:05,884 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-28 18:37:19,084 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:37:19,304 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 18:38:34,628 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-28 18:39:48,589 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:39:48,793 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 18:40:59,204 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-28 18:42:12,889 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:42:13,122 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 18:43:31,891 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-28 18:44:45,144 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:44:52,453 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 18:46:03,650 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-28 18:46:03,651 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 1
+2017-08-28 18:46:03,651 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splB_z0
+2017-08-28 18:46:04,949 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-28 18:47:18,827 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 18:47:50,167 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 19:15:27,632 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-28 19:16:40,115 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 19:17:10,580 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 19:28:17,049 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-28 19:29:29,361 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 19:29:51,326 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 19:31:34,959 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-28 19:32:49,105 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 19:33:30,553 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 19:35:39,935 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-28 19:36:54,279 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 19:37:20,717 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 19:39:07,278 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-28 19:40:22,236 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 19:41:12,874 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 19:43:31,931 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-28 19:44:44,657 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 19:45:15,287 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 19:46:57,573 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-28 19:48:11,163 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 19:49:28,905 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 19:53:28,700 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-28 19:54:43,948 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 19:55:13,177 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 19:56:52,569 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-28 19:56:52,570 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 2
+2017-08-28 19:56:52,570 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splB_z1
+2017-08-28 19:56:53,973 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-28 19:58:12,085 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 19:58:33,869 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 20:26:25,423 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-28 20:27:40,560 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 20:28:05,333 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 20:30:22,370 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-28 20:31:39,665 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 20:31:59,518 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 20:33:58,546 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-28 20:35:15,657 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 20:35:46,098 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 20:38:07,636 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-28 20:39:23,975 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 20:39:40,526 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 20:41:39,871 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-28 20:42:55,675 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 20:43:46,113 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 20:46:40,741 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-28 20:47:56,249 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 20:48:12,752 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 20:50:06,210 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-28 20:51:21,081 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 20:52:21,427 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 20:55:34,743 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-28 20:56:49,647 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 20:57:06,084 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 20:59:00,706 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-28 20:59:00,707 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 3
+2017-08-28 20:59:00,707 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splC_z0
+2017-08-28 20:59:02,130 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-28 21:00:19,588 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 21:00:52,590 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 21:29:08,894 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-28 21:30:24,515 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 21:31:10,041 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 21:34:02,618 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-28 21:35:17,230 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 21:35:58,285 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 21:38:42,642 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-28 21:39:57,768 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 21:40:45,913 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 21:43:43,063 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-28 21:44:56,444 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 21:45:46,025 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 21:48:51,952 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-28 21:50:06,476 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 21:50:43,410 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 21:53:26,277 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-28 21:54:41,923 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 21:55:12,635 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 21:57:43,841 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-28 21:58:58,671 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 22:00:03,817 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 22:03:35,036 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-28 22:04:48,414 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 22:05:12,782 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 22:07:32,831 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-28 22:07:32,831 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 4
+2017-08-28 22:07:32,832 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splC_z1
+2017-08-28 22:07:34,246 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-28 22:08:49,889 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 22:09:08,880 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 22:37:17,733 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-28 22:38:33,604 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 22:38:56,989 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 22:43:54,316 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-28 22:45:09,366 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 22:45:24,808 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 22:47:37,483 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-28 22:48:53,393 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 22:49:20,490 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 22:51:45,883 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-28 22:53:02,923 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 22:53:18,323 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 22:55:00,781 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-28 22:56:18,073 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 22:56:44,203 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 22:58:45,028 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-28 23:00:02,522 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 23:00:17,557 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 23:01:54,382 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-28 23:03:10,709 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 23:03:36,761 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 23:05:38,513 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-28 23:06:55,158 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-28 23:07:10,267 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-28 23:23:40,986 - INFO - multicut_src.false_merges.false_merges_workflow - ... done training false merges random forest!
+2017-08-29 01:30:52,686 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-29 01:30:52,786 - INFO - multicut_src.false_merges.false_merges_workflow - Begin of compute_false_merges ...
+2017-08-29 01:30:52,787 - INFO - multicut_src.false_merges.false_merges_workflow - Training false merges random forest ...
+2017-08-29 01:30:52,788 - INFO - multicut_src.false_merges.false_merges_workflow - Loading RF from: /mnt/ssd/amatskev/neuraldata/results/cache/rf_cache/rf_merges_splA_z1_splB_z0_splB_z1_splC_z0_splC_z1
+2017-08-29 01:31:13,993 - INFO - multicut_src.false_merges.false_merges_workflow - ... done training false merges random forest!
+2017-08-29 01:51:26,892 - INFO - multicut_src.false_merges.false_merges_workflow - Begin of compute_false_merges ...
+2017-08-29 01:51:26,893 - INFO - multicut_src.false_merges.false_merges_workflow - Training false merges random forest ...
+2017-08-29 01:51:26,894 - INFO - multicut_src.false_merges.false_merges_workflow - RF was not cached and will be computed.
+2017-08-29 01:51:26,894 - DEBUG - multicut_src.false_merges.false_merges_workflow - Looping over training sets:
+2017-08-29 01:51:26,894 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 01:51:26,895 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 0
+2017-08-29 01:51:26,895 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splA_z0
+2017-08-29 01:51:28,044 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 01:52:41,042 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 02:03:47,226 - INFO - multicut_src.false_merges.false_merges_workflow - Saving paths in /mnt/ssd/amatskev/neuraldata/results/cache/train_path_data/paths_ds_splA_z0_seg_0.h5
+2017-08-29 02:03:55,827 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 02:05:19,969 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 02:06:33,014 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 02:17:25,020 - INFO - multicut_src.false_merges.false_merges_workflow - Saving paths in /mnt/ssd/amatskev/neuraldata/results/cache/train_path_data/paths_ds_splA_z0_seg_1.h5
+2017-08-29 02:17:34,846 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 02:19:20,483 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 02:20:34,179 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 02:31:41,611 - INFO - multicut_src.false_merges.false_merges_workflow - Saving paths in /mnt/ssd/amatskev/neuraldata/results/cache/train_path_data/paths_ds_splA_z0_seg_2.h5
+2017-08-29 02:31:49,947 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 02:33:39,351 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 02:34:52,345 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 02:45:32,190 - INFO - multicut_src.false_merges.false_merges_workflow - Saving paths in /mnt/ssd/amatskev/neuraldata/results/cache/train_path_data/paths_ds_splA_z0_seg_3.h5
+2017-08-29 02:45:43,230 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 02:47:41,972 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 02:48:54,547 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 03:00:11,642 - INFO - multicut_src.false_merges.false_merges_workflow - Saving paths in /mnt/ssd/amatskev/neuraldata/results/cache/train_path_data/paths_ds_splA_z0_seg_4.h5
+2017-08-29 03:00:19,962 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 03:02:14,213 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 03:03:27,503 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 03:14:10,572 - INFO - multicut_src.false_merges.false_merges_workflow - Saving paths in /mnt/ssd/amatskev/neuraldata/results/cache/train_path_data/paths_ds_splA_z0_seg_5.h5
+2017-08-29 03:14:22,024 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 03:16:26,315 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 03:17:39,492 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 03:29:12,438 - INFO - multicut_src.false_merges.false_merges_workflow - Saving paths in /mnt/ssd/amatskev/neuraldata/results/cache/train_path_data/paths_ds_splA_z0_seg_6.h5
+2017-08-29 03:29:21,318 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 03:31:17,520 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 03:32:30,026 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 03:43:07,424 - INFO - multicut_src.false_merges.false_merges_workflow - Saving paths in /mnt/ssd/amatskev/neuraldata/results/cache/train_path_data/paths_ds_splA_z0_seg_7.h5
+2017-08-29 03:43:18,076 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 03:45:23,222 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 03:46:36,076 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 03:58:20,027 - INFO - multicut_src.false_merges.false_merges_workflow - Saving paths in /mnt/ssd/amatskev/neuraldata/results/cache/train_path_data/paths_ds_splA_z0_seg_8.h5
+2017-08-29 03:58:27,426 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:00:28,748 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 04:00:28,749 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 1
+2017-08-29 04:00:28,749 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splB_z0
+2017-08-29 04:00:29,888 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 04:01:42,166 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:02:12,348 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:02:16,195 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 04:03:27,888 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:03:57,229 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:04:01,012 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 04:05:13,330 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:05:35,258 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:05:38,626 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 04:06:50,879 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:07:32,275 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:07:36,514 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 04:08:48,571 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:09:14,954 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:09:18,479 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 04:10:30,659 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:11:21,290 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:11:25,832 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 04:12:37,912 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:13:08,532 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:13:11,981 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 04:14:30,442 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:15:48,164 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:15:53,473 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 04:17:05,758 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:17:34,980 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:17:38,253 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 04:17:38,253 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 2
+2017-08-29 04:17:38,253 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splB_z1
+2017-08-29 04:17:39,489 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 04:18:51,947 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:19:12,850 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:19:16,901 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 04:20:29,810 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:20:54,577 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:20:58,767 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 04:22:11,350 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:22:31,194 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:22:34,900 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 04:23:48,371 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:24:18,785 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:24:23,347 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 04:25:36,641 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:25:53,179 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:25:56,626 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 04:27:10,019 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:28:00,436 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:28:06,308 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 04:29:19,317 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:29:35,823 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:29:39,174 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 04:30:51,451 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:31:51,796 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:31:58,465 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 04:33:13,632 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:33:30,062 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:33:33,353 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 04:33:33,353 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 3
+2017-08-29 04:33:33,353 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splC_z0
+2017-08-29 04:33:34,717 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 04:34:48,084 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:35:21,077 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:35:25,042 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 04:36:40,845 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:37:26,370 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:37:30,884 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 04:38:46,241 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:39:27,296 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:39:31,468 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 04:40:46,896 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:41:35,029 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:41:39,725 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 04:42:55,116 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:43:44,698 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:43:48,680 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 04:45:04,457 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:45:41,365 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:45:45,955 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 04:47:05,712 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:47:36,461 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:47:40,580 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 04:48:56,139 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:50:01,248 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:50:06,807 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 04:51:22,740 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:51:47,327 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:51:50,883 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 04:51:50,883 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 4
+2017-08-29 04:51:50,884 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splC_z1
+2017-08-29 04:51:52,006 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 04:53:07,817 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:53:26,762 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:53:30,990 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 04:54:47,303 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:55:10,688 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:55:14,942 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 04:56:31,874 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:56:47,320 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:56:51,449 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 04:58:09,276 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 04:58:36,397 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 04:58:41,298 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 04:59:59,143 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 05:00:14,554 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 05:00:18,662 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 05:01:36,126 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 05:02:02,254 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 05:02:07,126 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 05:03:25,287 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 05:03:40,322 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 05:03:44,549 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 05:05:02,929 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 05:05:28,988 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 05:05:33,934 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 05:06:52,220 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 05:07:07,360 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 05:24:41,227 - INFO - multicut_src.false_merges.false_merges_workflow - ... done training false merges random forest!
+2017-08-29 06:29:25,097 - INFO - multicut_src.false_merges.false_merges_workflow - Begin of compute_false_merges ...
+2017-08-29 06:29:25,098 - INFO - multicut_src.false_merges.false_merges_workflow - Training false merges random forest ...
+2017-08-29 06:29:25,113 - INFO - multicut_src.false_merges.false_merges_workflow - RF was not cached and will be computed.
+2017-08-29 06:29:25,113 - DEBUG - multicut_src.false_merges.false_merges_workflow - Looping over training sets:
+2017-08-29 06:29:25,114 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 06:29:25,114 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 0
+2017-08-29 06:29:25,114 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splA_z0
+2017-08-29 06:29:26,100 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 06:30:38,642 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:30:39,265 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:30:39,331 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 06:31:52,251 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:32:00,601 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:32:05,332 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 06:33:18,107 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:33:25,353 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:33:29,804 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 06:34:42,770 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:34:52,326 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:34:57,333 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 06:36:10,403 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:36:15,759 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:36:20,329 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 06:37:33,290 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:37:44,403 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:37:49,433 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 06:39:02,533 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:39:09,291 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:39:13,745 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 06:40:27,725 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:40:36,844 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:40:41,897 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 06:41:55,765 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:42:02,123 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:42:06,498 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 06:42:06,499 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 1
+2017-08-29 06:42:06,499 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splA_z1
+2017-08-29 06:42:07,776 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 06:43:21,132 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:43:29,836 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:43:33,858 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 06:44:47,221 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:44:56,029 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:45:00,141 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 06:46:13,753 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:46:21,665 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:46:25,611 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 06:47:38,843 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:47:48,299 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:47:52,570 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 06:49:05,772 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:49:13,291 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:49:17,240 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 06:50:30,125 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:50:39,724 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:50:43,918 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 06:51:56,967 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:52:04,453 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:52:08,341 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 06:53:21,582 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:53:31,958 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:53:36,131 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 06:54:49,585 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:54:56,652 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:55:00,535 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 06:55:00,535 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 2
+2017-08-29 06:55:00,536 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splB_z1
+2017-08-29 06:55:01,672 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 06:56:13,819 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:56:33,479 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:56:37,244 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 06:57:49,937 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:58:12,571 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:58:16,404 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 06:59:29,715 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 06:59:42,332 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 06:59:44,722 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 07:00:57,496 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:01:19,709 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:01:22,760 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 07:02:35,341 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:02:45,648 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:02:47,311 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 07:04:00,054 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:04:34,307 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:04:38,151 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 07:05:51,068 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:06:02,429 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:06:04,793 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 07:07:17,515 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:08:02,904 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:08:08,173 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 07:09:21,070 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:09:36,422 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:09:39,545 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 07:09:39,545 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 3
+2017-08-29 07:09:39,546 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splC_z0
+2017-08-29 07:09:40,693 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 07:10:53,610 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:11:21,064 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:11:23,511 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 07:12:36,475 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:13:21,610 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:13:26,085 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 07:14:39,166 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:15:20,168 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:15:24,301 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 07:16:37,097 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:17:25,032 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:17:29,646 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 07:18:42,764 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:19:31,995 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:19:36,013 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 07:20:49,299 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:21:26,228 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:21:30,791 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 07:22:46,088 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:23:16,854 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:23:21,012 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 07:24:35,968 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:25:41,093 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:25:46,445 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 07:27:05,019 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:27:29,395 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:27:33,039 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 07:27:33,040 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 4
+2017-08-29 07:27:33,040 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splC_z1
+2017-08-29 07:27:34,234 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 07:28:49,850 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:29:08,785 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:29:13,038 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 07:30:29,058 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:30:51,564 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:30:54,259 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 07:32:11,212 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:32:11,538 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:32:11,642 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 07:33:27,853 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:33:28,289 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:33:28,396 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 07:34:46,101 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:34:46,421 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:34:46,498 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 07:36:03,786 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:36:04,205 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:36:04,309 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 07:37:23,553 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:37:23,876 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:37:23,965 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 07:38:50,870 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:38:51,263 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:38:51,344 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 07:40:23,710 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 07:40:24,041 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 07:57:38,899 - INFO - multicut_src.false_merges.false_merges_workflow - ... done training false merges random forest!
+2017-08-29 09:38:34,436 - INFO - multicut_src.false_merges.false_merges_workflow - Begin of compute_false_merges ...
+2017-08-29 09:38:34,437 - INFO - multicut_src.false_merges.false_merges_workflow - Training false merges random forest ...
+2017-08-29 09:38:34,438 - INFO - multicut_src.false_merges.false_merges_workflow - RF was not cached and will be computed.
+2017-08-29 09:38:34,438 - DEBUG - multicut_src.false_merges.false_merges_workflow - Looping over training sets:
+2017-08-29 09:38:34,438 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 09:38:34,439 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 0
+2017-08-29 09:38:34,439 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splA_z0
+2017-08-29 09:38:35,674 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 09:39:52,336 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 09:39:52,919 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 09:39:52,990 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 09:41:18,400 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 09:41:26,731 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 09:41:31,531 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 09:42:51,939 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 09:42:59,130 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 09:43:03,673 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 09:44:23,649 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 09:44:33,273 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 09:44:38,329 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 09:46:03,276 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 09:46:08,810 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 09:46:13,424 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 09:47:35,720 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 09:47:46,801 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 09:47:51,794 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 09:49:11,039 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 09:49:17,766 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 09:49:22,148 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 09:50:45,488 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 09:50:54,558 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 09:50:56,332 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 09:52:18,990 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 09:52:19,196 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 09:52:19,266 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 09:52:19,266 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 1
+2017-08-29 09:52:19,266 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splA_z1
+2017-08-29 09:52:20,358 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 09:53:40,641 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 09:53:49,365 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 09:53:53,481 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 09:55:18,637 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 09:55:27,421 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 09:55:31,486 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 09:56:56,325 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 09:57:04,211 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 09:57:08,231 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 09:58:30,534 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 09:58:39,966 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 09:58:44,408 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 10:00:09,768 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:00:17,270 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:00:21,192 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 10:01:45,535 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:01:55,291 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:01:59,866 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 10:03:22,485 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:03:30,278 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:03:34,562 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 10:05:04,188 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:05:14,527 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:05:18,732 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 10:06:45,643 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:06:52,747 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:06:56,851 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 10:06:56,852 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 2
+2017-08-29 10:06:56,852 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splB_z0
+2017-08-29 10:06:58,002 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 10:08:20,128 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:08:50,347 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:08:54,373 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 10:10:21,768 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:10:51,197 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:10:55,151 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 10:12:20,701 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:12:42,725 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:12:46,186 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 10:14:16,809 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:14:58,278 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:15:02,565 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 10:16:29,859 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:16:56,249 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:16:59,820 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 10:18:26,818 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:19:17,907 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:19:22,544 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 10:20:47,778 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:21:18,374 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:21:21,908 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 10:22:48,995 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:24:07,619 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:24:12,964 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 10:25:40,245 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:26:10,105 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:26:13,414 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 10:26:13,414 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 3
+2017-08-29 10:26:13,414 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splC_z0
+2017-08-29 10:26:14,532 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 10:27:44,408 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:27:44,848 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:27:44,956 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 10:29:19,538 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:29:20,108 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:29:20,193 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 10:30:52,468 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:30:53,016 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:30:53,142 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 10:32:25,631 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:32:26,230 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:32:26,345 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 10:33:55,964 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:33:56,551 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:33:56,639 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 10:35:30,735 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:35:31,257 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:35:31,331 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 10:37:04,144 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:37:04,590 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:37:04,696 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 10:38:36,554 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:38:37,356 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:38:37,490 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 10:40:07,925 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:40:08,306 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:40:08,393 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 10:40:08,394 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 4
+2017-08-29 10:40:08,394 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splC_z1
+2017-08-29 10:40:09,620 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 10:41:41,614 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:41:41,961 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:41:42,052 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 10:43:13,851 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:43:14,256 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:43:14,367 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 10:44:46,558 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:44:46,875 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:44:46,982 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 10:46:19,594 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:46:20,022 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:46:20,130 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 10:47:53,824 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:47:54,144 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:47:54,214 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 10:49:26,935 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:49:27,342 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:49:27,452 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 10:51:01,213 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:51:01,524 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:51:01,593 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 10:52:35,924 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:52:36,319 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 10:52:36,417 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 10:54:11,430 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 10:54:11,742 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 11:12:44,173 - INFO - multicut_src.false_merges.false_merges_workflow - ... done training false merges random forest!
+2017-08-29 12:50:57,013 - INFO - multicut_src.false_merges.false_merges_workflow - Begin of compute_false_merges ...
+2017-08-29 12:50:57,014 - INFO - multicut_src.false_merges.false_merges_workflow - Training false merges random forest ...
+2017-08-29 12:50:57,015 - INFO - multicut_src.false_merges.false_merges_workflow - RF was not cached and will be computed.
+2017-08-29 12:50:57,016 - DEBUG - multicut_src.false_merges.false_merges_workflow - Looping over training sets:
+2017-08-29 12:50:57,016 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 12:50:57,016 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 0
+2017-08-29 12:50:57,016 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splA_z0
+2017-08-29 12:50:57,981 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 12:52:11,504 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 12:52:11,726 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 12:52:11,795 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 12:53:25,360 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 12:53:25,560 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 12:53:25,645 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 12:54:38,779 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 12:54:38,982 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 12:54:39,072 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 12:55:51,833 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 12:55:52,068 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 12:55:52,161 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 12:57:10,459 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 12:57:10,661 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 12:57:10,755 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 12:58:24,678 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 12:58:24,910 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 12:58:24,982 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 12:59:38,270 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 12:59:38,473 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 12:59:38,568 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 13:00:51,772 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:00:52,001 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:00:52,106 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 13:02:06,312 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:02:06,513 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:02:06,608 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 13:02:06,608 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 1
+2017-08-29 13:02:06,608 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splA_z1
+2017-08-29 13:02:07,620 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 13:03:22,306 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:03:22,517 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:03:22,602 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 13:04:37,558 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:04:37,769 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:04:37,849 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 13:05:51,434 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:05:51,621 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:05:51,699 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 13:07:05,642 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:07:05,888 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:07:05,992 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 13:08:19,794 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:08:20,001 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:08:20,086 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 13:09:35,697 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:09:35,919 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:09:35,981 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 13:10:51,953 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:10:52,158 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:10:52,242 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 13:12:06,379 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:12:06,663 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:12:06,837 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 13:13:21,626 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:13:21,835 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:13:21,892 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 13:13:21,892 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 2
+2017-08-29 13:13:21,892 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splB_z0
+2017-08-29 13:13:22,965 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 13:14:38,968 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:15:09,087 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:15:12,995 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 13:16:26,901 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:16:56,469 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:17:00,417 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 13:18:14,902 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:18:36,832 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:18:40,533 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 13:19:54,847 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:20:36,522 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:20:40,849 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 13:21:54,952 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:22:21,237 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:22:24,728 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 13:23:37,259 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:24:28,080 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:24:32,674 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 13:25:49,108 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:26:19,142 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:26:22,426 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 13:27:37,069 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:28:53,494 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:28:58,629 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 13:30:14,060 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:30:42,042 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:30:45,241 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 13:30:45,242 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 3
+2017-08-29 13:30:45,242 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splB_z1
+2017-08-29 13:30:46,404 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 13:32:00,758 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:32:01,095 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:32:01,190 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 13:33:15,500 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:33:15,886 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:33:15,983 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 13:34:30,547 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:34:30,914 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:34:31,012 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 13:35:46,051 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:35:46,487 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:35:46,579 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 13:37:04,220 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:37:04,523 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:37:04,621 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 13:38:20,720 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:38:21,369 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:38:21,454 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 13:39:37,435 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:39:37,744 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:39:37,820 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 13:40:56,270 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:40:57,015 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:40:57,108 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 13:42:10,550 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:42:10,857 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:42:10,956 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 13:42:10,956 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 4
+2017-08-29 13:42:10,956 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splC_z1
+2017-08-29 13:42:12,199 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 13:43:27,847 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:43:28,190 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:43:28,268 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 13:44:43,582 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:44:43,982 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:44:44,093 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 13:45:58,280 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:45:58,618 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:45:58,721 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 13:47:15,523 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:47:15,966 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:47:16,077 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 13:48:30,496 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:48:30,821 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:48:30,918 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 13:49:46,540 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:49:46,954 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:49:47,058 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 13:51:00,626 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:51:00,940 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:51:01,043 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 13:52:17,955 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:52:18,398 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 13:52:18,487 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 13:53:34,843 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 13:53:35,246 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 14:11:30,197 - INFO - multicut_src.false_merges.false_merges_workflow - ... done training false merges random forest!
+2017-08-29 15:49:08,683 - INFO - multicut_src.false_merges.false_merges_workflow - Begin of compute_false_merges ...
+2017-08-29 15:49:08,684 - INFO - multicut_src.false_merges.false_merges_workflow - Training false merges random forest ...
+2017-08-29 15:49:08,686 - INFO - multicut_src.false_merges.false_merges_workflow - RF was not cached and will be computed.
+2017-08-29 15:49:08,686 - DEBUG - multicut_src.false_merges.false_merges_workflow - Looping over training sets:
+2017-08-29 15:49:08,686 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 15:49:08,687 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 0
+2017-08-29 15:49:08,687 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splA_z0
+2017-08-29 15:49:09,655 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 15:50:23,597 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 15:50:23,855 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 15:50:23,961 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 15:51:37,292 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 15:51:37,567 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 15:51:37,680 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 15:52:52,058 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 15:52:52,325 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 15:52:52,437 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 15:54:05,742 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 15:54:05,985 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 15:54:06,075 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 15:55:22,245 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 15:55:22,463 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 15:55:22,600 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 15:56:35,946 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 15:56:36,245 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 15:56:36,377 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 15:57:50,335 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 15:57:50,556 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 15:57:50,665 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 15:59:04,679 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 15:59:04,924 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 15:59:05,047 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 16:00:19,673 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:00:19,926 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:00:20,035 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 16:00:20,035 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 1
+2017-08-29 16:00:20,035 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splA_z1
+2017-08-29 16:00:21,085 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 16:01:35,056 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:01:35,331 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:01:35,435 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 16:02:49,331 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:02:49,563 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:02:49,663 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 16:04:04,477 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:04:04,746 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:04:04,854 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 16:05:19,301 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:05:19,552 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:05:19,660 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 16:06:33,495 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:06:33,713 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:06:33,818 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 16:07:48,037 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:07:48,294 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:07:48,395 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 16:09:01,995 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:09:02,214 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:09:02,315 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 16:10:16,888 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:10:17,165 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:10:17,265 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 16:11:33,758 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:11:33,985 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:11:34,082 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 16:11:34,082 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 2
+2017-08-29 16:11:34,083 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splB_z0
+2017-08-29 16:11:35,179 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 16:12:48,094 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:12:48,633 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:12:48,734 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 16:14:05,030 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:14:05,411 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:14:05,516 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 16:15:20,374 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:15:20,741 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:15:20,867 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 16:16:34,114 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:16:34,679 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:16:34,779 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 16:17:51,245 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:17:51,722 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:17:51,833 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 16:19:05,328 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:19:05,971 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:19:06,053 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 16:20:21,651 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:20:22,091 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:20:22,206 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 16:21:36,309 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:21:37,225 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:21:37,353 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 16:22:53,260 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:22:53,739 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:22:53,987 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 16:22:53,988 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 3
+2017-08-29 16:22:53,988 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splB_z1
+2017-08-29 16:22:55,299 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 16:24:09,814 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:24:10,241 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:24:10,355 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 16:25:26,074 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:25:26,533 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:25:26,646 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 16:26:40,559 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:26:40,973 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:26:41,072 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 16:27:55,171 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:27:55,665 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:27:55,765 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 16:29:10,636 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:29:10,952 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:29:11,070 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 16:30:26,275 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:30:27,501 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:30:27,628 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 16:31:43,074 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:31:43,408 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:31:43,538 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 16:32:56,788 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:32:57,609 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:32:57,706 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 16:34:14,037 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:34:14,374 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:34:14,501 - DEBUG - multicut_src.false_merges.false_merges_workflow - ----------
+2017-08-29 16:34:14,501 - DEBUG - multicut_src.false_merges.false_merges_workflow - ds_id = 4
+2017-08-29 16:34:14,501 - DEBUG - multicut_src.false_merges.false_merges_workflow - current_ds.ds_name = splC_z0
+2017-08-29 16:34:15,731 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 0
+2017-08-29 16:35:29,291 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:35:29,865 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:35:29,971 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 1
+2017-08-29 16:36:43,443 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:36:44,106 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:36:44,219 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 2
+2017-08-29 16:37:58,550 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:37:59,160 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:37:59,246 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 3
+2017-08-29 16:39:12,851 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:39:13,529 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:39:13,652 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 4
+2017-08-29 16:40:28,056 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:40:28,725 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:40:28,845 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 5
+2017-08-29 16:41:42,492 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:41:43,071 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:41:43,202 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 6
+2017-08-29 16:42:56,873 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:42:57,378 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:42:57,511 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 7
+2017-08-29 16:44:11,313 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:44:12,185 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 16:44:12,326 - DEBUG - multicut_src.false_merges.false_merges_workflow - seg_path_id = 8
+2017-08-29 16:45:27,036 - DEBUG - multicut_src.false_merges.false_merges_workflow - Extracting paths and labels from segmentation ...
+2017-08-29 16:45:27,496 - DEBUG - multicut_src.false_merges.false_merges_workflow - ... done extracting paths and labels from segmentation!
+2017-08-29 17:03:04,967 - INFO - multicut_src.false_merges.false_merges_workflow - ... done training false merges random forest!
+2017-08-29 22:52:31,843 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-29 23:01:46,368 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 12:36:56,352 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 12:51:38,126 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 13:14:12,123 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 13:23:00,123 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 13:24:03,190 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 13:32:03,626 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 13:42:52,517 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 13:44:21,523 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 13:46:37,469 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 14:14:58,784 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 14:16:56,335 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 14:38:54,419 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 14:47:15,096 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 14:56:49,747 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 15:12:46,272 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 15:19:27,510 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 15:30:08,124 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-30 22:44:49,202 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 08:18:26,733 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 08:40:32,664 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 09:32:34,284 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 09:41:27,318 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 10:21:44,547 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 10:24:04,007 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 10:30:22,339 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 10:33:23,903 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 10:41:52,325 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 10:52:35,675 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 10:57:52,522 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 10:58:49,120 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 10:59:22,333 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 11:09:25,640 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 11:37:59,862 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 11:43:34,799 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 11:49:29,588 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 11:51:23,257 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 11:56:22,275 - INFO - multicut_src - Configuration of multicut workflow logger complete!
+2017-08-31 11:56:42,626 - INFO - multicut_src - Configuration of multicut workflow logger complete!

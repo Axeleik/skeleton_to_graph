@@ -51,13 +51,12 @@ def extract_paths_from_segmentation(
         centres_dict = compute_border_contacts_old(seg, dt)
 
         #parallelized path computation
-        parallel_array = Parallel(n_jobs=-1)\
-            (delayed(parallel_wrapper)(seg, dt, [],
-                                       anisotropy, key,
-                                       len_uniq, centres_dict[key],
-                                       "testing")
-             for key in centres_dict.keys() if len(centres_dict[key]) > 1)
-
+        parallel_array=[parallel_wrapper(seg, dt, gt,
+                                       anisotropy, key, len_uniq,
+                                         centres_dict[key],"testing")
+                         if len(centres_dict[key]) > 0 else parallel_wrapper(seg, dt, gt,
+                                       anisotropy, key, len_uniq,
+                                         [],"testing") for key in centres_dict.keys()]
 
         [[all_paths.append(path)
            for path in seg_array[0] if seg_array!=[]]
@@ -117,14 +116,22 @@ def extract_paths_and_labels_from_segmentation(
         # for counting and debugging purposes
         len_uniq = len(np.unique(seg)) - 1
 
-        centres_dict = compute_border_contacts_old(seg, dt)
+        # centres_dict = compute_border_contacts_old(seg, dt)
 
-        #parallelized path computation
-        parallel_array = Parallel(n_jobs=-1)\
-            (delayed(parallel_wrapper)(seg, dt, gt,
+        # # parallelized path computation
+        # parallel_array = Parallel(n_jobs=-1)\
+        #     (delayed(parallel_wrapper)(seg, dt, gt,
+        #                                anisotropy, key, len_uniq,
+        #                                centres_dict[key])
+        #      for key in centres_dict.keys() if len(centres_dict[key])>1)
+
+        parallel_array=[parallel_wrapper(seg, dt, gt,
                                        anisotropy, key, len_uniq,
-                                       centres_dict[key])
-             for key in centres_dict.keys() if len(centres_dict[key])>1)
+                                         centres_dict[key])
+                         if len(centres_dict[key]) > 0 else parallel_wrapper(seg, dt, gt,
+                                       anisotropy, key, len_uniq,
+                                         []) for key in centres_dict.keys()]
+
 
 
         [[all_paths.append(path)

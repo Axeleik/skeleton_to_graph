@@ -1,13 +1,15 @@
 from copy import deepcopy
 from time import time
 
-import nifty_with_cplex as nifty
+# import nifty_with_cplex as nifty
 import numpy as np
 import vigra
-from workflow.methods.skel_contraction import graph_pruning
+# from workflow.methods.skel_contraction import graph_pruning
 from skimage.morphology import skeletonize_3d
-
-from workflow.methods.skel_graph import compute_graph_and_paths
+from test_functions import plot_figure_and_path
+# from workflow.methods.skel_contraction import graph_pruning
+#
+# from workflow.methods.skel_graph import compute_graph_and_paths
 
 
 def serialize_graph(graph):
@@ -74,7 +76,84 @@ def extract_from_seg(seg,label):
 
     return volume
 
+def plot_pruned(id,threshhold,finished):
+    volume=np.load("/export/home/amatskev/Bachelor/data/graph_pruning/seg_0.npy")
+    volume[volume!=id]=0
+    volume[volume>0]=1
 
+    finished=finished.tolist()
+
+    for_plotting =[finished[key][1]/finished[key][3] for key in finished.keys()]
+
+    range = xrange(0, len(for_plotting))
+
+    for_plotting=sorted(for_plotting)
+
+    # plt.figure()
+    # plt.bar(range, for_plotting)
+    # plt.show()
+
+
+    finished_pruned = [finished[key][2] for key in finished.keys() if finished[key][1] / finished[key][3] > threshhold]
+
+    a=finished_pruned[0]
+    if len(finished_pruned)>1:
+        for i in finished_pruned[1:]:
+            a=np.concatenate([a,i])
+
+    a=np.array(a)
+    plot_figure_and_path(volume,a)
+
+
+def pruning_without_space(label):
+
+    print "-----------------------------------------------------------"
+    print "Label: ", label
+    seg = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/seg_0.npy")
+    volume = extract_from_seg(seg, label)
+
+    finished = np.load("/export/home/amatskev/Bachelor/"
+                       "data/graph_pruning/finished_{0}.npy".format(label))
+    finished = finished.tolist()
+
+    # for_plotting =[finished[key][1]/finished[key][3] for key in finished.keys()]
+    #
+    # range = xrange(0, len(for_plotting))
+    #
+    # for_plotting=sorted(for_plotting)
+    #
+    # plt.figure()
+    # plt.bar(range, for_plotting)
+    # plt.show()
+    threshhold = input("What is the threshhold for the pruning? ")
+
+    # TODO maybe faster ?
+    pre_plotting_dict = \
+        {key: deepcopy(finished[key][5]) for key in finished.keys()
+         if finished[key][1] / finished[key][4] > threshhold}
+
+
+    counter = 1
+    while counter != 0:
+        counter = 0
+        print pre_plotting_dict.keys()
+        for key in pre_plotting_dict.keys():
+            print key
+            if pre_plotting_dict[key] not in pre_plotting_dict.keys():
+                counter = 1
+
+                del pre_plotting_dict[key]
+
+    finished_pruned = np.array([finished[key][2] for key in pre_plotting_dict.keys()])
+    terms=[key for key in pre_plotting_dict.keys()]
+    a = finished_pruned[0]
+    if len(finished_pruned) > 1:
+        for i in finished_pruned[1:]:
+            a = np.concatenate([a, i])
+
+    a = np.array(a)
+    plot_figure_and_path(volume, a)
+    return finished_pruned
 
 def get_finished_paths_for_pruning(label):
 
@@ -108,128 +187,81 @@ def get_finished_paths_for_pruning(label):
     np.save("/export/home/amatskev/Bachelor/"
             "data/graph_pruning/finished_label_{0}.npy".format(label),finished)
 
+def compute_graph_and_pruning_for_label(where,label):
+    seg_0=np.load(where+"seg_0.npy")
+    seg_0_dt=np.load(where + "dt_seg_0.npy")
+
+    img=np.zeros(seg_0.shape)
+    img[seg_0==label]=1
+    term_list, edges_and_lens, g, nodes=compute_graph_and_paths(img,seg_0_dt,"run",[1,1,10])
+    finished_pruning=graph_pruning(g,term_list,edges_and_lens,nodes)
+
+    np.save("/export/home/amatskev/Bachelor/misc/86/finished_{}.npy".format(label),finished_pruning)
+
+def actual_pruning_and_plotting(volume,finished,threshhold):
+    # TODO maybe faster ?
+    finished=finished.tolist()
+    pre_plotting_dict = \
+        {key: deepcopy(finished[key][5]) for key in finished.keys()
+         if finished[key][1] / finished[key][4] > threshhold}
+    print "Max factor: ", np.max([finished[key][1] / finished[key][4] for key in finished.keys()])
+    counter = 1
+    while counter != 0:
+        counter = 0
+
+        for key in pre_plotting_dict.keys():
+
+            if pre_plotting_dict[key] not in pre_plotting_dict.keys():
+                counter = 1
+
+                del pre_plotting_dict[key]
+
+    finished_pruned = np.array([finished[key][2] for key in pre_plotting_dict.keys()])
+    if len(finished_pruned)>0:
+        a = finished_pruned[0]
+        if len(finished_pruned) > 1:
+            for i in finished_pruned[1:]:
+                a = np.concatenate([a, i])
+
+        a = np.array(a)
+        plot_figure_and_path(volume, a)
+
+    else:
+        plot_figure_and_path(volume, [],False)
+
 if __name__ == "__main__":
+    where="/export/home/amatskev/Bachelor/data/graph_pruning/"
+    # label=86
+    seg_0=np.load(where+"seg_0.npy")
 
-    g=read_graph("/export/home/amatskev/Bachelor/"
-            "data/graph_pruning/label_281/graph_tmp.h5")
-
-    term_list,edges,nodes=np.load("/export/home/amatskev/Bachelor/"
-            "data/graph_pruning/label_281/term_edges_nodes.npy")
-
-    dt = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/dt_seg_0.npy")
-
-    finished_pruned=graph_pruning(g,term_list,edges,dt,nodes)
-
-    # get_finished_paths_for_pruning(140)
-    # get_finished_paths_for_pruning(281)
-    # get_finished_paths_for_pruning(86)
-    # get_finished_paths_for_pruning(67)
-    # get_finished_paths_for_pruning(71)
-    # get_finished_paths_for_pruning(41)
-
-
-
-    # plot_pruned(140)
-    pruning_without_space(281)
-    plot_figure_and_path(volume,finished_pruned,anisotropy_input=[1,1,10])
-
-    # plot_pruned(86)
-    # plot_pruned(67)
-    # plot_pruned(71)
-    # plot_pruned(41)
-    # print "hi"
-    # print "hi"
-
-    # a=np.zeros((500,500,500))
-    # a[50:450,200:250,100:150]=1
-    # a[50:450, 200:250, 300:350] = 1
-    # a[100:130, 210:240, 50:400] = 1
-    # a[250:280, 210:240, 50:400] = 1
-    # a[350:370, 210:240, 280:380] = 1
-    # a[390:450, 200:250, 2:280] = 1
-    # a[250:280, 210:240, 200:230] = 0
-    # img,skel=img_to_skel(a)
-    # volume=np.load("/export/home/amatskev/"
-    #                       "Bachelor/data/test_volume.npy")
+    volume = np.zeros(seg_0.shape)
+    volume[seg_0 == 281] = 1
+    # a=np.load("/export/home/amatskev/Bachelor/data/graph_pruning/finished_paths_86_test.npy")
     #
+    # plot_figure_and_path(volume, a)
+    skel_img=skeletonize_3d(volume)
 
-    # test=deepcopy(seg)
-    # a = np.array([[len(np.where(seg == label)[0]), label]
-    #               for label in np.unique(seg)])
+    wher_skel=np.where(skel_img)
 
-    # skel_img=np.load("/export/home/amatskev/"
-    #         "Bachelor/data/test_volume_skel_img.npy")
+    skel_arr=np.zeros((len(wher_skel[0]),3))
+    skel_arr[:,0]=wher_skel[0]
+    skel_arr[:, 1] = wher_skel[1]
+    skel_arr[:, 2] = wher_skel[2]
+
+
+    plot_figure_and_path(volume, skel_arr)
+
+    # pruning_without_space(86)
+
+    # finished=np.load("/export/home/amatskev/Bachelor/misc/86/finished_86.npy")
+    # seg = np.load("/export/home/amatskev/Bachelor/data/graph_pruning/seg_0.npy")
+    # volume = extract_from_seg(seg, 86)
     #
-    # skel=np.load("/export/home/amatskev/"
-    #         "Bachelor/data/test_volume_skel.npy")
     #
-    # edges=np.load('/export/home/amatskev/Bachelor/data/test_edges.npy')
-    # term_list=np.load('/export/home/amatskev/Bachelor/data/test_term_list.npy')
-    # nodes=np.load('/export/home/amatskev/Bachelor/data/test_nodes.npy')
-    # g=read_graph('/export/home/amatskev/Bachelor/data/test_graph.h5')
-
-    # skel = np.array([[array for array in nodes.tolist()[key]]
-    #               for key in (nodes.tolist()).keys()])
-    # plt.figure()
-    # plt.imshow(skel_img[:,225,:])
-    # a=np.array([[358, 225, 325],[359, 225, 326],[359, 225, 325]])
-    # plot_figure_and_path(volume,a)
     #
-    # #
-    # volume=np.load("/export/home/amatskev/"
-    #                "Link to neuraldata/test/first_try_volume.npy")
-    #
-    # skel_img=np.load("/export/home/amatskev/"
-    #                       "Bachelor/data/graph_pruning/skel_img.npy")
-    #
-    # volume=close_cavities(volume)
-
-    # skel_img = skeletonize_3d(volume)
-    # #
-    # volume = extract_from_seg(seg,86)
-    # skel_img=skeletonize_3d(volume)
-    # term_list, edges, g=compute_graph_and_paths(skel_img,"testing")
-    # #
-    # skel = np.array(
-    #     [[e1, e2, e3] for e1, e2, e3 in zip(np.where(skel_img)[0],
-    #                                         np.where(skel_img)[1],
-    #                                         np.where(skel_img)[2])])
+    # actual_pruning_and_plotting(volume,finished,56)
+    # actual_pruning_and_plotting(volume,finished,40)
+    # actual_pruning_and_plotting(volume,finished,44)
 
 
-    # with open('/export/home/amatskev/Link to neuraldata/'
-    #           'test/extract_paths_from_segmentation/input_ds.pkl', mode='r') as f:
-    #     input_ds_example=pickle.load(f)
-    #
-
-    # term_list   = np.load("/export/home/amatskev/"
-    #                       "Bachelor/data/graph_pruning/term_list.npy")
-    # # edge_lens   = np.load("/export/home/amatskev/"
-    # #                       "Bachelor/data/graph_pruning/edge_lens.npy")
-    # edges       = np.load("/export/home/amatskev/"
-    #                       "Bachelor/data/graph_pruning/edges.npy")
-    # nodes       = np.load("/export/home/amatskev/"
-    #                       "Bachelor/data/graph_pruning/nodes.npy")
-    # is_node_map = np.load("/export/home/amatskev/"
-    #                       "Bachelor/data/graph_pruning/is_node_map.npy")
-    #
-    # g=read_graph('/export/home/amatskev/Bachelor/data/graph_pruning/graph_tmp.h5')
-    # finished=np.load("/export/home/amatskev/Bachelor/data/"
-    #                  "graph_pruning/finished_without_unique_label_86.npy" )
-    # skel=np.load("/export/home/amatskev/Bachelor/data/"
-    #              "graph_pruning/skel_label_86.npy")
-    # volume=np.load("/export/home/amatskev/Bachelor/"
-    #                "data/graph_pruning/volume_label_86.npy")
-
-    # skel_img=np.load("/export/home/amatskev/"
-    #                  "Bachelor/data/graph_pruning/skel_img_label_86.npy")
-
-
-
-    # finished=np.load("/export/"
-    #                         "home/amatskev/Bachelor/data/graph_pruning/"
-    #                         "finished_with_ordered_paths_label_86.npy")
-    #
-    # skel=np.load("/export/"
-    #         "home/amatskev/Bachelor/data/"
-    #         "graph_pruning/skeleton_paths_seg_0_label_86.npy")
-
+# compute_graph_and_pruning_for_label(where,86)

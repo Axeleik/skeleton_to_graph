@@ -1,6 +1,6 @@
 import numpy as np
 # from mesh_test import plot_mesh
-# import test_functions as tf
+import test_functions as tf
 # from neuro_seg_plot import NeuroSegPlot as nsp
 from skimage.measure import label
 # import nifty_with_cplex as nifty
@@ -310,10 +310,72 @@ def test_func(a,b):
 
 
 
+def python_region_features_extractor_2_mc(single_vals):
 
-def extract_features_for_path_orig(path,feature_volumes,idx):
+    path_features = []
 
-        path_image = np.zeros((62,1250,1250), dtype='uint32')
+    [path_features.extend([np.mean(vals), np.var(vals), sum(vals),
+                            max(vals), min(vals),
+                            scipy.stats.kurtosis(vals),
+                           (((vals - vals.mean()) / vals.std(ddof=0)) ** 3).mean()
+])
+     for vals in single_vals]
+
+    return np.array(path_features)
+
+def path_features_from_feature_images(
+        ds,
+        inp_id,
+        paths,
+        anisotropy_factor):
+
+    # FIXME for now we don't use fastfilters here
+    feat_paths = ds.make_filters(inp_id, anisotropy_factor)
+    # print feat_paths
+    # TODO sort the feat_path correctly
+    # load the feature images ->
+    # FIXME this might be too memory hungry if we have a large global bounding box
+
+    # compute the global bounding box
+    global_min = np.min(
+        np.concatenate([np.min(path, axis=0)[None, :] for path in paths], axis=0),
+        axis=0
+    )
+    global_max = np.max(
+        np.concatenate([np.max(path, axis=0)[None, :] for path in paths], axis=0),
+        axis=0
+    ) + 1
+    # substract min coords from all paths to bring them to new coordinates
+    paths_in_roi = [path - global_min for path in paths]
+    roi = np.s_[
+        global_min[0]:global_max[0],
+        global_min[1]:global_max[1],
+        global_min[2]:global_max[2]
+    ]
+
+    # load features in global boundng box
+    feature_volumes = []
+    import h5py
+    for path in feat_paths:
+        with h5py.File(path) as f:
+            feat_shape = f['data'].shape
+            # we add a singleton dimension to single channel features to loop over channel later
+            if len(feat_shape) == 3:
+                feature_volumes.append(f['data'][roi][..., None])
+            else:
+                feature_volumes.append(f['data'][roi])
+    stats = ExperimentSettings().feature_stats
+
+    def extract_features_for_path(path):
+
+        # calculate the local path bounding box
+        min_coords  = np.min(path, axis=0)
+        max_coords = np.max(path, axis=0)
+        max_coords += 1
+        shape = tuple(max_coords - min_coords)
+        path_image = np.zeros(shape, dtype='uint32')
+        path -= min_coords
+        # we swapaxes to properly index the image properly
         path_sa = np.swapaxes(path, 0, 1)
         path_image[path_sa[0], path_sa[1], path_sa[2]] = 1
 
@@ -321,95 +383,57 @@ def extract_features_for_path_orig(path,feature_volumes,idx):
         for feature_volume in feature_volumes:
             for c in range(feature_volume.shape[-1]):
                 path_roi = np.s_[
-                        0:62,
-                        0:1250,
-                        0:1250,
+                    min_coords[0]:max_coords[0],
+                    min_coords[1]:max_coords[1],
+                    min_coords[2]:max_coords[2],
                     c  # wee need to also add the channel to the slicing
                 ]
                 extractor = vigra.analysis.extractRegionFeatures(
                     feature_volume[path_roi],
                     path_image,
                     ignoreLabel=0,
-                    features=["skewness"]
+                    features=stats
                 )
                 # TODO make sure that dimensions match for more that 1d stats!
                 path_features.extend(
-                    [extractor[stat][1] for stat in
-                     ["skewness"]]
+                    [extractor[stat][1] for stat in stats]
                 )
         # ret = np.array(path_features)[:,None]
         # print ret.shape
-
-        print idx
-
         return np.array(path_features)[None, :]
 
-def ram_test(volume_dt,nr):
-    test=volume_dt[0,0,nr]
-    return test
+    if len(paths) > 1:
 
-def testing_dt(threshhold_boundary,seg):
+        # We parallelize over the paths for now.
+        # TODO parallelizing over filters might in fact be much faster, because
+        # we avoid the single threaded i/o in the beginning!
+        # it also lessens memory requirements if we have less threads than filters
+        # parallel
+        with futures.ThreadPoolExecutor(max_workers=ExperimentSettings().n_threads) as executor:
+            tasks = []
+            for p_id, path in enumerate(paths_in_roi):
+                tasks.append(executor.submit(extract_features_for_path, path))
+            out = np.concatenate([t.result() for t in tasks], axis=0)
 
-    # creating distance transform of whole volume for border near paths
-    volume_expanded = np.ones((seg.shape[0] + 2, seg.shape[1] + 2, seg.shape[1] + 2))
-    volume_expanded[1:-1, 1:-1, 1:-1] = 0
-    volume_dt = vigra.filters.distanceTransform(
-        volume_expanded.astype("uint32"), background=True,
-        pixel_pitch=[10, 1, 1])[1:-1, 1:-1, 1:-1]
+    else:
 
-    # threshhold for distance transform for picking terminal
-    # points near boundary
-    volume_where_threshhold = np.where(volume_dt < threshhold_boundary)
-    volume_dt_boundaries = np.s_[min(volume_where_threshhold[0]) + 1:max(volume_where_threshhold[0]),
-                           min(volume_where_threshhold[1]) + 1:max(volume_where_threshhold[1]),
-                           min(volume_where_threshhold[2]) + 1:max(volume_where_threshhold[2])]
-    print volume_dt_boundaries
+        out = np.concatenate([extract_features_for_path(path) for path in paths_in_roi])
 
+    # serial for debugging
+    # out = []
+    # for p_id, path in enumerate(paths_in_roi):
+    #     out.append( extract_features_for_path(path) )
+    # out = np.concatenate(out, axis = 0)
 
-def load_feature_volumes_for_ds(ds, inp_id=0,
-                                anisotropy_factor=
-                                10):
-    """load the feature volumes for ds_inp 0,1,2 for one ds"""
-    import h5py
-    feat_paths = ds.make_filters(inp_id, anisotropy_factor)
-    roi = np.s_[
-          0:ds.shape[0],
-          0:ds.shape[1],
-          0:ds.shape[2]
-          ]
+    assert out.ndim == 2, str(out.shape)
+    assert out.shape[0] == len(paths), str(out.shape)
+    # TODO checkfor correct number of features
 
-    # load features in global boundng box
-    feature_volumes_unfinished = []
-    feature_volumes = []
-    for path in feat_paths:
-        with h5py.File(path) as f:
-            feat_shape = f['data'].shape
-            # we add a singleton dimension to single channel features to loop over channel later
-            if len(feat_shape) == 3:
-                feature_volumes_unfinished.append(np.float64(f['data'][roi][..., None]))
-            else:
-                feature_volumes_unfinished.append(np.float64(f['data'][roi]))
-
-    for stack in feature_volumes_unfinished:
-        for idx in xrange(0, stack.shape[-1]):
-            feature_volumes.append(stack[:, :, :, idx])
-
-    return np.array(feature_volumes)
-
-
+    return out
 
 if __name__ == '__main__':
-    ds, seg, seg_id, gt, correspondence_list = \
-        np.load("/mnt/localdata01/amatskev/"
-                "debugging/border_term_points/first_seg_paths_and_labels_all.npy")
-    dt = np.load("/mnt/localdata01/amatskev/debugging/border_term_points/"
-                "first_dt.npy")
-    centres_dict=np.load("/mnt/localdata01/amatskev/debugging/"
-            "border_term_points/centres_array.npy").tolist()
+    feature_stats = ["Mean", "Variance", "Sum", "Maximum", "Minimum", "Kurtosis", "Skewness"]
 
-
-    extract_paths_and_labels_from_segmentation(
-        centres_dict, dt, seg, seg_id, gt, correspondence_list, None)
 
     # ds, seg, seg_id, gt, correspondence_list = \
     #     np.load("/mnt/localdata01/amatskev/"
