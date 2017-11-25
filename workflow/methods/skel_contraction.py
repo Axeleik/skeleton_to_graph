@@ -303,7 +303,17 @@ def graph_pruning(g,term_list,edges,nodes_list):
                                    if adj_node!=node_dict[current_node][0][0] and
                                                    adj_node!=main_dict[node_dict[current_node][1]][0][-2]]:
 
-                finished_dict[finished_label].append(finished_label)
+
+                if finished_label in finished_dict.keys():
+
+                    finished_dict[finished_label] \
+                        .append(node_dict[current_node][1])
+
+                else:
+
+                    finished_dict[node_dict[finished_label][1]]\
+                        .append(node_dict[current_node][1])
+
 
             for key in main_dict.keys():
 

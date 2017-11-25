@@ -188,15 +188,13 @@ def get_finished_paths_for_pruning(label):
             "data/graph_pruning/finished_label_{0}.npy".format(label),finished)
 
 def compute_graph_and_pruning_for_label(where,label):
-    seg_0=np.load(where+"seg_0.npy")
-    seg_0_dt=np.load(where + "dt_seg_0.npy")
-
-    img=np.zeros(seg_0.shape)
-    img[seg_0==label]=1
-    term_list, edges_and_lens, g, nodes=compute_graph_and_paths(img,seg_0_dt,"run",[1,1,10])
+    seg_test,dt_test=np.load("/mnt/localdata1/amatskev/debugging/data/graph_pruning/debugging/seg_and_dt_test.npy")
+    img=np.zeros(seg_test.shape)
+    img[seg_test==1]=1
+    term_list, edges_and_lens, g, nodes=compute_graph_and_paths(img,dt_test,"run",[10,1,1])
     finished_pruning=graph_pruning(g,term_list,edges_and_lens,nodes)
 
-    np.save("/export/home/amatskev/Bachelor/misc/86/finished_{}.npy".format(label),finished_pruning)
+    np.save("/export/home/amatskev/Bachelor/misc/86/finished_test.npy",finished_pruning)
 
 def actual_pruning_and_plotting(volume,finished,threshhold):
     # TODO maybe faster ?
@@ -230,12 +228,19 @@ def actual_pruning_and_plotting(volume,finished,threshhold):
         plot_figure_and_path(volume, [],False)
 
 if __name__ == "__main__":
-    where="/export/home/amatskev/Bachelor/data/graph_pruning/"
-    # label=86
-    seg_0=np.load(where+"seg_0.npy")
+    # compute_graph_and_pruning_for_label(1, 2)
+    # seg_test,dt_test=np.load("/mnt/localdata1/amatskev/debugging/data/graph_pruning/debugging/seg_and_dt_test.npy")
+    # img=np.zeros(seg_test.shape)
+    # img[seg_test==1]=1
+    #
+    # where="/export/home/amatskev/Bachelor/data/graph_pruning/"
+    # dict=np.load(where + "finished_86.npy").tolist()
+    # # label=86
+    # seg_0=np.load(where+"seg_0.npy")
+    seg_0,dt_test=np.load("/mnt/localdata1/amatskev/debugging/data/graph_pruning/debugging/seg_and_dt_test.npy")
 
     volume = np.zeros(seg_0.shape)
-    volume[seg_0 == 281] = 1
+    volume[seg_0 == 41] = 1
     # a=np.load("/export/home/amatskev/Bachelor/data/graph_pruning/finished_paths_86_test.npy")
     #
     # plot_figure_and_path(volume, a)
@@ -249,7 +254,7 @@ if __name__ == "__main__":
     skel_arr[:, 2] = wher_skel[2]
 
 
-    plot_figure_and_path(volume, skel_arr)
+    plot_figure_and_path(volume, skel_arr,anisotropy_input=[10,1,1])
 
     # pruning_without_space(86)
 

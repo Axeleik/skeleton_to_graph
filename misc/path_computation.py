@@ -92,8 +92,6 @@ def stage_one(skel_img, dt, anisotropy):
     is_queued_map = np.zeros(volume.shape, dtype=int)
     is_node_map = np.zeros(volume.shape, dtype=int)
     is_term_map = np.zeros(volume.shape, dtype=int)
-    is_branch_map = np.zeros(volume.shape, dtype=int)
-    is_standart_map = np.zeros(volume.shape, dtype=int)
     nodes = {}
     edges = []
     last_node = 1
@@ -105,7 +103,7 @@ def stage_one(skel_img, dt, anisotropy):
     node_list = []
     length = 0
     if (point == np.array([-1, -1, -1])).all():
-        return is_node_map, is_term_map, is_branch_map, nodes, edges, loop_list
+        return is_node_map, is_term_map, nodes, edges, loop_list
 
     is_queued_map[point[0], point[1], point[2]] = 1
     not_queued, is_node_list, are_near = check_box(volume, point, is_queued_map, is_node_map)
@@ -117,7 +115,7 @@ def stage_one(skel_img, dt, anisotropy):
         nodes = {}
         point = init(volume)
         if (point == np.array([-1, -1, -1])).all():
-            return is_node_map, is_term_map, is_branch_map, nodes, edges,loop_list
+            return is_node_map, is_term_map, nodes, edges,loop_list
         is_queued_map[point[0], point[1], point[2]] = 1
         not_queued, is_node_list, are_near = check_box(volume, point, is_queued_map, is_node_map)
         nodes[current_node] = point
@@ -133,7 +131,6 @@ def stage_one(skel_img, dt, anisotropy):
         is_node_map[point[0], point[1], point[2]] = last_node
 
     else:
-        is_branch_map[point[0], point[1], point[2]] = last_node
         is_node_map[point[0], point[1], point[2]] = last_node
 
     while queue.qsize():
@@ -156,7 +153,6 @@ def stage_one(skel_img, dt, anisotropy):
             queue.put(np.array([not_queued[0], current_node, length, edge_list, dt_list]))
             is_queued_map[not_queued[0][0], not_queued[0][1], not_queued[0][2]] = 1
             branch_point_list.extend([[point[0], point[1], point[2]]])
-            is_standart_map[point[0], point[1], point[2]] = 1
 
         elif len(not_queued) == 0 and (len(are_near) > 1 or len(is_node_list) > 0):
             loop_list.extend([current_node])
@@ -194,11 +190,10 @@ def stage_one(skel_img, dt, anisotropy):
                                     [dt[point[0], point[1], point[2]]]]))
                 is_queued_map[x[0], x[1], x[2]] = 1
 
-            is_branch_map[point[0], point[1], point[2]] = last_node
             is_node_map[point[0], point[1], point[2]] = last_node
 
 
-    return is_node_map, is_term_map, is_branch_map, nodes, edges, loop_list
+    return is_node_map, is_term_map, nodes, edges, loop_list
 
 
 def stage_two(is_node_map, list_term, edges, dt):
@@ -288,7 +283,7 @@ def form_term_list(is_term_map):
 def skeleton_to_graph(skel_img, dt, anisotropy):
     """main function, wraps up stage one and two"""
 
-    is_node_map, is_term_map, is_branch_map, nodes, edges_and_lens, loop_list = \
+    is_node_map, is_term_map, nodes, edges_and_lens, loop_list = \
         stage_one(skel_img, dt, anisotropy)
 
 
