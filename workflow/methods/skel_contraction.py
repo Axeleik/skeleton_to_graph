@@ -209,7 +209,7 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_li
             finished_dict[key].append(key)
         _ = queue.get()
 
-    return queue,finished_dict,node_dict,main_dict,intersecting_node_dict,min_array
+    return queue,finished_dict,node_dict,main_dict,intersecting_node_dict
 
 
 def pruning_2_nodes(edges,term_list,pruning_factor):
@@ -250,7 +250,7 @@ def graph_pruning(g,term_list,edges,nodes_list, dict_border_points=None):
     if start_queue.qsize()==2:
         return pruning_2_nodes(edges,term_list,pruning_factor)
 
-    queue,finished_dict,node_dict,main_dict,intersecting_node_dict,min_array = \
+    queue,finished_dict,node_dict,main_dict,intersecting_node_dict = \
         terminal_func (start_queue, g, finished_dict,
                        node_dict, main_dict, copy(edges),
                        nodes_list,intersecting_node_dict)
