@@ -202,13 +202,20 @@ def get_finished_paths_for_pruning(label):
 def compute_graph_and_pruning_for_label():
 
     seg_test=vigra.readHDF5('/mnt/localdata1/amatskev/debugging/result.h5', "z/1/data")
-    img=np.zeros(seg_test.shape)
-    img[seg_test==2]=1
-    img=np.uint64(img)
-    dt = distance_transform(img, [10., 1., 1.])
-    term_list, edges_and_lens, g, nodes=compute_graph_and_paths(img,dt,"run",[10,1,1])
-    finished_dict, intersecting_node_dict, nodes_list=\
-        graph_pruning(g,term_list,edges_and_lens,nodes)
+    for label in np.unique(seg_test)[18:]:
+        print "label: ", label
+        img=np.zeros(seg_test.shape)
+        img[seg_test==label]=1
+        img=np.uint64(img)
+        dt = distance_transform(img, [10., 1., 1.])
+        a=compute_graph_and_paths(img,dt,"run",[10,1,1])
+        if len(a)==0:
+            continue
+        term_list, edges_and_lens, g, nodes=a
+        if len(term_list)<3:
+            continue
+        finished_dict, intersecting_node_dict, nodes_list=\
+            graph_pruning(g,term_list,edges_and_lens,nodes)
 
     np.save("/export/home/amatskev/Bachelor/misc/finished_question.npy",(finished_dict, intersecting_node_dict, nodes_list))
 

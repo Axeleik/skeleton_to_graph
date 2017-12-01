@@ -14,7 +14,7 @@ def adj(g,val):
 def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_list,intersecting_node_dict):
 
     queue = Queue()
-
+    queued_list=[]
 
     while start_queue.qsize():
 
@@ -131,11 +131,19 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_li
                 _ = queue.get()
                 break
 
+            #spooky things where we had loops or crosses
+            if len(edges)==4 and len(nodes_list)==5 and start_queue.qsize()==0:
+                for dummy_lbl in main_dict.keys():
+                    main_dict[dummy_lbl].append(dummy_lbl)
+                    finished_dict[dummy_lbl] = deepcopy(main_dict[dummy_lbl])
 
-
+                    del main_dict[dummy_lbl]
+                while queue.qsize()!=0:
+                    _ = queue.get()
+                break
 
             # if all except one branches reached the adjacent node
-            elif len(node_dict[adjacency[0][0]][0]) == 1:
+            if len(node_dict[adjacency[0][0]][0]) == 1:
 
 
                 # writing longest label at node to the others,
@@ -187,7 +195,7 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_li
                 # putting next
                 queue.put([node_dict[adjacency[0][0]][0][0],
                            node_dict[adjacency[0][0]][1]])
-
+                queued_list.append(node_dict[adjacency[0][0]][1])
 
 
                 # # deleting node from dict
@@ -213,7 +221,7 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_li
             finished_dict[key].append(key)
         _ = queue.get()
 
-    return queue,finished_dict,node_dict,main_dict,intersecting_node_dict
+    return queue,finished_dict,node_dict,main_dict,intersecting_node_dict,queued_list
 
 
 def pruning_2_nodes(edges,term_list,pruning_factor):
@@ -241,7 +249,7 @@ def graph_pruning(g,term_list,edges,nodes_list, dict_border_points=None):
     start_queue=Queue()
     intersecting_node_dict={}
     last_dict={}
-    level_dict={}
+    stuck_list=[]
     # edges_and_lens=deepcopy(edges)
 
     pruning_factor=4
@@ -254,7 +262,7 @@ def graph_pruning(g,term_list,edges,nodes_list, dict_border_points=None):
     if start_queue.qsize()==2:
         return pruning_2_nodes(edges,term_list,pruning_factor)
 
-    queue,finished_dict,node_dict,main_dict,intersecting_node_dict = \
+    queue,finished_dict,node_dict,main_dict,intersecting_node_dict,queued_list = \
         terminal_func (start_queue, g, finished_dict,
                        node_dict, main_dict, copy(edges),
                        nodes_list,intersecting_node_dict)
@@ -267,11 +275,14 @@ def graph_pruning(g,term_list,edges,nodes_list, dict_border_points=None):
         # draw from queue
         current_node, label = queue.get()
 
+        min_length_array=[main_dict[key][1] for key in queued_list]
+
         # if this path is not the smallest right now, skip
-        if main_dict[label][1] != min(np.array(main_dict.values())[:, 1]):
+        if main_dict[label][1] != min(min_length_array):
             queue.put([current_node, label])
             continue
 
+        queued_list.remove(label)
 
 
         # if current node was already visited at least once
@@ -335,7 +346,7 @@ def graph_pruning(g,term_list,edges,nodes_list, dict_border_points=None):
 
 
 
-        else:
+        elif current_node not in node_dict.keys():
 
             #create new entry for this node
             node_dict[current_node] = [[adj_node for adj_node, adj_edge
@@ -346,32 +357,93 @@ def graph_pruning(g,term_list,edges,nodes_list, dict_border_points=None):
                                            in g.nodeAdjacency(current_node)
                                            if adj_edge != main_dict[label][3]]]
 
+
         #finishing contraction
         if len(main_dict.keys())<3:
 
+            #if we get the case where the node before was not the shortest so we jump to this one
+            if main_dict[main_dict.keys()[0]][0][-1]!=main_dict[main_dict.keys()[1]][0][-1]:
 
-            for finished_label in [adj_node for adj_node,
-                                                adj_edge in g.nodeAdjacency(current_node)
-                                   if adj_node!=node_dict[current_node][0][0] and
-                                                   adj_node!=main_dict[node_dict[current_node][1]][0][-2]]:
+                # writing new node to label
+                main_dict[node_dict[current_node][1]][0]. \
+                    extend([node_dict[current_node][0][0]])
 
+                # comparing maximum of dt
+                if main_dict[node_dict[current_node][1]][4] < \
+                        edges[node_dict[current_node][2][0]][3]:
+                    main_dict[node_dict[current_node][1]][4] = \
+                        edges[node_dict[current_node][2][0]][3]
 
-                if finished_label in finished_dict.keys():
+                # adding length to label
+                main_dict[node_dict[current_node][1]][1] += \
+                    edges[node_dict[current_node][2][0]][1]
 
-                    finished_dict[finished_label] \
-                        .append(node_dict[current_node][1])
+                # adding path to next node to label
+                if main_dict[node_dict[current_node][1]][2][-1] == \
+                        edges[node_dict[current_node][2][0]][2][-1]:
 
+                    main_dict[node_dict[current_node][1]][2].extend(
+                        edges[node_dict[current_node][2][0]][2][-2::-1])
+
+                # adding path to next node to label
                 else:
 
-                    finished_dict[node_dict[finished_label][1]]\
-                        .append(node_dict[current_node][1])
+                    main_dict[node_dict[current_node][1]][2].extend(
+                        edges[node_dict[current_node][2][0]][2][1:])
+
+                # adding edge number to label
+                main_dict[node_dict[current_node][1]][3] = \
+                    node_dict[current_node][2][0]
+
+                assert main_dict[main_dict.keys()[0]][0][-1]==main_dict[main_dict.keys()[1]][0][-1], "something went wrong with the new stuff"
+
+                if len([adj_node for adj_node, adj_edge in g.nodeAdjacency(node_dict[current_node][0][0])])!=2:
+
+                    for finished_label in [adj_node for adj_node,
+                                     adj_edge in g.nodeAdjacency(node_dict[current_node][0][0])
+                                     if adj_node != node_dict[node_dict[current_node][0][0]][0][0] and  # is not the only one left in node dict for this node
+                                     adj_node != main_dict[node_dict[node_dict[current_node][0][0]][1]][0][-2]]:  # is not the previous node
+                                                                                                                # from the strongest label at this node
+
+
+                        if finished_label in finished_dict.keys():
+
+                            finished_dict[finished_label] \
+                                .append(finished_label)
+
+                        else:
+
+                            finished_dict[node_dict[finished_label][1]] \
+                                .append(node_dict[current_node][1])
+
+
+
+            else:
+
+                for finished_label in [adj_node for adj_node,
+                                                    adj_edge in g.nodeAdjacency(current_node)
+                                       if adj_node!=node_dict[current_node][0][0] and #is not the only one left in node dict for this node
+                                                       adj_node!=main_dict[node_dict[current_node][1]][0][-2]]: # is not the previous node
+                                                                                                                # from the strongest label at this node
+
+
+                    if finished_label in finished_dict.keys():
+
+                        finished_dict[finished_label] \
+                            .append(finished_label)
+
+                    else:
+
+                        finished_dict[node_dict[finished_label][1]]\
+                            .append(node_dict[current_node][1])
 
 
             for key in main_dict.keys():
 
                 # writing to intersection_node so we can connect later on
                 if main_dict[key][0][-1] in intersecting_node_dict.keys():
-                    intersecting_node_dict[main_dict[key][0][-1]].append(key)
+                    if key not in intersecting_node_dict[main_dict[key][0][-1]]:
+                        intersecting_node_dict[main_dict[key][0][-1]].append(key)
                 else:
                     intersecting_node_dict[main_dict[key][0][-1]] = [key]
 
@@ -386,9 +458,11 @@ def graph_pruning(g,term_list,edges,nodes_list, dict_border_points=None):
 
             break
 
-
-        if main_dict[node_dict[current_node][1]][1] > min(np.array(main_dict.values())[:, 1]):
-            queue.put([current_node,label])
+        # check if all branches reached the adjacent node but we cant go
+        # further because the dominant edge is not the smallest edge
+        if main_dict[node_dict[current_node][1]][1] > min(min_length_array) and len(node_dict[current_node][0]) == 1:
+            queue.put([current_node,node_dict[current_node][1]])
+            queued_list.append(node_dict[current_node][1])
 
 
         # if all except one branches reached the adjacent node
@@ -448,9 +522,11 @@ def graph_pruning(g,term_list,edges,nodes_list, dict_border_points=None):
             # putting next
             queue.put([node_dict[current_node][0][0],
                         node_dict[current_node][1]])
+            queued_list.append(node_dict[current_node][1])
 
             # # deleting node from dict
             # del node_dict[current_node]
+
 
         assert(queue.qsize()>0),"contraction finished before all the nodes were seen"
 
