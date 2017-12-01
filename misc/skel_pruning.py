@@ -7,10 +7,10 @@ import vigra
 import skimage
 # from workflow.methods.skel_contraction import graph_pruning
 from skimage.morphology import skeletonize_3d
-# from test_functions import plot_figure_and_path
-from workflow.methods.skel_contraction import graph_pruning,actual_pruning
-
-from workflow.methods.skel_graph import compute_graph_and_paths
+from test_functions import plot_figure_and_path
+# from workflow.methods.skel_contraction import graph_pruning,actual_pruning
+#
+# from workflow.methods.skel_graph import compute_graph_and_paths
 
 
 def serialize_graph(graph):
@@ -250,8 +250,27 @@ def actual_pruning_and_plotting(volume,finished,threshhold):
     else:
         plot_figure_and_path(volume, [],False)
 
+def close_cavities(volume):
+    test_vol=np.zeros(volume.shape)
+    test_vol[volume==0]=2
+    test_vol[volume==1]=1
+
+    lab=label(test_vol)
+    if len(np.unique(lab))==2:
+        return volume
+    count,what=0,0
+    for uniq in np.unique(lab):
+        if len(np.where(lab == uniq)[0])> count:
+            count=len(np.where(lab == uniq)[0])
+            what=uniq
+
+    test_vol[lab==what]=0
+    test_vol[lab != what] = 1
+
+    return test_vol
+
 if __name__ == "__main__":
-    compute_graph_and_pruning_for_label()
+    # compute_graph_and_pruning_for_label()
     # finished_dict, intersecting_node_dict, nodes_list=np.load("/export/home/amatskev/Bachelor/misc/finished_question.npy")
     # finished_dict
     # intersecting_node_dict=intersecting_node_dict.tolist()
@@ -268,15 +287,23 @@ if __name__ == "__main__":
     # seg_0[a*10:a*90,  a*10:a*20, a* 47:a*-47]=1
     # seg_0[a*10:a*90, a*80:a*90, a*47:a*-47] = 1
     # # seg_0[40:-40, 40:-40, 10:-10] = 1
-
+    from skimage.measure import label
     # volume=seg_0
     #
     where="/mnt/localdata1/amatskev/debugging/data/graph_pruning/"
     # seg_0=np.load(where+"seg_0.npy")
-    seg_0 = vigra.readHDF5('/mnt/localdata0/amatskev/neuraldata/results/'
-                           'splA_z0/result.h5', "z/0/data")
+    seg_0 = vigra.readHDF5('/mnt/localdata1/amatskev/neuraldata/results1/'
+                           'splB_z0/result.h5', "z/0/data")
     volume = np.zeros(seg_0.shape)
-    volume[seg_0 == 0] = 1
+    volume[seg_0 == 2] = 1
+    # volume[:,:,400:]=0
+    # volume[:, :, :250] = 0
+    # volume[:,500:, : ] = 0
+    # volume[:, :250, :] = 0
+    # volume[7:, :, :] = 0
+    # a=label(volume)
+
+    volume=close_cavities(volume)
 
     #
     #
@@ -286,9 +313,9 @@ if __name__ == "__main__":
 
 
     # a=np.load("/export/home/amatskev/Bachelor/data/graph_pruning/finished_paths_86_test.npy")
-    wher_vol=np.where(volume)
-    print "min: ",min(wher_vol[0]),"max: ",max(wher_vol[0])
-    print "len: " ,len(wher_vol[0])
+    # wher_vol=np.where(volume)
+    # print "min: ",min(wher_vol[0]),"max: ",max(wher_vol[0])
+    # print "len: " ,len(wher_vol[0])
 
     # seg_0 = np.load("/mnt/localdata1/amatskev/debugging/data/graph_pruning/seg_0.npy")
 

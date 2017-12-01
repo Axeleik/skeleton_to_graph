@@ -34,8 +34,11 @@ import multiprocessing
 
 
 def close_cavities(volume):
-    volume[volume==0]=2
-    lab=label(volume)
+    test_vol=np.zeros(volume.shape)
+    test_vol[volume==0]=2
+    test_vol[volume==1]=1
+
+    lab=label(test_vol)
     if len(np.unique(lab))==2:
         return volume
     count,what=0,0
@@ -44,10 +47,10 @@ def close_cavities(volume):
             count=len(np.where(lab == uniq)[0])
             what=uniq
 
-    volume[lab==what]=0
-    volume[lab != what] = 1
+    test_vol[lab==what]=0
+    test_vol[lab != what] = 1
 
-    return volume
+    return test_vol
 
 def example_rag():
     x = np.zeros((25, 25), dtype='uint32')
