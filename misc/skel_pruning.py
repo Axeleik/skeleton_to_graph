@@ -4,12 +4,13 @@ from time import time
 # import nifty_with_cplex as nifty
 import numpy as np
 import vigra
+import skimage
 # from workflow.methods.skel_contraction import graph_pruning
 from skimage.morphology import skeletonize_3d
-from test_functions import plot_figure_and_path
-# from workflow.methods.skel_contraction import graph_pruning
-#
-# from workflow.methods.skel_graph import compute_graph_and_paths
+# from test_functions import plot_figure_and_path
+from workflow.methods.skel_contraction import graph_pruning,actual_pruning
+
+from workflow.methods.skel_graph import compute_graph_and_paths
 
 
 def serialize_graph(graph):
@@ -155,6 +156,17 @@ def pruning_without_space(label):
     plot_figure_and_path(volume, a)
     return finished_pruned
 
+# calculate the distance transform for the given segmentation
+def distance_transform(segmentation, anisotropy):
+    edge_volume = np.concatenate(
+        [vigra.analysis.regionImageToEdgeImage(segmentation[z])[None, :]
+         for z in xrange(segmentation.shape[0])],
+        axis=0
+    )
+    dt = vigra.filters.distanceTransform(edge_volume.astype('uint32'), pixel_pitch=anisotropy, background=True)
+    return dt
+
+
 def get_finished_paths_for_pruning(label):
 
     print "-----------------------------------------------------------"
@@ -187,14 +199,18 @@ def get_finished_paths_for_pruning(label):
     np.save("/export/home/amatskev/Bachelor/"
             "data/graph_pruning/finished_label_{0}.npy".format(label),finished)
 
-def compute_graph_and_pruning_for_label(where,label):
-    seg_test,dt_test=np.load("/mnt/localdata1/amatskev/debugging/data/graph_pruning/debugging/seg_and_dt_test.npy")
-    img=np.zeros(seg_test.shape)
-    img[seg_test==1]=1
-    term_list, edges_and_lens, g, nodes=compute_graph_and_paths(img,dt_test,"run",[10,1,1])
-    finished_pruning=graph_pruning(g,term_list,edges_and_lens,nodes)
+def compute_graph_and_pruning_for_label():
 
-    np.save("/export/home/amatskev/Bachelor/misc/86/finished_test.npy",finished_pruning)
+    seg_test=vigra.readHDF5('/mnt/localdata1/amatskev/debugging/result.h5', "z/1/data")
+    img=np.zeros(seg_test.shape)
+    img[seg_test==2]=1
+    img=np.uint64(img)
+    dt = distance_transform(img, [10., 1., 1.])
+    term_list, edges_and_lens, g, nodes=compute_graph_and_paths(img,dt,"run",[10,1,1])
+    finished_dict, intersecting_node_dict, nodes_list=\
+        graph_pruning(g,term_list,edges_and_lens,nodes)
+
+    np.save("/export/home/amatskev/Bachelor/misc/finished_question.npy",(finished_dict, intersecting_node_dict, nodes_list))
 
 def actual_pruning_and_plotting(volume,finished,threshhold):
     # TODO maybe faster ?
@@ -228,23 +244,61 @@ def actual_pruning_and_plotting(volume,finished,threshhold):
         plot_figure_and_path(volume, [],False)
 
 if __name__ == "__main__":
-    # compute_graph_and_pruning_for_label(1, 2)
+    compute_graph_and_pruning_for_label()
+    # finished_dict, intersecting_node_dict, nodes_list=np.load("/export/home/amatskev/Bachelor/misc/finished_question.npy")
+    # finished_dict
+    # intersecting_node_dict=intersecting_node_dict.tolist()
+    # actual_pruning(finished_dict, intersecting_node_dict, nodes_list)
     # seg_test,dt_test=np.load("/mnt/localdata1/amatskev/debugging/data/graph_pruning/debugging/seg_and_dt_test.npy")
     # img=np.zeros(seg_test.shape)
     # img[seg_test==1]=1
-    #
-    # where="/export/home/amatskev/Bachelor/data/graph_pruning/"
-    # dict=np.load(where + "finished_86.npy").tolist()
-    # # label=86
-    # seg_0=np.load(where+"seg_0.npy")
-    seg_0,dt_test=np.load("/mnt/localdata1/amatskev/debugging/data/graph_pruning/debugging/seg_and_dt_test.npy")
+    # a=6
+    # seg_0=np.zeros((a*100,a*100,a*100))
+    # seg_0[  a*10:a*20,    a*10:a*90,a*47:a*-47]=1
+    # seg_0[a*80:a*90,  a*10:a*90,a*47:a*-47]=1
+    # seg_0[a*40:a*60, a*10:a*90, a*40:a*60] = 1
+    # # seg_0[a*45:a*55,a*45:a*55,a*45:a*55]=0
+    # seg_0[a*10:a*90,  a*10:a*20, a* 47:a*-47]=1
+    # seg_0[a*10:a*90, a*80:a*90, a*47:a*-47] = 1
+    # # seg_0[40:-40, 40:-40, 10:-10] = 1
 
-    volume = np.zeros(seg_0.shape)
-    volume[seg_0 == 41] = 1
-    # a=np.load("/export/home/amatskev/Bachelor/data/graph_pruning/finished_paths_86_test.npy")
+    # volume=seg_0
     #
-    # plot_figure_and_path(volume, a)
-    skel_img=skeletonize_3d(volume)
+    where="/mnt/localdata1/amatskev/debugging/data/graph_pruning/"
+    # seg_0=np.load(where+"seg_0.npy")
+    seg_0 = vigra.readHDF5('/mnt/localdata0/amatskev/neuraldata/results/'
+                           'splA_z0/result.h5', "z/0/data")
+    volume = np.zeros(seg_0.shape)
+    volume[seg_0 == 0] = 1
+
+    #
+    #
+    # seg_0=np.load("/mnt/localdata1/amatskev/debugging/data/"
+    #                  "graph_pruning/debugging/seg_and_dt_test.npy")
+    # skel_img=np.int64(np.load("/mnt/localdata1/amatskev/debugging/data/graph_pruning/debugging/spooky/skel_seg.npy"))
+
+
+    # a=np.load("/export/home/amatskev/Bachelor/data/graph_pruning/finished_paths_86_test.npy")
+    wher_vol=np.where(volume)
+    print "min: ",min(wher_vol[0]),"max: ",max(wher_vol[0])
+    print "len: " ,len(wher_vol[0])
+
+    # seg_0 = np.load("/mnt/localdata1/amatskev/debugging/data/graph_pruning/seg_0.npy")
+
+    # volume = np.zeros(seg_0.shape)
+    # volume[seg_0 == 0] = 1
+    # # a=np.load("/export/home/amatskev/Bachelor/data/graph_pruning/finished_paths_86_test.npy")
+    # wher_vol = np.where(volume)
+    # print "min: ", min(wher_vol[2]), "max: ", max(wher_vol[2])
+    # print "len: ", len(wher_vol[2])
+    # # plot_figure_and_path(volume, a)
+    # expand image as the skeletonization sees the image border as a border
+    expand_number = 10
+    # skeletonize
+    skel_img = skeletonize_3d(volume)
+
+    # skel_img[1000:,:,:]=0
+    # volume[1000:,:,:]=0
 
     wher_skel=np.where(skel_img)
 
@@ -253,8 +307,7 @@ if __name__ == "__main__":
     skel_arr[:, 1] = wher_skel[1]
     skel_arr[:, 2] = wher_skel[2]
 
-
-    plot_figure_and_path(volume, skel_arr,anisotropy_input=[10,1,1])
+    plot_figure_and_path(volume, skel_arr,anisotropy_input=[10,1,1],opacity=0.3)
 
     # pruning_without_space(86)
 

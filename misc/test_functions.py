@@ -72,7 +72,7 @@ def find_bounding_rect(image):
     return np.s_[rows.min():rows.max()+1, cols.min():cols.max()+1, bnds.min():bnds.max()+1]
 
 
-def plot_figure_and_path(figure,paths=[],plot_path=True,anisotropy_input=[1,1,10]):
+def plot_figure_and_path(figure,paths=[],plot_path=True,anisotropy_input=[10,1,1],opacity=0.3):
     """plots figure and path"""
     from mayavi import mlab
 
@@ -82,12 +82,12 @@ def plot_figure_and_path(figure,paths=[],plot_path=True,anisotropy_input=[1,1,10
     # sub_paths = seg_figure.multiple_paths_for_plotting(paths)
     seg_figure.start_figure()
 
-    seg_figure.add_iso_surfaces(figure, anisotropy_input,vmin=np.amin(figure),vmax=np.amax(figure))
+    seg_figure.add_iso_surfaces(figure, anisotropy_input,vmin=np.amin(figure),vmax=np.amax(figure),opacity=opacity)
     # path=np.array(paths[0])
     # sub_paths = seg_figure.multiple_paths_for_plotting(paths)
     if plot_path==True:
-            seg_figure.add_path(paths.swapaxes(0, 1),anisotropy=anisotropy_input,representation="points")
-    mlab.view(azimuth=0)
+            seg_figure.add_path(paths.swapaxes(0, 1),anisotropy=anisotropy_input,representation="points",line_width=10)
+    mlab.view(azimuth=37)
 
 
     seg_figure.show()

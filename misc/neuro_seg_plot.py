@@ -30,7 +30,7 @@ class NeuroSegPlot():
                  color=(1, 0, 0),
                  colormap='Spectral',
                  representation='wireframe',
-                 line_width=5,
+                 line_width=100,
                  vmax=None, vmin=None,
                  custom_lut=None
                  ):
