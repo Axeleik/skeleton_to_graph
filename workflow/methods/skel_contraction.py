@@ -359,62 +359,72 @@ def graph_pruning(g,term_list,edges,nodes_list, dict_border_points=None):
 
 
         #finishing contraction
-        if len(main_dict.keys())<3:
+        if len(main_dict.keys())<3 :
+            if last_point_was_a_loop==1:
+                last_point_was_a_loop=2
 
             #if we get the case where the node before was not the shortest so we jump to this one
             if main_dict[main_dict.keys()[0]][0][-1]!=main_dict[main_dict.keys()[1]][0][-1]:
 
-                # writing new node to label
-                main_dict[node_dict[current_node][1]][0]. \
-                    extend([node_dict[current_node][0][0]])
+                adj_nodes=[[adj_node,adj_edge] for adj_node, adj_edge in g.nodeAdjacency(node_dict[current_node][0][0])]
 
-                # comparing maximum of dt
-                if main_dict[node_dict[current_node][1]][4] < \
-                        edges[node_dict[current_node][2][0]][3]:
-                    main_dict[node_dict[current_node][1]][4] = \
-                        edges[node_dict[current_node][2][0]][3]
+                if len(adj_nodes)==2 and last_point_was_a_loop!=2:
+                    last_point_was_a_loop=1
 
-                # adding length to label
-                main_dict[node_dict[current_node][1]][1] += \
-                    edges[node_dict[current_node][2][0]][1]
-
-                # adding path to next node to label
-                if main_dict[node_dict[current_node][1]][2][-1] == \
-                        edges[node_dict[current_node][2][0]][2][-1]:
-
-                    main_dict[node_dict[current_node][1]][2].extend(
-                        edges[node_dict[current_node][2][0]][2][-2::-1])
-
-                # adding path to next node to label
                 else:
 
-                    main_dict[node_dict[current_node][1]][2].extend(
-                        edges[node_dict[current_node][2][0]][2][1:])
 
-                # adding edge number to label
-                main_dict[node_dict[current_node][1]][3] = \
-                    node_dict[current_node][2][0]
+                    # writing new node to label
+                    main_dict[node_dict[current_node][1]][0]. \
+                        extend([node_dict[current_node][0][0]])
 
-                assert main_dict[main_dict.keys()[0]][0][-1]==main_dict[main_dict.keys()[1]][0][-1], "something went wrong with the new stuff"
+                    # comparing maximum of dt
+                    if main_dict[node_dict[current_node][1]][4] < \
+                            edges[node_dict[current_node][2][0]][3]:
+                        main_dict[node_dict[current_node][1]][4] = \
+                            edges[node_dict[current_node][2][0]][3]
 
-                if len([adj_node for adj_node, adj_edge in g.nodeAdjacency(node_dict[current_node][0][0])])!=2:
+                    # adding length to label
+                    main_dict[node_dict[current_node][1]][1] += \
+                        edges[node_dict[current_node][2][0]][1]
 
-                    for finished_label in [adj_node for adj_node,
-                                     adj_edge in g.nodeAdjacency(node_dict[current_node][0][0])
-                                     if adj_node != node_dict[node_dict[current_node][0][0]][0][0] and  # is not the only one left in node dict for this node
-                                     adj_node != main_dict[node_dict[node_dict[current_node][0][0]][1]][0][-2]]:  # is not the previous node
-                                                                                                                # from the strongest label at this node
+                    # adding path to next node to label
+                    if main_dict[node_dict[current_node][1]][2][-1] == \
+                            edges[node_dict[current_node][2][0]][2][-1]:
+
+                        main_dict[node_dict[current_node][1]][2].extend(
+                            edges[node_dict[current_node][2][0]][2][-2::-1])
+
+                    # adding path to next node to label
+                    else:
+
+                        main_dict[node_dict[current_node][1]][2].extend(
+                            edges[node_dict[current_node][2][0]][2][1:])
+
+                    # adding edge number to label
+                    main_dict[node_dict[current_node][1]][3] = \
+                        node_dict[current_node][2][0]
+
+                    assert main_dict[main_dict.keys()[0]][0][-1]==main_dict[main_dict.keys()[1]][0][-1], "something went wrong with the new stuff"
+
+                    if len([adj_node for adj_node, adj_edge in g.nodeAdjacency(node_dict[current_node][0][0])])!=2:
+
+                        for finished_label in [adj_node for adj_node,
+                                         adj_edge in g.nodeAdjacency(node_dict[current_node][0][0])
+                                         if adj_node != node_dict[node_dict[current_node][0][0]][0][0] and  # is not the only one left in node dict for this node
+                                         adj_node != main_dict[node_dict[node_dict[current_node][0][0]][1]][0][-2]]:  # is not the previous node
+                                                                                                                    # from the strongest label at this node
 
 
-                        if finished_label in finished_dict.keys():
+                            if finished_label in finished_dict.keys():
 
-                            finished_dict[finished_label] \
-                                .append(finished_label)
+                                finished_dict[finished_label] \
+                                    .append(finished_label)
 
-                        else:
+                            else:
 
-                            finished_dict[node_dict[finished_label][1]] \
-                                .append(node_dict[current_node][1])
+                                finished_dict[node_dict[finished_label][1]] \
+                                    .append(node_dict[current_node][1])
 
 
 
@@ -439,24 +449,24 @@ def graph_pruning(g,term_list,edges,nodes_list, dict_border_points=None):
 
 
             for key in main_dict.keys():
+                if last_point_was_a_loop==0 or last_point_was_a_loop==2:
+                    # writing to intersection_node so we can connect later on
+                    if main_dict[key][0][-1] in intersecting_node_dict.keys():
+                        if key not in intersecting_node_dict[main_dict[key][0][-1]]:
+                            intersecting_node_dict[main_dict[key][0][-1]].append(key)
+                    else:
+                        intersecting_node_dict[main_dict[key][0][-1]] = [key]
 
-                # writing to intersection_node so we can connect later on
-                if main_dict[key][0][-1] in intersecting_node_dict.keys():
-                    if key not in intersecting_node_dict[main_dict[key][0][-1]]:
-                        intersecting_node_dict[main_dict[key][0][-1]].append(key)
-                else:
-                    intersecting_node_dict[main_dict[key][0][-1]] = [key]
+                    finished_dict[key]=deepcopy(main_dict[key])
 
-                finished_dict[key]=deepcopy(main_dict[key])
+                    del main_dict[key]
 
-                del main_dict[key]
-
-                finished_dict[key].append(key)
+                    finished_dict[key].append(key)
 
             # # deleting node from dict
             # del node_dict[current_node]
-
-            break
+            if last_point_was_a_loop == 0 or last_point_was_a_loop==2:
+                break
 
         # check if all branches reached the adjacent node but we cant go
         # further because the dominant edge is not the smallest edge
