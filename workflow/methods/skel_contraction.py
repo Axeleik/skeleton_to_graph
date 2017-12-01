@@ -28,6 +28,7 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_li
 
 
 
+
         assert(len(adjacency) == 1)
 
         # for terminating points
@@ -98,6 +99,7 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_li
                                                if adj_edge != adjacency[0][1]]]
 
 
+
             # we finish when we have only two open labels left
             if start_queue.qsize() == 0 and len(nodes_list.keys())==6:
 
@@ -130,8 +132,10 @@ def terminal_func(start_queue,g,finished_dict,node_dict,main_dict,edges,nodes_li
                 break
 
 
+
+
             # if all except one branches reached the adjacent node
-            if len(node_dict[adjacency[0][0]][0]) == 1:
+            elif len(node_dict[adjacency[0][0]][0]) == 1:
 
 
                 # writing longest label at node to the others,
@@ -263,8 +267,17 @@ def graph_pruning(g,term_list,edges,nodes_list, dict_border_points=None):
         # draw from queue
         current_node, label = queue.get()
 
+        # if this path is not the smallest right now, skip
+        if main_dict[label][1] != min(np.array(main_dict.values())[:, 1]):
+            queue.put([current_node, label])
+            continue
+
+
+
         # if current node was already visited at least once
-        if current_node in node_dict.keys():
+        if current_node in node_dict.keys() and \
+                main_dict[label][0][-2] in node_dict[current_node][0]:
+
 
 
             # remove previous node from adjacency
@@ -374,8 +387,12 @@ def graph_pruning(g,term_list,edges,nodes_list, dict_border_points=None):
             break
 
 
+        if main_dict[node_dict[current_node][1]][1] > min(np.array(main_dict.values())[:, 1]):
+            queue.put([current_node,label])
+
+
         # if all except one branches reached the adjacent node
-        if len(node_dict[current_node][0]) == 1:
+        elif len(node_dict[current_node][0]) == 1:
 
             # writing longest label at node to the others,
             # so we dont cut in half later
