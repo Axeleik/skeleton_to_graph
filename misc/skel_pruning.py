@@ -254,6 +254,7 @@ def close_cavities(volume):
     test_vol=np.zeros(volume.shape)
     test_vol[volume==0]=2
     test_vol[volume==1]=1
+    test_vol=np.pad(test_vol, 1, "constant", constant_values=2)
 
     lab=label(test_vol)
     if len(np.unique(lab))==2:
@@ -267,7 +268,7 @@ def close_cavities(volume):
     test_vol[lab==what]=0
     test_vol[lab != what] = 1
 
-    return test_vol
+    return test_vol[1:-1,1:-1,1:-1]
 
 if __name__ == "__main__":
     # compute_graph_and_pruning_for_label()
@@ -292,10 +293,10 @@ if __name__ == "__main__":
     #
     where="/mnt/localdata1/amatskev/debugging/data/graph_pruning/"
     # seg_0=np.load(where+"seg_0.npy")
-    seg_0 = vigra.readHDF5('/mnt/localdata1/amatskev/neuraldata/results1/'
-                           'splB_z0/result.h5', "z/0/data")
+    seg_0 = vigra.readHDF5('/mnt/localdata1/amatskev/neuraldata/results2/'
+                           'splC_z1/result.h5', "z/1/data")
     volume = np.zeros(seg_0.shape)
-    volume[seg_0 == 2] = 1
+    volume[seg_0 == 141] = 1
     # volume[:,:,400:]=0
     # volume[:, :, :250] = 0
     # volume[:,500:, : ] = 0

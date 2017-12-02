@@ -15,6 +15,25 @@ import vigra
 # from multicut_src.false_merges.path_computation import parallel_wrapper
 from math import sqrt
 
+def close_cavities(volume):
+    test_vol=np.zeros(volume.shape)
+    test_vol[volume==0]=2
+    test_vol[volume==1]=1
+    test_vol=np.pad(test_vol, 1, "constant", constant_values=2)
+
+    lab=label(test_vol)
+    if len(np.unique(lab))==2:
+        return volume
+    count,what=0,0
+    for uniq in np.unique(lab):
+        if len(np.where(lab == uniq)[0])> count:
+            count=len(np.where(lab == uniq)[0])
+            what=uniq
+
+    test_vol[lab==what]=0
+    test_vol[lab != what] = 1
+
+    return test_vol[1:-1,1:-1,1:-1]
 
 def interpolation(data,param=5000):
     """interpolates the "stairlike" path"""
