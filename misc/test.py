@@ -39,7 +39,7 @@ def close_cavities(volume):
     test_vol[volume==1]=1
     test_vol=np.pad(test_vol, 1, "constant", constant_values=2)
 
-    lab=label(test_vol)
+    lab=label(test_vol,connectivity=1)
     if len(np.unique(lab))==2:
         return volume
     count,what=0,0
@@ -50,7 +50,6 @@ def close_cavities(volume):
 
     test_vol[lab==what]=0
     test_vol[lab != what] = 1
-
     return test_vol[1:-1,1:-1,1:-1]
 
 def example_rag():

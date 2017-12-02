@@ -256,7 +256,7 @@ def close_cavities(volume):
     test_vol[volume==1]=1
     test_vol=np.pad(test_vol, 1, "constant", constant_values=2)
 
-    lab=label(test_vol)
+    lab=label(test_vol,connectivity=1)
     if len(np.unique(lab))==2:
         return volume
     count,what=0,0
@@ -267,7 +267,6 @@ def close_cavities(volume):
 
     test_vol[lab==what]=0
     test_vol[lab != what] = 1
-
     return test_vol[1:-1,1:-1,1:-1]
 
 if __name__ == "__main__":
@@ -291,17 +290,23 @@ if __name__ == "__main__":
     from skimage.measure import label
     # volume=seg_0
     #
+    seg1=np.load("/mnt/localdata1/amatskev/debugging/funny_shit1.npy" )
+    seg=np.load("/mnt/localdata1/amatskev/debugging/funny_shit.npy" )
+
     where="/mnt/localdata1/amatskev/debugging/data/graph_pruning/"
     # seg_0=np.load(where+"seg_0.npy")
     seg_0 = vigra.readHDF5('/mnt/localdata1/amatskev/neuraldata/results2/'
-                           'splC_z1/result.h5', "z/1/data")
+                           'splB_z0/result.h5', "z/0/data")
     volume = np.zeros(seg_0.shape)
-    volume[seg_0 == 141] = 1
-    # volume[:,:,400:]=0
-    # volume[:, :, :250] = 0
-    # volume[:,500:, : ] = 0
-    # volume[:, :250, :] = 0
-    # volume[7:, :, :] = 0
+    volume[seg_0 == 2] = 1
+
+    # volume=np.load("/mnt/localdata1/amatskev/debugging/funny_shit.npy")
+
+    # volume[:,:,:500]=0
+    # # volume[:, :, :250] = 0
+    # volume[:,230:, : ] = 0
+    # volume[:, :130, :] = 0
+    # volume[15:, :, :] = 0
     # a=label(volume)
 
     volume=close_cavities(volume)
