@@ -105,7 +105,7 @@ def plot_figure_and_path(figure,paths=[],plot_path=True,anisotropy_input=[10,1,1
     # sub_paths = seg_figure.multiple_paths_for_plotting(paths)
     if plot_path==True:
             seg_figure.add_path(paths.swapaxes(0, 1),anisotropy=anisotropy_input,representation="points",line_width=10)
-    mlab.view(azimuth=37)
+    mlab.view(azimuth=38)
 
 
     seg_figure.show()
@@ -412,6 +412,12 @@ def shorten_paths(paths_full_raw,shortage_ratio=0.1):
     return paths_cut
 
 if __name__ == "__main__":
+    import h5py
+    filename = '/export/home/amatskev/Downloads/groundtruth.h5'
+    f = h5py.File(filename, 'r')
+
+    test_vol=np.array(f["stack"])
+
 
 
     ref_seg=np.load("/mnt/localdata1/amatskev/debugging/vi_scores/splA_z0/ref_seg.npy")

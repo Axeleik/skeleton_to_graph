@@ -148,12 +148,13 @@ nsp.start_figure()
 #nsp.add_iso_surfaces(seg, anisotropy=[1, 1, 10], vmin=0, vmax=np.amax(seg), opacity=0.5)
 #nsp.start_figure()
 
-nsp.add_iso_surfaces(gt, anisotropy=[10, 1, 1], vmin=0, vmax=np.amax((np.amax(newseg),np.amax(gt))), opacity=0.5)
+nsp.add_iso_surfaces(gt, anisotropy=[1, 1, 1], vmin=0, vmax=np.amax((np.amax(newseg),np.amax(gt))), opacity=0.3)
+nsp.add_path(paths[id].swapaxes(0, 1), anisotropy=[1, 1, 10])
 
 #nsp.start_figure()
 
 #nsp.add_iso_surfaces(gt, anisotropy=[1, 1, 10], vmin=0, vmax=np.amax((np.amax(newseg),np.amax(gt))), opacity=0.5)
-nsp.show()
+nsp.movie_show()
 
 
 

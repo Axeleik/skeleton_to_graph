@@ -350,7 +350,7 @@ class NeuroSegPlot():
         )
 
         # Objects of the segmentation ----------------------------------------------
-        print np.unique(seg_image)
+        print (np.unique(seg_image))
 
         for i in np.unique(seg_image):
 

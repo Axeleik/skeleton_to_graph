@@ -435,7 +435,19 @@ def path_features_from_feature_images(
     return out
 
 if __name__ == '__main__':
+    import h5py
+    filename = '/export/home/amatskev/Downloads/groundtruth.h5'
+    f = h5py.File(filename, 'r')
+
+
+
+
+
+
     feature_stats = ["Mean", "Variance", "Sum", "Maximum", "Minimum", "Kurtosis", "Skewness"]
+
+
+
 
 
     # ds, seg, seg_id, gt, correspondence_list = \

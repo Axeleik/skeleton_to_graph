@@ -447,20 +447,22 @@ def check_edge_paths(edge_paths, node_list):
 
 
 
-def compute_graph_and_paths(img,dt,modus="run",anisotropy=[10,1,1]):
+def compute_graph_and_paths(img,dt,provided_skel_img=False,modus="run",anisotropy=[10,1,1]):
     """ overall wrapper for all functions, input: label image; output: paths
         sampled from skeleton
     """
+    if provided_skel_img==False:
+        #skeletonize
+        skel_img=skeletonize_3d(img)
 
-    #skeletonize
-    skel_img=skeletonize_3d(img)
 
 
-
-    print "deleting img..."
-    del img
-    # vigra.filters.distanceTransform(
-    #     a.astype("uint32"), background=True, pixel_pitch=[3, 1, 1])
+        print "deleting img..."
+        del img
+        # vigra.filters.distanceTransform(
+        #     a.astype("uint32"), background=True, pixel_pitch=[3, 1, 1])
+    else:
+        skel_img=img
 
     nodes, edges_and_lens, term_list, is_node_map, loop_list = \
         skeleton_to_graph(skel_img, dt, anisotropy)
